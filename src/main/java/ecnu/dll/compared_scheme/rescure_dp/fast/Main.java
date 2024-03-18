@@ -1,4 +1,4 @@
-package ecnu.dll.pre_process;
+package ecnu.dll.compared_scheme.rescure_dp.fast;
 
 public class Main {
     public static void main0(String[] args) {
