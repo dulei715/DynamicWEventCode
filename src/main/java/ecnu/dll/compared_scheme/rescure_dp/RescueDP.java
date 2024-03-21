@@ -3,12 +3,11 @@ package ecnu.dll.compared_scheme.rescure_dp;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.basic.MatrixArray;
-import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.map.MapUtils;
-import edu.ecnu.dll.tools.collection.ArraysUtils;
-import org.apache.commons.math3.linear.MatrixUtils;
+import cn.edu.dll.statistic.StatisticTool;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -17,32 +16,56 @@ public class RescueDP {
     /**
      * 行表示region，列表示时间
      */
-    protected double[][] regionValueArray;
-    protected double[][] regionStatisticArray;
-    protected boolean[][] isSampledArray;
+    protected double[][] regionValueMatrix;
+    protected double[][] regionStatisticMatrix;
+    protected boolean[][] isSampledMatrix;
+
+    protected double[][] noiseValueMatrix;
+
+    public double[][] getRegionValueMatrix() {
+        return regionValueMatrix;
+    }
+
+    public void setRegionValueMatrix(double[][] regionValueMatrix) {
+        this.regionValueMatrix = regionValueMatrix;
+    }
+
+    public double[][] getRegionStatisticMatrix() {
+        return regionStatisticMatrix;
+    }
+
+    public void setRegionStatisticMatrix(double[][] regionStatisticMatrix) {
+        this.regionStatisticMatrix = regionStatisticMatrix;
+    }
+
+    public boolean[][] getIsSampledMatrix() {
+        return isSampledMatrix;
+    }
+
+    public void setIsSampledMatrix(boolean[][] isSampledMatrix) {
+        this.isSampledMatrix = isSampledMatrix;
+    }
 
     public static int adaptiveSampling(double kP, double kI, double kD, double[] eArray, double kNow, double kBefore, int intervalBefore, int thetaScale, double lambda) {
         double eSum = BasicCalculation.getSum(eArray);
         double delta = kP * eArray[eArray.length-1] + kI * eSum / eArray.length + kD * eArray[eArray.length-1] / (kNow - kBefore);
-        int intervalNow = (int)Math.floor(Math.max(1, intervalBefore + thetaScale * (1 - Math.pow(delta / lambda, 2))));
-        return intervalNow;
+        return (int)Math.floor(Math.max(1, intervalBefore + thetaScale * (1 - Math.pow(delta / lambda, 2))));
     }
 
     public static double adaptiveBudgetAllocation(double epsilon, int interval, double[] beforeWMinusOneEpsilonArray, double maxEpsilon, double phiScaleFactor, double maxP) {
         double beforeWTotalBudget = BasicCalculation.getSum(beforeWMinusOneEpsilonArray);
         double remainEpsilon = epsilon - beforeWTotalBudget;
         double portionP = Math.min(phiScaleFactor * Math.log1p(interval), maxP);
-        double epsilonNow = Math.min(portionP * remainEpsilon, maxEpsilon);
-        return epsilonNow;
+        return Math.min(portionP * remainEpsilon, maxEpsilon);
     }
 
     protected double[][] getSampleHistoryMatrix(int currentTime, int sampleWindowSize) {
-        double[][] result = new double[this.regionStatisticArray.length][sampleWindowSize];
+        double[][] result = new double[this.regionValueMatrix.length][sampleWindowSize];
         int tempTime, resultTime;
-        for (int i = 0; i < this.regionValueArray.length; i++) {
-            for (tempTime = currentTime - 1, resultTime = sampleWindowSize - 1; tempTime >= 0 && resultTime >= 0; tempTime++) {
-                if (this.isSampledArray[i][tempTime]) {
-                    result[i][resultTime] = this.regionValueArray[i][tempTime];
+        for (int i = 0; i < this.regionValueMatrix.length; i++) {
+            for (tempTime = currentTime - 1, resultTime = sampleWindowSize - 1; tempTime >= 0 && resultTime >= 0; tempTime--) {
+                if (this.isSampledMatrix[i][tempTime]) {
+                    result[i][resultTime] = this.regionValueMatrix[i][tempTime];
                     -- resultTime;
                 }
             }
@@ -63,7 +86,7 @@ public class RescueDP {
         return result;
     }
 
-    public void dynamicGrouping(int currentTime, int sampleWindowSize, double tao1, double tao2, double tao3) {
+    public List<List<Integer>> dynamicGrouping(int currentTime, int sampleWindowSize, double tao1, double tao2, double tao3) {
         List<List<Integer>> group = new ArrayList<>();
 
         // step 1
@@ -83,11 +106,45 @@ public class RescueDP {
         }
 
         // step 3
+        Integer firstRemainIndex, tempIndex;
         List<Integer> increaseRemainRegionIndex = getIncreaseRegionIndexByValue(regionStatisticsArray, remainIndexList);
+
+
+        double tempGroupStatisticSum, tempSimilarity;
+        Iterator<Integer> tempIterator;
+//        int
+        while (!increaseRemainRegionIndex.isEmpty()) {
+            tempList = new ArrayList<>();
+            firstRemainIndex = increaseRemainRegionIndex.remove(0);
+            tempList.add(firstRemainIndex);
+            tempGroupStatisticSum = regionStatisticsArray[firstRemainIndex];
+            tempIterator = increaseRemainRegionIndex.iterator();
+            while (tempIterator.hasNext()) {
+                tempIndex = tempIterator.next();
+                if (regionStatisticsArray[tempIndex] - regionStatisticsArray[firstRemainIndex] < tao3 && tempGroupStatisticSum < tao1) {
+                    // step 6
+                    tempSimilarity = StatisticTool.getPearsonCorrelationCoefficient(sampleHistoryMatrix[firstRemainIndex], sampleHistoryMatrix[tempIndex]);
+                    if (tempSimilarity > tao2) {
+                        tempIterator.remove();
+                        tempList.add(tempIndex);
+                        tempGroupStatisticSum += regionStatisticsArray[tempIndex];
+                    }
+                } else {
+                    // step 7: part_1 (之前已经 remove fi_1 了)
+                    break;
+                }
+            }
+            // step 7: part_2 (为了解决末尾并组问题，将这步放在了while循环外)
+            group.add(tempList);
+        }
+
+        return group;
 
     }
 
-    public void perturbation() {
+    public void perturbation(List<Integer> groupElement, double[] elementEpsilonArray) {
+        double minimalEpsilon = BasicArrayUtil.getMinimalValue(elementEpsilonArray);
+        // todo
 
     }
 
