@@ -8,7 +8,7 @@ public class KalmanFiltering {
      * @param pBefore   前一时刻的方差
      * @param noiseQ    过程噪声方差
      * @param noiseR    隐私噪声方差（用Gauss噪声近似Laplace噪声）
-     * @return  [当前数据估计值，当前方差]
+     * @return double[]  [当前数据估计值，当前方差]
      */
     public static double[] estimate(double rPri, double zNow, double pBefore, double noiseQ, double noiseR) {
         double xPri, pPri, kalmanValue, xNow, pNow;

@@ -166,8 +166,8 @@ public class RescueDP {
         return noiseValueArray;
     }
 
-    public void filtering() {
-        KalmanFiltering.estimate();
+    public double[] filtering(double rPri, double zNow, double pBefore, double noiseQ, double noiseR) {
+        return KalmanFiltering.estimate(rPri, zNow, pBefore, noiseQ, noiseR);
     }
 
 
