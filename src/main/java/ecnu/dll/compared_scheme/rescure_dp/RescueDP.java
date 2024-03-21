@@ -3,6 +3,8 @@ package ecnu.dll.compared_scheme.rescure_dp;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.basic.MatrixArray;
+import cn.edu.dll.collection.ListUtils;
+import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 import cn.edu.dll.map.MapUtils;
 import cn.edu.dll.statistic.StatisticTool;
 
@@ -142,10 +144,25 @@ public class RescueDP {
 
     }
 
-    public void perturbation(List<Integer> groupElement, double[] elementEpsilonArray) {
-        double minimalEpsilon = BasicArrayUtil.getMinimalValue(elementEpsilonArray);
-        // todo
+    public double[] perturbation(int time, List<List<Integer>> group, List<List<Double>> groupEpsilonList) {
+//        double minimalEpsilon = BasicArrayUtil.getMinimalValue(elementEpsilonArray);
+        double totalRealValue, tempMinimalEpsilon;
+        double[] noiseValueArray = new double[group.size()];
+        List<Integer> tempGroupElement;
+        List<Double> tempGroupEpsilon;
+        for (int i = 0; i < group.size(); i++) {
+            tempGroupElement = group.get(i);
+            tempGroupEpsilon = groupEpsilonList.get(i);
+            totalRealValue = 0;
+            for (Integer index : tempGroupElement) {
+                totalRealValue += this.regionValueMatrix[index][time];
+            }
+            tempMinimalEpsilon = ListUtils.getMinimalValue(tempGroupEpsilon);
 
+            totalRealValue += LaplaceUtils.getLaplaceNoise(1, tempMinimalEpsilon);
+            noiseValueArray[i] = totalRealValue;
+        }
+        return noiseValueArray;
     }
 
     public void filtering() {
