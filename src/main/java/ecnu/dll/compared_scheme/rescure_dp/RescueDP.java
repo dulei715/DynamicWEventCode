@@ -7,6 +7,7 @@ import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 import cn.edu.dll.map.MapUtils;
 import cn.edu.dll.statistic.StatisticTool;
+import ecnu.dll.compared_scheme.rescure_dp.basic_component.KalmanFiltering;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -166,7 +167,7 @@ public class RescueDP {
     }
 
     public void filtering() {
-
+        KalmanFiltering.estimate();
     }
 
 
