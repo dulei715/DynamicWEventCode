@@ -7,20 +7,21 @@ import cn.edu.dll.map.MapUtils;
 import java.util.*;
 
 public class RescueDPUtils {
-    public static TreeMap<Integer, Double> getNonNegativeAverageOfSampleRegion(TreeMap<Integer, Double[]> sampleRegionMap) {
-        double tempSum;
+    public static TreeMap<Integer, Double> getNonNegativeAverageOfSampleRegion(TreeMap<Integer, TimeValue[]> sampleRegionMap) {
+        double tempSum, tempValue;
         int tempSize;
         Integer tempRegionIndex;
-        Double[] data;
+        TimeValue[] timeValueArray;
         TreeMap<Integer, Double> result = new TreeMap<>();
-        for (Map.Entry<Integer, Double[]> regionItem : sampleRegionMap.entrySet()) {
+        for (Map.Entry<Integer, TimeValue[]> regionItem : sampleRegionMap.entrySet()) {
             tempRegionIndex = regionItem.getKey();
-            data = regionItem.getValue();
+            timeValueArray = regionItem.getValue();
             tempSum = 0;
             tempSize = 0;
-            for (int j = 0; j < data.length; j++) {
-                if (data[j] >= 0) {
-                    tempSum += data[j];
+            for (int j = 0; j < timeValueArray.length; j++) {
+                tempValue = timeValueArray[j].getStatisticValue();
+                if (tempValue >= 0) {
+                    tempSum += tempValue;
                     ++tempSize;
                 }
             }
@@ -29,18 +30,18 @@ public class RescueDPUtils {
         return result;
     }
 
-    public static double getNonNegativePearsonCorrelationCoefficient(Double[] originalDataA, Double[] originalDataB) {
+    public static double getNonNegativePearsonCorrelationCoefficient(TimeValue[] originalDataA, TimeValue[] originalDataB) {
         int dataAFirstNonNegativeIndex = 0, dataBFirstNonNegativeIndex = 0;
 //            List<Double> dataAReverseList = new ArrayList<>(), dataBReverseList = new ArrayList<>();
-        for (; originalDataA[dataAFirstNonNegativeIndex] < 0; dataAFirstNonNegativeIndex++);
-        for (; originalDataB[dataBFirstNonNegativeIndex] < 0; dataBFirstNonNegativeIndex++);
+        for (; originalDataA[dataAFirstNonNegativeIndex].getStatisticValue() < 0; dataAFirstNonNegativeIndex++);
+        for (; originalDataB[dataBFirstNonNegativeIndex].getStatisticValue() < 0; dataBFirstNonNegativeIndex++);
         int minimalSize = Math.min(originalDataA.length - dataAFirstNonNegativeIndex, originalDataB.length - dataBFirstNonNegativeIndex);
         double[] dataA = new double[minimalSize], dataB = new double[minimalSize];
         int k = minimalSize;
         for (int dataAIndex = originalDataA.length - 1, dataBIndex = originalDataB.length - 1; dataAIndex >= dataAFirstNonNegativeIndex && dataBIndex >= dataBFirstNonNegativeIndex; dataAIndex--, dataBIndex--) {
             -- k;
-            dataA[k] = originalDataA[dataAIndex];
-            dataB[k] = originalDataB[dataBIndex];
+            dataA[k] = originalDataA[dataAIndex].getStatisticValue();
+            dataB[k] = originalDataB[dataBIndex].getStatisticValue();
         }
         double averageA = BasicCalculation.getAverage(dataA);
         double averageB = BasicCalculation.getAverage(dataB);

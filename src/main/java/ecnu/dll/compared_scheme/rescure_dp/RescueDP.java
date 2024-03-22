@@ -136,7 +136,7 @@ public class RescueDP {
 
 
 
-    public List<List<Integer>> dynamicGrouping(Integer currentTime, TreeMap<Integer, Double[]> sampleHistoryTree) {
+    public List<List<Integer>> dynamicGrouping(Integer currentTime, List<Integer> sampleRegionIndexList) {
         List<List<Integer>> groupList = new ArrayList<>();
         List<Integer> tempGroup;
         Integer tempRegionIndex;
@@ -144,7 +144,7 @@ public class RescueDP {
 
         // 处理 currentTime为0的情况
         if (currentTime.equals(0)) {
-            for (Integer index : sampleHistoryTree.keySet()) {
+            for (Integer index : sampleRegionIndexList) {
                 tempGroup = new ArrayList<>();
                 tempGroup.add(index);
                 groupList.add(tempGroup);
@@ -153,7 +153,7 @@ public class RescueDP {
         }
 
         // step 1
-//        TreeMap<Integer, Double[]> sampleHistoryTree = getSampleHistoryMatrix(currentTime, sampleRegionIndexList, this.sampleWindowSize);
+        TreeMap<Integer, TimeValue[]> sampleHistoryTree = RescueDPUtils.getSampleHistoryMatrix(this.regionStatisticMatrix, this.isSampledMatrix, currentTime, sampleRegionIndexList, this.sampleWindowSize);
         TreeMap<Integer, Double> regionAverageStatisticsMap = RescueDPUtils.getNonNegativeAverageOfSampleRegion(sampleHistoryTree);
 
         // step 2

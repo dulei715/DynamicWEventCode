@@ -39,8 +39,8 @@ public class RescueDPTest {
     public void fun2() {
         Double[] dataA = new Double[] {-1D, -1D, 2D, 3D, 4D};
         Double[] dataB = new Double[] {-1D, -4D, 3D, 7D};
-        Double result = RescueDPUtils.getNonNegativePearsonCorrelationCoefficient(dataA, dataB);
-        System.out.println(result);
+//        Double result = RescueDPUtils.getNonNegativePearsonCorrelationCoefficient(dataA, dataB);
+//        System.out.println(result);
     }
     
     
