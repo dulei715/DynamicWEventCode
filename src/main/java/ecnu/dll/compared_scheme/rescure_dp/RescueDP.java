@@ -36,13 +36,13 @@ public class RescueDP {
 
 //    private int[]
 
-    @Deprecated
-    public RescueDP() {
-        this.tao1 = Constant.TAO_1;
-        this.tao2 = Constant.TAO_2;
-        this.tao3 = Constant.TAO_3;
-        this.sampleWindowSize = Constant.SAMPLE_WINDOW_SIZE;
-    }
+//    @Deprecated
+//    public RescueDP() {
+//        this.tao1 = Constant.TAO_1;
+//        this.tao2 = Constant.TAO_2;
+//        this.tao3 = Constant.TAO_3;
+//        this.sampleWindowSize = Constant.SAMPLE_WINDOW_SIZE;
+//    }
 
     public RescueDP(Integer regionSize, Integer timeUpperBound, Double privacyBudget) {
         this.regionSize = regionSize;
@@ -88,6 +88,9 @@ public class RescueDP {
         this.isSampledMatrix = isSampledMatrix;
     }
 
+    public Double[][] getEstimateStatisticMatrix() {
+        return estimateStatisticMatrix;
+    }
 
     public List<Integer> adaptiveSampling(Integer currentTime, List<Integer> sampleRegionIndexList, List<Double> nextTimeRemainBudgetList) {
         List<Integer> result = new ArrayList<>();
