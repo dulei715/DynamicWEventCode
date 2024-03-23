@@ -105,11 +105,14 @@ public class RescueDPUtils {
         return result;
     }
 
-    public static void setNextValueAndStatus(Double[][] noiseRegionStatisticMatrix, Boolean[][] isSampleMatrix, Map<Integer, Integer>[] sampleRecord, Integer currentRegionIndex, Integer currentTime, Double currentNoise, Integer newInterval) {
+    public static void setNextValueAndStatus(Double[][] noiseRegionStatisticMatrix, Boolean[][] isSampleMatrix, Double[][] epsilonArray, Map<Integer, Integer>[] sampleRecord, Integer currentRegionIndex, Integer currentTime, Double currentNoise, Integer newInterval) {
         int tempTime = 1;
+        int index;
         for (; tempTime < newInterval; tempTime++) {
-            noiseRegionStatisticMatrix[currentRegionIndex][currentTime + tempTime] = currentNoise;
-            isSampleMatrix[currentRegionIndex][currentTime + tempTime] = false;
+            index = currentTime + tempTime;
+            epsilonArray[currentRegionIndex][index] = 0D;
+            noiseRegionStatisticMatrix[currentRegionIndex][index] = currentNoise;
+            isSampleMatrix[currentRegionIndex][index] = false;
         }
         isSampleMatrix[currentRegionIndex][currentTime + tempTime] = true;
         sampleRecord[currentRegionIndex].put(currentTime + tempTime, newInterval);
@@ -121,6 +124,63 @@ public class RescueDPUtils {
             sampleRecord[index].put(currentTime + 1, 1);
 
         }
+    }
+
+    public static List<Double> getSumOfHistoricalPrivacyBudget(Double[][] epsilonRecordArray, List<Integer> regionIndexList, Integer currentTime, Integer windowSize) {
+        Integer tempTime;
+        Double tempResult;
+        List<Double> resultList = new ArrayList<>();
+        for (Integer regionIndex : regionIndexList) {
+            tempTime = currentTime - windowSize + 1;
+            tempResult = 0D;
+            if (tempTime < 0) {
+                tempTime = 0;
+            }
+            for (; tempTime < currentTime; tempTime ++) {
+                tempResult += epsilonRecordArray[regionIndex][tempTime];
+            }
+            resultList.add(tempResult);
+        }
+
+        return resultList;
+    }
+
+    public static List<Double> getRemainPrivacyBudget(List<Double> historicalSumPrivacyBudgetList, Double totalPrivacyBudget) {
+        List<Double> resultList = new ArrayList<>();
+        for (Double historySum : historicalSumPrivacyBudgetList) {
+            resultList.add(totalPrivacyBudget - historySum);
+        }
+        return resultList;
+    }
+
+    public static List<Double> getRemainPrivacyBudget(Double[][] epsilonRecordArray, List<Integer> regionIndexList, Integer currentTime, Integer windowSize, Double totalPrivacyBudget) {
+        List<Double> sumOfHistoricalPrivacyBudget = getSumOfHistoricalPrivacyBudget(epsilonRecordArray, regionIndexList, currentTime, windowSize);
+        return getRemainPrivacyBudget(sumOfHistoricalPrivacyBudget, totalPrivacyBudget);
+    }
+
+    public static void setNoiseValue(Double[][] noiseMatrix, Integer currentTime, List<List<Integer>> groupList, List<Double> groupAverageNoiseValueList) {
+        List<Integer> tempGroup;
+        Double tempNoiseValue;
+        for (int groupID = 0; groupID < groupList.size(); groupID++) {
+            tempGroup = groupList.get(groupID);
+            tempNoiseValue = groupAverageNoiseValueList.get(groupID);
+            for (int index = 0; index < tempGroup.size(); index++) {
+                noiseMatrix[index][currentTime] = tempNoiseValue;
+            }
+        }
+    }
+
+    public static List<List<Double>> getCurrentPrivacyBudgetAsGroup(Double[][] epsilonMatrix, Integer currentTime, List<List<Integer>> groupIndexList) {
+        List<List<Double>> groupEpsilonList = new ArrayList<>();
+        List<Double> tempValueList;
+        for (List<Integer> indexList : groupIndexList) {
+            tempValueList = new ArrayList<>();
+            for (Integer index : indexList) {
+                tempValueList.add(epsilonMatrix[index][currentTime]);
+            }
+            groupEpsilonList.add(tempValueList);
+        }
+        return groupEpsilonList;
     }
 
 }

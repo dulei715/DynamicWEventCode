@@ -12,5 +12,13 @@ public class Constant {
     public static Double KD = 0D;
     public static Integer THETA_SCALE = 10;
     public static Integer PID_PI = 3;
+
+    public static Double PHI_Scale = 0.5;
+
+    //这里规定p_max为0.5
+    public static Double P_MAX = 0.5;
+
+    public static Double Q_VARIANCE = Math.pow(10, 5);
+    public static Double R_VARIANCE = Math.pow(10, 6);
 //    public static double
 }

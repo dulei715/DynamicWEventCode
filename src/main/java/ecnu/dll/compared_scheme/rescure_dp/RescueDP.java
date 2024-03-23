@@ -1,12 +1,9 @@
 package ecnu.dll.compared_scheme.rescure_dp;
 
 import cn.edu.dll.basic.BasicArrayUtil;
-import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
-import cn.edu.dll.struct.pair.BasicPair;
-import com.google.common.collect.Lists;
 import ecnu.dll.compared_scheme.rescure_dp.basic_component.KalmanFiltering;
 import ecnu.dll.compared_scheme.rescure_dp.basic_component.RescueDPUtils;
 import ecnu.dll.compared_scheme.rescure_dp.basic_component.TimeValue;
@@ -15,7 +12,10 @@ import ecnu.dll.config.Constant;
 import java.util.*;
 
 public class RescueDP {
+    protected Integer regionSize;
+    protected Integer timeUpperBound;
     protected Double privacyBudget;
+    protected Double[][] timePrivacyBudget;
 
     /**
      * 行表示region，列表示时间
@@ -24,6 +24,9 @@ public class RescueDP {
     protected Boolean[][] isSampledMatrix;
 
     protected Double[][] noiseStatisticMatrix;
+    protected Double[][] estimateStatisticMatrix;
+    // 记录每个region的PValue，每调用一次Filter要更新一次
+    protected Double[] pArray;
     //记录每个sampling个体的上次sample间隔(time->lastInterval)
     protected Map<Integer, Integer>[] samplingRecord;
 
@@ -42,11 +45,15 @@ public class RescueDP {
     }
 
     public RescueDP(Integer regionSize, Integer timeUpperBound, Double privacyBudget) {
+        this.regionSize = regionSize;
+        this.timeUpperBound = timeUpperBound;
         this.privacyBudget = privacyBudget;
         this.regionStatisticMatrix = new Double[regionSize][timeUpperBound];
         this.isSampledMatrix = new Boolean[regionSize][timeUpperBound];
         this.samplingRecord = new Map[regionSize];
         this.noiseStatisticMatrix = new Double[regionSize][timeUpperBound];
+        this.estimateStatisticMatrix = new Double[regionSize][timeUpperBound];
+        this.pArray = new Double[regionSize];
         initialize();
     }
 
@@ -61,6 +68,7 @@ public class RescueDP {
         // 设置每个region的0时刻的前一个sample区间为0以及1时刻的前一个sample区间为1
         RescueDPUtils.initializeAndAddFirstItemForAllMap(this.samplingRecord, 0, 0);
         RescueDPUtils.initializeAndAddFirstItemForAllMap(this.samplingRecord, 1, 1);
+        BasicArrayUtil.setDoubleArrayToZero(this.pArray);
 
     }
 
@@ -81,14 +89,14 @@ public class RescueDP {
     }
 
 
-    public List<Integer> adaptiveSampling(Integer currentTime, List<Integer> sampleRegionIndexList, Double nextTimeRemainBudget) {
+    public List<Integer> adaptiveSampling(Integer currentTime, List<Integer> sampleRegionIndexList, List<Double> nextTimeRemainBudgetList) {
         List<Integer> result = new ArrayList<>();
         if (currentTime.equals(0)) {
             ListUtils.addValue(result, 1, sampleRegionIndexList.size());
             RescueDPUtils.setNextTimeValueAndStatus(this.isSampledMatrix, this.samplingRecord, sampleRegionIndexList, currentTime);
             return result;
         }
-        TreeMap<Integer, TimeValue[]> noiseHistoryMatrix = RescueDPUtils.getSampleHistoryMatrix(this.noiseStatisticMatrix, this.isSampledMatrix, currentTime, sampleRegionIndexList, Constant.PID_PI - 1);
+        TreeMap<Integer, TimeValue[]> noiseHistoryMatrix = RescueDPUtils.getSampleHistoryMatrix(this.estimateStatisticMatrix, this.isSampledMatrix, currentTime, sampleRegionIndexList, Constant.PID_PI - 1);
         Integer tempIndex, tempInterval;
         Double[] eArray;
         TimeValue[] tempTimeValueArray;
@@ -107,12 +115,12 @@ public class RescueDP {
                     eArrayList.add(element);
                 }
             }
-            eArrayList.add(this.noiseStatisticMatrix[tempIndex][currentTime]);
+            eArrayList.add(this.estimateStatisticMatrix[tempIndex][currentTime]);
             eArray = eArrayList.toArray(new Double[0]);
             intervalBefore = this.samplingRecord[tempIndex].get(currentTime);
-            tempInterval = RescueDPUtils.getNewSampleInterval(Constant.KP, Constant.KI, Constant.KD, eArray, currentTime, kBefore, intervalBefore, Constant.THETA_SCALE, 1/nextTimeRemainBudget);
+            tempInterval = RescueDPUtils.getNewSampleInterval(Constant.KP, Constant.KI, Constant.KD, eArray, currentTime, kBefore, intervalBefore, Constant.THETA_SCALE, 1/nextTimeRemainBudgetList.get(tempIndex));
             result.add(tempInterval);
-            RescueDPUtils.setNextValueAndStatus(this.noiseStatisticMatrix, this.isSampledMatrix, this.samplingRecord, tempIndex, currentTime, this.noiseStatisticMatrix[tempIndex][currentTime], tempInterval);
+            RescueDPUtils.setNextValueAndStatus(this.estimateStatisticMatrix, this.isSampledMatrix, this.timePrivacyBudget, this.samplingRecord, tempIndex, currentTime, this.estimateStatisticMatrix[tempIndex][currentTime], tempInterval);
         }
         return result;
     }
@@ -127,11 +135,20 @@ public class RescueDP {
         return result;
     }
 
-    public Double adaptiveBudgetAllocation(Integer interval, Double[] beforeWMinusOneEpsilonArray, Double maxEpsilon, Double phiScaleFactor, Double maxP) {
-        Double beforeWTotalBudget = BasicCalculation.getSum(beforeWMinusOneEpsilonArray);
-        Double remainEpsilon = this.privacyBudget - beforeWTotalBudget;
-        Double portionP = Math.min(phiScaleFactor * Math.log1p(interval), maxP);
-        return Math.min(portionP * remainEpsilon, maxEpsilon);
+    public void adaptiveBudgetAllocation(Integer currentTime, List<Integer> sampleRegionIndexList, List<Double> beforeTotaludgetList, List<Integer> intervalList) {
+        Double beforeWTotalBudget, remainEpsilon, portionP, maxEpsilon, newRegionBudgetAllocation;
+        Integer regionIndex;
+        for (int i = 0; i < sampleRegionIndexList.size(); i++) {
+            regionIndex = sampleRegionIndexList.get(i);
+//            beforeWTotalBudget = RescueDPUtils.getSumOfHistoricalPrivacyBudget(this.timePrivacyBudget, regionIndex, currentTime, this.sampleWindowSize);
+            beforeWTotalBudget = beforeTotaludgetList.get(i);
+            remainEpsilon = this.privacyBudget - beforeWTotalBudget;
+            portionP = Math.min(Constant.PHI_Scale * Math.log1p(intervalList.get(i)), Constant.P_MAX);
+            // 这里规定epsilonMax是总epsilon的0.2
+            maxEpsilon = this.privacyBudget * 0.2;
+            newRegionBudgetAllocation = Math.min(portionP * remainEpsilon, maxEpsilon);
+            this.timePrivacyBudget[regionIndex][currentTime] = newRegionBudgetAllocation;
+        }
     }
 
 
@@ -209,37 +226,78 @@ public class RescueDP {
 
     }
 
-    public Double[] perturbation(Integer time, List<List<Integer>> group, List<List<Double>> groupEpsilonList) {
+    public List<Double> perturbation(Integer currentTime, List<List<Integer>> groupList) {
 //        double minimalEpsilon = BasicArrayUtil.getMinimalValue(elementEpsilonArray);
-        Double totalRealValue, tempMinimalEpsilon;
-        Double[] noiseValueArray = new Double[group.size()];
+        List<List<Double>> groupEpsilonList = RescueDPUtils.getCurrentPrivacyBudgetAsGroup(this.timePrivacyBudget, currentTime, groupList);
+        Double totalValue, tempMinimalEpsilon;
+//        Double[] noiseValueArray = new Double[groupList.size()];
+        List<Double> noiseValueList = new ArrayList<>();
         List<Integer> tempGroupElement;
         List<Double> tempGroupEpsilon;
-        for (int i = 0; i < group.size(); i++) {
-            tempGroupElement = group.get(i);
+        for (int i = 0; i < groupList.size(); i++) {
+            tempGroupElement = groupList.get(i);
             tempGroupEpsilon = groupEpsilonList.get(i);
-            totalRealValue = 0D;
+            totalValue = 0D;
             for (Integer index : tempGroupElement) {
-                totalRealValue += this.regionStatisticMatrix[index][time];
+                totalValue += this.regionStatisticMatrix[index][currentTime];
             }
             tempMinimalEpsilon = ListUtils.getMinimalValue(tempGroupEpsilon);
 
-            totalRealValue += LaplaceUtils.getLaplaceNoise(1, tempMinimalEpsilon);
-            noiseValueArray[i] = totalRealValue;
+            totalValue += LaplaceUtils.getLaplaceNoise(1, tempMinimalEpsilon);
+            noiseValueList.add(totalValue / tempGroupElement.size());
         }
-        return noiseValueArray;
+        RescueDPUtils.setNoiseValue(this.noiseStatisticMatrix, currentTime, groupList, noiseValueList);
+        return noiseValueList;
     }
 
-    public Double[] filtering(Double rPri, Double zNow, Double pBefore, Double noiseQ, Double noiseR) {
-        return KalmanFiltering.estimate(rPri, zNow, pBefore, noiseQ, noiseR);
+    public Double filtering(Integer currentTime, List<Integer> sampleRegionIndexList) {
+        Double rPri, zNow, pBefore;
+        Double[] result = null;
+        for (Integer index : sampleRegionIndexList) {
+            if (currentTime <= 1) {
+                rPri = 0D;
+                pBefore = 0D;
+            } else {
+                rPri = this.estimateStatisticMatrix[index][currentTime - 1];
+                pBefore = this.pArray[index];
+            }
+            zNow = this.noiseStatisticMatrix[index][currentTime];
+            result = KalmanFiltering.estimate(rPri, zNow, pBefore, Constant.Q_VARIANCE, Constant.R_VARIANCE);
+            this.estimateStatisticMatrix[index][currentTime] = result[0];
+            this.pArray[index] = result[1];
+        }
+        return result[0];
     }
 
-    public Double[] privateRelease(Integer currentTime, Double[] realStatisticNow) {
-        MatrixArray.setColValueAsGivenVector(this.regionStatisticMatrix, currentTime, realStatisticNow);
-        List<Integer> sampleRegionIndexList = getSamplingRegionIndexList(currentTime);
-        List<List<Integer>> groupingList = dynamicGrouping(currentTime, sampleRegionIndexList);
-        adaptiveBudgetAllocation();
-        return null;
+    public void privateRelease() {
+        List<Integer> sampleIntervalList = null;
+        List<Double> sumOfHistoricalPrivacyBudget, remainPrivacyBudget;
+        List<Integer> sampleRegionIndexListNow, sampleRegionIndexListNext;
+
+        sampleRegionIndexListNext = getSamplingRegionIndexList(0);
+        remainPrivacyBudget = ListUtils.generateListWithFixedElement(this.privacyBudget, sampleRegionIndexListNext.size());
+        sampleIntervalList = adaptiveSampling(0, sampleRegionIndexListNext, remainPrivacyBudget);
+        for (int currentTime = 0; currentTime < this.timeUpperBound; currentTime++) {
+//            MatrixArray.setColValueAsGivenVector(this.regionStatisticMatrix, currentTime);
+            sampleRegionIndexListNow = sampleRegionIndexListNext;
+            List<List<Integer>> groupingList = dynamicGrouping(currentTime, sampleRegionIndexListNow);
+
+            sumOfHistoricalPrivacyBudget = RescueDPUtils.getSumOfHistoricalPrivacyBudget(this.timePrivacyBudget, sampleRegionIndexListNow, currentTime, this.sampleWindowSize);
+            adaptiveBudgetAllocation(currentTime, sampleRegionIndexListNow, sumOfHistoricalPrivacyBudget, sampleIntervalList);
+            perturbation(currentTime, groupingList);
+            filtering(currentTime, sampleRegionIndexListNow);
+
+//            sumOfHistoricalPrivacyBudget = RescueDPUtils.getSumOfHistoricalPrivacyBudget(this.timePrivacyBudget, sampleRegionIndexList, currentTime + 1, this.sampleWindowSize);
+//            remainPrivacyBudget = RescueDPUtils.getRemainPrivacyBudget(sumOfHistoricalPrivacyBudget, this.privacyBudget);
+
+            sampleRegionIndexListNext = getSamplingRegionIndexList(currentTime + 1);
+            remainPrivacyBudget = RescueDPUtils.getRemainPrivacyBudget(this.timePrivacyBudget, sampleRegionIndexListNext, currentTime + 1, this.sampleWindowSize, this.privacyBudget);
+            sampleIntervalList = adaptiveSampling(currentTime + 1, sampleRegionIndexListNext, remainPrivacyBudget);
+
+
+        }
+
+        System.out.println("Finish all event!");;
     }
 
 
