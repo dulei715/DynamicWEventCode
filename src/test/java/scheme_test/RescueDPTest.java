@@ -3,6 +3,7 @@ package scheme_test;
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.compared_scheme.rescure_dp.RescueDP;
 import ecnu.dll.compared_scheme.rescure_dp.basic_component.RescueDPUtils;
+import ecnu.dll.metric.Measurement;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -59,6 +60,14 @@ public class RescueDPTest {
         rescueDP.privateRelease();
 
         MyPrint.show2DimensionDoubleArray(rescueDP.getEstimateStatisticMatrix());
+
+        MyPrint.showSplitLine("*", 150);
+
+        double[] resultA = Measurement.getMeanAbsoluteError(rescueDP.getRegionStatisticMatrix(), rescueDP.getEstimateStatisticMatrix());
+        double[] resultB = Measurement.getMeanRelativeError(rescueDP.getRegionStatisticMatrix(), rescueDP.getEstimateStatisticMatrix());
+
+        MyPrint.showArray(resultA, "; ");
+        MyPrint.showArray(resultB, "; ");
 
     }
     
