@@ -2,6 +2,7 @@ package ecnu.dll.compared_scheme.rescure_dp.basic_component;
 
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
+import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.map.MapUtils;
 
 import java.util.*;
@@ -104,25 +105,52 @@ public class RescueDPUtils {
         }
         return result;
     }
-
-    public static void setNextValueAndStatus(Double[][] noiseRegionStatisticMatrix, Boolean[][] isSampleMatrix, Double[][] epsilonArray, Map<Integer, Integer>[] sampleRecord, Integer currentRegionIndex, Integer currentTime, Double currentNoise, Integer newInterval) {
+    @Deprecated
+    public static void setNextValueAndStatus(Double[][] estimationRegionStatisticMatrix, Boolean[][] isSampleMatrix, Double[][] epsilonArray, Map<Integer, Integer>[] sampleRecord, Integer currentRegionIndex, Integer currentTime, Double currentNoise, Integer newInterval) {
         int tempTime = 1;
         int index;
-        for (; tempTime < newInterval; tempTime++) {
-            index = currentTime + tempTime;
+//        Integer tempIndex;
+        for (index = currentTime + tempTime; tempTime < newInterval && index < estimationRegionStatisticMatrix[0].length; tempTime++, index++) {
+//            index = currentTime + tempTime;
             epsilonArray[currentRegionIndex][index] = 0D;
-            noiseRegionStatisticMatrix[currentRegionIndex][index] = currentNoise;
+            estimationRegionStatisticMatrix[currentRegionIndex][index] = currentNoise;
             isSampleMatrix[currentRegionIndex][index] = false;
         }
-        isSampleMatrix[currentRegionIndex][currentTime + tempTime] = true;
-        sampleRecord[currentRegionIndex].put(currentTime + tempTime, newInterval);
+        if (index < estimationRegionStatisticMatrix[0].length) {
+            isSampleMatrix[currentRegionIndex][index] = true;
+            sampleRecord[currentRegionIndex].put(index, newInterval);
+        }
+    }
+    public static void setNextValueAndStatus(Double[][] estimationRegionStatisticMatrix, Boolean[][] isSampleMatrix, Double[][] epsilonArray, Integer currentRegionIndex, Integer currentTime, Double currentNoise, Integer newInterval) {
+        int tempTime = 1;
+        int index;
+//        Integer tempIndex;
+        for (index = currentTime + tempTime; tempTime < newInterval && index < estimationRegionStatisticMatrix[0].length; tempTime++, index++) {
+//            index = currentTime + tempTime;
+            epsilonArray[currentRegionIndex][index] = 0D;
+            estimationRegionStatisticMatrix[currentRegionIndex][index] = currentNoise;
+            isSampleMatrix[currentRegionIndex][index] = false;
+        }
+        if (index < estimationRegionStatisticMatrix[0].length) {
+            isSampleMatrix[currentRegionIndex][index] = true;
+//            sampleRecord[currentRegionIndex].put(index, newInterval);
+//            preSampleIntervalArray[currentRegionIndex] = newSampleIntervalArray[currentRegionIndex];
+//            newSampleIntervalArray[currentRegionIndex] = newInterval;
+        }
     }
 
+    @Deprecated
     public static void setNextTimeValueAndStatus(Boolean[][] isSampleMatrix, Map<Integer, Integer>[] sampleRecord, List<Integer> currentSampleRegionIndexList, Integer currentTime) {
         for (Integer index : currentSampleRegionIndexList) {
             isSampleMatrix[index][currentTime + 1] = true;
             sampleRecord[index].put(currentTime + 1, 1);
 
+        }
+    }
+    public static void setNextTimeValueAndStatus(Boolean[][] isSampleMatrix, Integer[] newInterValueStateArray, List<Integer> currentSampleRegionIndexList, Integer currentTime) {
+        for (Integer index : currentSampleRegionIndexList) {
+            isSampleMatrix[index][currentTime + 1] = true;
+            newInterValueStateArray[index] = 1;
         }
     }
 
@@ -164,8 +192,8 @@ public class RescueDPUtils {
         for (int groupID = 0; groupID < groupList.size(); groupID++) {
             tempGroup = groupList.get(groupID);
             tempNoiseValue = groupAverageNoiseValueList.get(groupID);
-            for (int index = 0; index < tempGroup.size(); index++) {
-                noiseMatrix[index][currentTime] = tempNoiseValue;
+            for (Integer tempIndex : tempGroup) {
+                noiseMatrix[tempIndex][currentTime] = tempNoiseValue;
             }
         }
     }
@@ -181,6 +209,22 @@ public class RescueDPUtils {
             groupEpsilonList.add(tempValueList);
         }
         return groupEpsilonList;
+    }
+
+    public static Double[] getEnhancedNeighborAbsDifferenceWithGivenSizeUpperBoundFromEnd(final List<Double> data, int sizeUpperBound) {
+        int dataSize = data.size();
+        int resultSize = Math.min(dataSize, sizeUpperBound);
+        Double[] result = new Double[resultSize];
+        int resultIndex, dataIndex;
+        for (resultIndex = resultSize - 1, dataIndex = dataSize - 1; resultIndex > 0; resultIndex--, dataIndex--) {
+            result[resultIndex] = Math.abs(data.get(dataIndex) - data.get(dataIndex - 1));
+        }
+        if (dataIndex < 1) {
+            result[0] = Math.abs(data.get(0));
+        } else {
+            result[0] = Math.abs(data.get(dataIndex) - data.get(dataIndex - 1));
+        }
+        return result;
     }
 
 }
