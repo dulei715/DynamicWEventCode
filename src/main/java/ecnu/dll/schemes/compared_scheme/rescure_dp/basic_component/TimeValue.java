@@ -1,4 +1,4 @@
-package ecnu.dll.compared_scheme.rescure_dp.basic_component;
+package ecnu.dll.schemes.compared_scheme.rescure_dp.basic_component;
 
 public class TimeValue {
     private Integer timePoint;

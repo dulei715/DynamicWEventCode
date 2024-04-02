@@ -1,13 +1,9 @@
 package scheme_test;
 
 import cn.edu.dll.io.print.MyPrint;
-import ecnu.dll.compared_scheme.rescure_dp.RescueDP;
-import ecnu.dll.compared_scheme.rescure_dp.basic_component.RescueDPUtils;
+import ecnu.dll.schemes.compared_scheme.rescure_dp.RescueDP;
 import ecnu.dll.metric.Measurement;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RescueDPTest {
 //    @Test

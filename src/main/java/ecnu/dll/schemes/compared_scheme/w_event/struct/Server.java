@@ -1,8 +1,6 @@
-package ecnu.dll.compared_scheme.w_event.struct;
+package ecnu.dll.schemes.compared_scheme.w_event.struct;
 
 import ecnu.dll.struts.BasicData;
-
-import java.util.List;
 
 public class Server {
     protected int windowSize = -1;

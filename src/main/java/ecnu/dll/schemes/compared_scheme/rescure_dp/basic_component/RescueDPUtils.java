@@ -1,8 +1,7 @@
-package ecnu.dll.compared_scheme.rescure_dp.basic_component;
+package ecnu.dll.schemes.compared_scheme.rescure_dp.basic_component;
 
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
-import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.map.MapUtils;
 
 import java.util.*;
