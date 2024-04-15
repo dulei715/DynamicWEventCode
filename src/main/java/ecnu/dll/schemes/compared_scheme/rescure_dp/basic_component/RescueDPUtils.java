@@ -74,7 +74,7 @@ public class RescueDPUtils {
 
     public static <K,V> void initializeAndAddFirstItemForAllMap(Map<K,V>[] mapArray, K key, V value) {
         for (int i = 0; i < mapArray.length; i++) {
-            mapArray[i] = new HashMap<>();
+            mapArray[i] = new HashMap<K, V>();
             mapArray[i].put(key, value);
         }
     }
