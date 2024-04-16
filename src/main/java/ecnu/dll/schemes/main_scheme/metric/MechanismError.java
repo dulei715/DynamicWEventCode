@@ -16,7 +16,7 @@ public class MechanismError {
 
     public static Double getSampleError(Integer itemSize, TreeMap<Double, Double> epsilonRatioMap, Double epsilonTheta) {
         Double totalRatio = MapUtils.getValueSum(epsilonRatioMap);
-        if (!totalRatio.equals(1D)) {
+        if (Math.abs(totalRatio - 1) > Math.pow(10, -6)) {
             throw new RuntimeException("The sum of epsilonRatioMap's value is not equal to 1!");
         }
         Double result = 0D, countVar = 0D, bias = 0D, tempEpsilon, tempRatio, tempProbability, tempValue;
