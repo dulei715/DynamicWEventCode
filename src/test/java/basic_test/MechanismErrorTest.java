@@ -3,8 +3,6 @@ package basic_test;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.io.print.MyPrint;
-import cn.edu.dll.statistic.DistributionUtil;
-import cn.edu.dll.statistic.StatisticTool;
 import ecnu.dll.schemes.main_scheme.metric.MechanismError;
 import org.junit.Test;
 
