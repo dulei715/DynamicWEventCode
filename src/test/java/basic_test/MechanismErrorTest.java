@@ -3,7 +3,7 @@ package basic_test;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.io.print.MyPrint;
-import ecnu.dll.schemes.main_scheme.metric.MechanismError;
+import ecnu.dll.schemes._scheme_utils.MechanismErrorUtils;
 import org.junit.Test;
 
 import java.util.TreeMap;
@@ -30,10 +30,10 @@ public class MechanismErrorTest {
         Double[] errorArray = new Double[size], sampleErrorArray = new Double[size], dpErrorArray = new Double[size];
         Double[] countError = new Double[size], biasError = new Double[size];
         for (int i = 0; i < size; i++) {
-            countError[i] = MechanismError.getCountError(1000, map, epsilonArray[i]);
-            biasError[i] = MechanismError.getBiasError(1000, map, epsilonArray[i]);
-            sampleErrorArray[i] = MechanismError.getSampleError(1000, map, epsilonArray[i]);
-            dpErrorArray[i] = MechanismError.getDPError(epsilonArray[i]);
+            countError[i] = MechanismErrorUtils.getCountError(1000, map, epsilonArray[i]);
+            biasError[i] = MechanismErrorUtils.getBiasError(1000, map, epsilonArray[i]);
+            sampleErrorArray[i] = MechanismErrorUtils.getSampleError(1000, map, epsilonArray[i]);
+            dpErrorArray[i] = MechanismErrorUtils.getDPError(epsilonArray[i]);
             errorArray[i] = sampleErrorArray[i] + dpErrorArray[i];
         }
         MyPrint.showArray(countError, "; ");
@@ -78,10 +78,10 @@ public class MechanismErrorTest {
         Double[] errorArray = new Double[size], sampleErrorArray = new Double[size], dpErrorArray = new Double[size];
         Double[] countError = new Double[size], biasError = new Double[size];
         for (int i = 0; i < size; i++) {
-            countError[i] = MechanismError.getCountError(1000, map, epsilonArray[i]);
-            biasError[i] = MechanismError.getBiasError(1000, map, epsilonArray[i]);
-            sampleErrorArray[i] = MechanismError.getSampleError(1000, map, epsilonArray[i]);
-            dpErrorArray[i] = MechanismError.getDPError(epsilonArray[i]);
+            countError[i] = MechanismErrorUtils.getCountError(1000, map, epsilonArray[i]);
+            biasError[i] = MechanismErrorUtils.getBiasError(1000, map, epsilonArray[i]);
+            sampleErrorArray[i] = MechanismErrorUtils.getSampleError(1000, map, epsilonArray[i]);
+            dpErrorArray[i] = MechanismErrorUtils.getDPError(epsilonArray[i]);
             errorArray[i] = sampleErrorArray[i] + dpErrorArray[i];
         }
         MyPrint.showArray(countError, "; ");
@@ -125,10 +125,10 @@ public class MechanismErrorTest {
         Double[] errorArray = new Double[size], sampleErrorArray = new Double[size], dpErrorArray = new Double[size];
         Double[] countError = new Double[size], biasError = new Double[size];
         for (int i = 0; i < size; i++) {
-            countError[i] = MechanismError.getCountError(1000, map, epsilonArray[i]);
-            biasError[i] = MechanismError.getBiasError(1000, map, epsilonArray[i]);
-            sampleErrorArray[i] = MechanismError.getSampleError(1000, map, epsilonArray[i]);
-            dpErrorArray[i] = MechanismError.getDPError(epsilonArray[i]);
+            countError[i] = MechanismErrorUtils.getCountError(1000, map, epsilonArray[i]);
+            biasError[i] = MechanismErrorUtils.getBiasError(1000, map, epsilonArray[i]);
+            sampleErrorArray[i] = MechanismErrorUtils.getSampleError(1000, map, epsilonArray[i]);
+            dpErrorArray[i] = MechanismErrorUtils.getDPError(epsilonArray[i]);
             errorArray[i] = sampleErrorArray[i] + dpErrorArray[i];
         }
         MyPrint.showArray(countError, "; ");
