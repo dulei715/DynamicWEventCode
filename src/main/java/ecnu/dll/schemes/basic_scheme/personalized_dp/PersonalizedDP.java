@@ -1,17 +1,16 @@
-package ecnu.dll.schemes.compared_scheme.personalized_dp;
+package ecnu.dll.schemes.basic_scheme.personalized_dp;
 
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 
 import java.util.*;
-
+@Deprecated
 public class PersonalizedDP<T> {
     protected List<T> elementList = null;
     protected List<Double> privacyBudgetList = null;
-    protected Double budgetThreshold = null;
     protected List<Double> probabilityList = null;
+    protected Double budgetThreshold = null;
 
-    protected Random random = new Random();
 
     public PersonalizedDP(List<T> elementList, List<Double> privacyBudgetList, Double budgetThreshold) {
         this.elementList = elementList;
