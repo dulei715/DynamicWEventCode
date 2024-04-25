@@ -96,8 +96,8 @@ public class MechanismErrorUtils {
         return getDPError(epsilon, 1.0);
     }
 
-    public static Double[] getMinimalEpsilonAndError(List<Double> privacyBudgetList) {
-        TreeMap<Double, Integer> epsilonCountMap = (TreeMap<Double, Integer>) StatisticTool.countHistogramNumber(privacyBudgetList);;
+    public static Double[] getMinimalEpsilonAndError(TreeMap<Double, Integer> epsilonCountMap) {
+//        TreeMap<Double, Integer> epsilonCountMap = (TreeMap<Double, Integer>) StatisticTool.countHistogramNumber(privacyBudgetList);;
         Set<Double> epsilonSet = epsilonCountMap.keySet();
         Double minimalError = Double.MAX_VALUE, tempError;
         Double optimalEpsilon = null;
