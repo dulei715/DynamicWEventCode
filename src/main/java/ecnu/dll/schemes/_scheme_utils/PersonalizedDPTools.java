@@ -27,16 +27,16 @@ public class PersonalizedDPTools {
     }
 
 
-    public static TreeMap<Double, Double> getNoiseCount(TreeMap<Double, Integer> data) {
-        Double tempBudget;
+    public static TreeMap<String, Double> getNoiseCount(TreeMap<String, Integer> data, Double privacyBudget) {
+        String tempTypeName;
         Integer tempCount;
         Double tempNoiseCount;
-        TreeMap<Double, Double> result = new TreeMap<Double, Double>();
-        for (Map.Entry<Double, Integer> entry : data.entrySet()) {
-            tempBudget = entry.getKey();
+        TreeMap<String, Double> result = new TreeMap<String, Double>();
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
+            tempTypeName = entry.getKey();
             tempCount = entry.getValue();
-            tempNoiseCount = tempCount + LaplaceUtils.getLaplaceNoise(1, tempBudget);
-            result.put(tempBudget, tempNoiseCount);
+            tempNoiseCount = tempCount + LaplaceUtils.getLaplaceNoise(1, privacyBudget);
+            result.put(tempTypeName, tempNoiseCount);
         }
         return result;
     }

@@ -1,7 +1,9 @@
 package ecnu.dll.schemes._scheme_utils;
 
 import cn.edu.dll.map.MapUtils;
+import cn.edu.dll.statistic.StatisticTool;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -94,11 +96,12 @@ public class MechanismErrorUtils {
         return getDPError(epsilon, 1.0);
     }
 
-    public static Double[] getMinimalEpsilonAndError(TreeMap<Double, Integer> epsilonCountMap) {
-        Set<Double> epsilonList = epsilonCountMap.keySet();
+    public static Double[] getMinimalEpsilonAndError(List<Double> privacyBudgetList) {
+        TreeMap<Double, Integer> epsilonCountMap = (TreeMap<Double, Integer>) StatisticTool.countHistogramNumber(privacyBudgetList);;
+        Set<Double> epsilonSet = epsilonCountMap.keySet();
         Double minimalError = Double.MAX_VALUE, tempError;
         Double optimalEpsilon = null;
-        for (Double epsilon : epsilonList) {
+        for (Double epsilon : epsilonSet) {
             tempError = getSampleError(epsilonCountMap, epsilon);
             if (tempError < minimalError) {
                 minimalError = tempError;
