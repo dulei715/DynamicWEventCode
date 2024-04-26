@@ -57,4 +57,8 @@ public class StreamDataElement<T extends Comparable<T>> {
                 "dataMap=" + dataMap +
                 '}';
     }
+
+    
+
+
 }
