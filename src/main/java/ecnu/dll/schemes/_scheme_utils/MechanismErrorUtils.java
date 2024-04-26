@@ -102,7 +102,7 @@ public class MechanismErrorUtils {
         Double minimalError = Double.MAX_VALUE, tempError;
         Double optimalEpsilon = null;
         for (Double epsilon : epsilonSet) {
-            tempError = getSampleError(epsilonCountMap, epsilon);
+            tempError = getSampleError(epsilonCountMap, epsilon) + getDPError(epsilon);
             if (tempError < minimalError) {
                 minimalError = tempError;
                 optimalEpsilon = epsilon;

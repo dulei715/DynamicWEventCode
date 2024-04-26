@@ -1,6 +1,6 @@
 package ecnu.dll.schemes.compared_scheme.w_event;
 
-public class LDPBudgetDistribution {
+public class BudgetDistribution {
 
     protected int windowSize = -1;
     protected double[] windowValueArray = null;

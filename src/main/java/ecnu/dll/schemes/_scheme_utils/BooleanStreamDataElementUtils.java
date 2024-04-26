@@ -42,4 +42,18 @@ public class BooleanStreamDataElementUtils {
         }
         return result;
     }
+
+    public static TreeMap<String, Integer> getCountByGivenElementType(Boolean elementValue, List<StreamDataElement<Boolean>> dataList) {
+        TreeMap<String, List<Boolean>> typeDataTreeMap = extractSubData(dataList);
+        Map<Boolean, Integer> tempMap;
+        String tempKey;
+        TreeMap<String, Integer> result = new TreeMap<>();
+        for (Map.Entry<String, List<Boolean>> entry : typeDataTreeMap.entrySet()) {
+            tempKey = entry.getKey();
+            tempMap = StatisticTool.countHistogramNumberByGivenElementType(elementValue, entry.getValue());
+            result.put(tempKey, tempMap.get(elementValue));
+        }
+        return result;
+    }
+
 }

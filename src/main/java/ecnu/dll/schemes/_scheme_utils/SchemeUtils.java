@@ -24,6 +24,10 @@ public class SchemeUtils {
         }
         Double average = 0D;
         for (Map.Entry<String, Integer> currentEntry : currentCountMap.entrySet()) {
+//            System.out.println(currentEntry.getValue() + ";;; " + lastTimeNoiseMap);
+//            if (currentEntry.getValue() == null) {
+//                System.out.println("null");
+//            }
             average += Math.abs(currentEntry.getValue() - lastTimeNoiseMap.get(currentEntry.getKey()));
         }
         average /= size;

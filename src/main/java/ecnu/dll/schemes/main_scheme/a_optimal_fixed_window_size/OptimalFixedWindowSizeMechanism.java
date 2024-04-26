@@ -22,6 +22,9 @@ public abstract class OptimalFixedWindowSizeMechanism {
 
     protected StreamNoiseCountData lastReleaseNoiseCountMap;
 
+    protected List<Double> calculationPrivacyBudgetList;
+    protected List<Double> publicationPrivacyBudgetList;
+
     public OptimalFixedWindowSizeMechanism(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
         this.currentTime = -1;
         this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
@@ -29,9 +32,9 @@ public abstract class OptimalFixedWindowSizeMechanism {
         this.windowSizeList = windowSizeList;
     }
 
-    protected abstract List<Double> getCalculationPrivacyBudgetList();
+    protected abstract void setCalculationPrivacyBudgetList();
 
-    protected abstract List<Double> getPublicationPrivacyBudgetList();
+    protected abstract void setPublicationPrivacyBudgetList();
 
 //    public void setParameters(List<StreamDataElement<Boolean>> currentDataElementList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
 ////        this.currentDataElementList = currentDataElementList;
@@ -44,25 +47,44 @@ public abstract class OptimalFixedWindowSizeMechanism {
         this.windowSizeList = windowSizeList;
     }
 
+    public StreamNoiseCountData getReleaseNoiseCountMap() {
+        return this.lastReleaseNoiseCountMap;
+    }
+
 
 
     public boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> nextDataElementList) {
-//        this.setParameters(nextDataElementList, nextPrivacyBudgetList, nextWindowSizeList);
+
+        ++this.currentTime;
         // M_{t,1}
-        List<Double> calculationBudgetList = getCalculationPrivacyBudgetList();
-        Double[] minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(calculationBudgetList);
-        List<Integer> sampleIndexList = PersonalizedDPTools.sampleIndex(calculationBudgetList, minimalEpsilonAndError[0]);
-        TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
-        Double dissimilarity = SchemeUtils.getDissimilarity(sampleCountMap, this.lastReleaseNoiseCountMap, minimalEpsilonAndError[0]);
+        Double dissimilarity = mechanismPartA(nextDataElementList);
 
         // M_{t,2}
-        List<Double> publicationBudgetList = getPublicationPrivacyBudgetList();
-        minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(publicationBudgetList);
+        return mechanismPartB(nextDataElementList, dissimilarity);
+    }
+
+    protected Double mechanismPartA(List<StreamDataElement<Boolean>> nextDataElementList) {
+        setCalculationPrivacyBudgetList();
+        Double[] minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(this.calculationPrivacyBudgetList);
+        List<Integer> sampleIndexList = PersonalizedDPTools.sampleIndex(this.calculationPrivacyBudgetList, minimalEpsilonAndError[0]);
+        TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
+        Double dissimilarity = SchemeUtils.getDissimilarity(sampleCountMap, this.lastReleaseNoiseCountMap, minimalEpsilonAndError[0]);
+        return dissimilarity;
+    }
+
+    protected boolean mechanismPartB(List<StreamDataElement<Boolean>> nextDataElementList, Double dissimilarity) {
+        TreeMap<String, Integer> sampleCountMap;
+        Double[] minimalEpsilonAndError;
+        List<Integer> sampleIndexList;
+        setPublicationPrivacyBudgetList();
+        minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(this.publicationPrivacyBudgetList);
 
         TreeMap<String, Double> releaseDataMap;
-        ++this.currentTime;
+
+//        System.out.printf("dis: %f; err: %f\n", dissimilarity, Math.sqrt(minimalEpsilonAndError[1]));
+
         if (dissimilarity > Math.sqrt(minimalEpsilonAndError[1])) {
-            sampleIndexList = PersonalizedDPTools.sampleIndex(publicationBudgetList, minimalEpsilonAndError[0]);
+            sampleIndexList = PersonalizedDPTools.sampleIndex(this.publicationPrivacyBudgetList, minimalEpsilonAndError[0]);
             sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
             releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
@@ -70,8 +92,6 @@ public abstract class OptimalFixedWindowSizeMechanism {
         }
 
         return false;
-
-
     }
 
 }
