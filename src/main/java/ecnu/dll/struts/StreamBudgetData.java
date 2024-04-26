@@ -1,5 +1,6 @@
 package ecnu.dll.struts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StreamBudgetData {
@@ -9,6 +10,11 @@ public class StreamBudgetData {
     public StreamBudgetData(Integer timeSlot, List<Double> budgetList) {
         this.timeSlot = timeSlot;
         this.budgetList = budgetList;
+    }
+
+    public StreamBudgetData(Integer timeSlot, Double budget) {
+        this.timeSlot = timeSlot;
+        setBudget(budget);
     }
 
     public Integer getTimeSlot() {
@@ -25,5 +31,13 @@ public class StreamBudgetData {
 
     public void setBudgetList(List<Double> budgetList) {
         this.budgetList = budgetList;
+    }
+
+    public Double getBudget() {
+        return this.budgetList.get(0);
+    }
+    public void setBudget(Double budget) {
+        this.budgetList = new ArrayList<>();
+        this.budgetList.add(budget);
     }
 }
