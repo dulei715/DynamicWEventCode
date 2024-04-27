@@ -16,6 +16,6 @@ public abstract class WEventMechanism {
     protected Double calculationPrivacyBudget;
     protected Double publicationPrivacyBudget;
 
-    
+
 
 }
