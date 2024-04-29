@@ -4,6 +4,8 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import com.sun.javafx.binding.StringFormatter;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
+import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
+import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
 import ecnu.dll.struts.StreamDataElement;
@@ -146,6 +148,79 @@ public class MechanismTest {
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
             MyPrint.showMap(pba.getReleaseNoiseCountMap().getDataMap());
+//            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
+//            MyPrint.showList(budgetList);
+//            MyPrint.showList(windowSizeList);
+            MyPrint.showSplitLine("*", 50);
+            MyPrint.showMap(realMapResult);
+            MyPrint.showSplitLine("*", 150);
+
+        }
+
+
+    }
+
+    @Test
+    public void fun3() {
+
+        int userSize = 100;
+        int typeSize = 5;
+        int windowSizeUpperBound = 6;
+
+        double privacyBudget = 0.5;
+        int windowSize = 5;
+
+        int timeUpperBound = 100;
+
+        List<StreamDataElement<Boolean>> dataElementList;
+
+        dataElementList = generateStreamDataElementList(userSize, typeSize);
+        BudgetDistribution pbd = new BudgetDistribution(dataElementList.get(0).getKeyList(), privacyBudget, windowSize);
+        TreeMap<String, Integer> realMapResult;
+
+        for (int i = 0; i < timeUpperBound; i++) {
+            System.out.println(i);
+            dataElementList = generateStreamDataElementList(userSize, typeSize);
+            realMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
+            boolean isPublication = pbd.updateNextPublicationResult(dataElementList);
+//            String.format("status: %s; dis: %f; err: %f", isPublication, )
+            System.out.println(isPublication);
+            MyPrint.showMap(pbd.getReleaseNoiseCountMap().getDataMap());
+//            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
+//            MyPrint.showList(budgetList);
+//            MyPrint.showList(windowSizeList);
+            MyPrint.showSplitLine("*", 50);
+            MyPrint.showMap(realMapResult);
+            MyPrint.showSplitLine("*", 150);
+
+        }
+
+
+    }
+    public void fun4() {
+
+        int userSize = 100;
+        int typeSize = 5;
+
+        int windowSize = 5;
+        double privacyBudget = 0.5;
+
+        int timeUpperBound = 100;
+
+        List<StreamDataElement<Boolean>> dataElementList;
+
+        dataElementList = generateStreamDataElementList(userSize, typeSize);
+        BudgetAbsorption budgetAbsorption = new BudgetAbsorption(dataElementList.get(0).getKeyList(), privacyBudget, windowSize);
+        TreeMap<String, Integer> realMapResult;
+
+        for (int i = 0; i < timeUpperBound; i++) {
+            System.out.println(i);
+            dataElementList = generateStreamDataElementList(userSize, typeSize);
+            realMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
+            boolean isPublication = budgetAbsorption.updateNextPublicationResult(dataElementList);
+//            String.format("status: %s; dis: %f; err: %f", isPublication, )
+            System.out.println(isPublication);
+            MyPrint.showMap(budgetAbsorption.getReleaseNoiseCountMap().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);

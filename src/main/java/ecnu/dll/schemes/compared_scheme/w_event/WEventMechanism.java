@@ -30,6 +30,10 @@ public abstract class WEventMechanism {
 
     protected abstract void setPublicationPrivacyBudget();
 
+    public StreamNoiseCountData getReleaseNoiseCountMap() {
+        return this.lastReleaseNoiseCountMap;
+    }
+
     protected Double mechanismPartA(List<StreamDataElement<Boolean>> nextDataElementList) {
         TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList);
         Double epsilon = this.privacyBudget / (2 * this.windowSize);
