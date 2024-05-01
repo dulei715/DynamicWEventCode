@@ -3,8 +3,7 @@ package basic_test;
 import cn.edu.dll.io.print.MyPrint;
 import org.junit.Test;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 public class BasicTest {
     @Test
@@ -37,5 +36,52 @@ public class BasicTest {
         }
 
     }
+
+
+    @Test
+    public void fun4() {
+        HashSet<Integer> set = new HashSet<>();
+        set.add(2);
+        set.add(5);
+        set.add(6);
+        MyPrint.showCollection(set, "; ");
+
+        Iterator<Integer> setIterator = set.iterator();
+        Integer tempElement;
+        while (setIterator.hasNext()) {
+            tempElement = setIterator.next();
+            if (tempElement.equals(5)) {
+                setIterator.remove();
+            }
+        }
+        MyPrint.showCollection(set, "; ");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

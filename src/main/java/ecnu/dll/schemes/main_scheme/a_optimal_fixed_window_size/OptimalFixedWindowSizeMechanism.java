@@ -1,22 +1,17 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 
-import cn.edu.dll.statistic.StatisticTool;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
-import ecnu.dll.schemes._scheme_utils.MechanismErrorUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
 import ecnu.dll.struts.StreamNoiseCountData;
 import ecnu.dll.struts.StreamDataElement;
 
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class OptimalFixedWindowSizeMechanism {
 
     protected int currentTime;
-
-//    protected List<StreamDataElement<Boolean>> currentDataElementList;
     protected List<Double> privacyBudgetList;
     protected List<Integer> windowSizeList;
 
@@ -35,12 +30,6 @@ public abstract class OptimalFixedWindowSizeMechanism {
     protected abstract void setCalculationPrivacyBudgetList();
 
     protected abstract void setPublicationPrivacyBudgetList();
-
-//    public void setParameters(List<StreamDataElement<Boolean>> currentDataElementList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
-////        this.currentDataElementList = currentDataElementList;
-//        this.privacyBudgetList = privacyBudgetList;
-//        this.windowSizeList = windowSizeList;
-//    }
 
     public void setParameters(List<Double> privacyBudgetList, List<Integer> windowSizeList) {
         this.privacyBudgetList = privacyBudgetList;
