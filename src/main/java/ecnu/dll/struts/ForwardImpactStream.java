@@ -1,8 +1,6 @@
 package ecnu.dll.struts;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ForwardImpactStream {
     private Integer currentTime;
@@ -49,6 +47,30 @@ public class ForwardImpactStream {
             return null;
         }
         return element.getWindowSize();
+    }
+
+    public void showStream() {
+        TreeMap<Integer, ForwardImpactElement> sortedMap = new TreeMap<>();
+        sortedMap.putAll(this.impactStream);
+        Collection<Integer> keyCollection = sortedMap.keySet();
+        Collection<ForwardImpactElement> valueCollection = sortedMap.values();
+//        System.out.println("");
+        for (int i = 0; i < keyCollection.size(); i++) {
+            System.out.print("----------------");
+        }
+        System.out.println();
+        for (Integer key : keyCollection) {
+            System.out.printf("%d\t\t\t\t", key);
+        }
+        System.out.println();
+        for (int i = 0; i < keyCollection.size(); i++) {
+            System.out.print("----------------");
+        }
+        System.out.println();
+        for (ForwardImpactElement element : valueCollection) {
+            System.out.printf("%.2f, %d\t\t\t", element.getTotalPrivacyBudget(), element.getWindowSize());
+        }
+        System.out.println();
     }
 
 
