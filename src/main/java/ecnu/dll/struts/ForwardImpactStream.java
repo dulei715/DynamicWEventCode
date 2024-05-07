@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ForwardImpactStream {
     private Integer currentTime;
-    private HashMap<Integer, ForwardImpactElement> impactStream = null;
+    private HashMap<Integer, ImpactElement> impactStream;
 
     public ForwardImpactStream() {
         this.impactStream = new HashMap<>();
@@ -17,8 +17,8 @@ public class ForwardImpactStream {
     }
 
     private void updateStream() {
-        Iterator<Map.Entry<Integer, ForwardImpactElement>> elementIterator = this.impactStream.entrySet().iterator();
-        ForwardImpactElement element;
+        Iterator<Map.Entry<Integer, ImpactElement>> elementIterator = this.impactStream.entrySet().iterator();
+        ImpactElement element;
         while (elementIterator.hasNext()) {
             element = elementIterator.next().getValue();
             if (element.getTimeSlot() + element.getWindowSize() - 1 < this.currentTime) {
@@ -27,33 +27,51 @@ public class ForwardImpactStream {
         }
     }
 
+    public Integer getCurrentTime() {
+        return currentTime;
+    }
+
     public void addElement(Double totalPrivacyBudget, Integer windowSize) {
         ++this.currentTime;
-        this.impactStream.put(this.currentTime, new ForwardImpactElement(this.currentTime, totalPrivacyBudget, windowSize));
+        this.impactStream.put(this.currentTime, new ImpactElement(this.currentTime, totalPrivacyBudget, windowSize));
         updateStream();
     }
 
+    public ImpactElement getHistoricalEffectiveElement(Integer timeSlot) {
+        if (timeSlot > this.currentTime) {
+            throw new RuntimeException("The time slot " + timeSlot + " has not achieved!");
+        }
+        return this.impactStream.get(timeSlot);
+    }
+
+    public Iterator<ImpactElement> forwardImpactElementIterator() {
+        return this.impactStream.values().iterator();
+    }
+
     public Double getHistoricalEpsilon(Integer timeSlot) {
-        ForwardImpactElement element = this.impactStream.get(timeSlot);
+        ImpactElement element = this.impactStream.get(timeSlot);
         if (element == null) {
             return null;
         }
         return element.getTotalPrivacyBudget();
     }
 
+
     public Integer getHistoricalWindowSize(Integer timeSlot) {
-        ForwardImpactElement element = this.impactStream.get(timeSlot);
+        ImpactElement element = this.impactStream.get(timeSlot);
         if (element == null) {
             return null;
         }
         return element.getWindowSize();
     }
 
+
+
     public void showStream() {
-        TreeMap<Integer, ForwardImpactElement> sortedMap = new TreeMap<>();
+        TreeMap<Integer, ImpactElement> sortedMap = new TreeMap<>();
         sortedMap.putAll(this.impactStream);
         Collection<Integer> keyCollection = sortedMap.keySet();
-        Collection<ForwardImpactElement> valueCollection = sortedMap.values();
+        Collection<ImpactElement> valueCollection = sortedMap.values();
 //        System.out.println("");
         for (int i = 0; i < keyCollection.size(); i++) {
             System.out.print("----------------");
@@ -67,11 +85,13 @@ public class ForwardImpactStream {
             System.out.print("----------------");
         }
         System.out.println();
-        for (ForwardImpactElement element : valueCollection) {
+        for (ImpactElement element : valueCollection) {
             System.out.printf("%.2f, %d\t\t\t", element.getTotalPrivacyBudget(), element.getWindowSize());
         }
         System.out.println();
     }
+
+
 
 
 }

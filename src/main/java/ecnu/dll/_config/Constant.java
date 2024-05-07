@@ -21,4 +21,9 @@ public class Constant {
 
 
 
+    // constant for Personalized Dynamic Budget Distribution (Absorption)
+    public static Integer MAX_BACKWARD_WINDOW_SIZE = 100;
+
+
+
 }

@@ -58,6 +58,30 @@ public class BasicTest {
 
     }
 
+    @Test
+    public void fun5() {
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        linkedList.add(2);
+        linkedList.add(5);
+        linkedList.add(7);
+        Iterator<Integer> iterator = linkedList.descendingIterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    @Test
+    public void fun6() {
+        Deque<Integer> queue = new LinkedList<>();
+        queue.add(2);
+        queue.add(5);
+        queue.add(7);
+        Iterator<Integer> iterator = queue.descendingIterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
 
 
 
