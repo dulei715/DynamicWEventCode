@@ -35,17 +35,9 @@ public abstract class DynamicWindowSizeMechanism {
 
 //    protected List<>
 
-//    protected abstract void setCalculationPrivacyBudgetList();
-
-    protected abstract void setPublicationPrivacyBudgetList();
-
-
-
-    public boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> nextDataElementList, List<Double> backwardBudgetList,
-                                               List<Integer> backwardWindowSizeList, List<Double> forwardBudgetList,
-                                               List<Integer> forwardWindowSizeList) {
-
-        ++this.currentTime;
+    protected void setCalculationPrivacyBudgetList(List<StreamDataElement<Boolean>> nextDataElementList, List<Double> backwardBudgetList,
+                                                   List<Integer> backwardWindowSizeList, List<Double> forwardBudgetList,
+                                                   List<Integer> forwardWindowSizeList){
         StreamDataElement<Boolean> tempStreamElement;
         Double tempBackwardBudget, tempForwardBudget, tempForwardAverageBudget, tempBackwardBudgetRemain, tempCalculationBudget;
         Integer tempBackwardWindowSize, tempForwardWindowSize;
@@ -67,6 +59,22 @@ public abstract class DynamicWindowSizeMechanism {
             tempCalculationBudget = Math.min(tempForwardAverageBudget, Math.max(tempBackwardBudgetRemain, 0));
             this.calculationPrivacyBudgetList.add(tempCalculationBudget);
         }
+    }
+
+    protected abstract void setPublicationPrivacyBudgetList();
+
+
+    protected Double mechanismPartA(List<StreamDataElement<Boolean>> nextDataElementList) {
+
+    }
+
+
+    public boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> nextDataElementList, List<Double> backwardBudgetList,
+                                               List<Integer> backwardWindowSizeList, List<Double> forwardBudgetList,
+                                               List<Integer> forwardWindowSizeList) {
+
+        ++this.currentTime;
+
 
 
         // M_{t,1}
@@ -77,4 +85,8 @@ public abstract class DynamicWindowSizeMechanism {
 
         return false;
     }
+
+
+
+
 }
