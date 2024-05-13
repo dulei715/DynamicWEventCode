@@ -45,6 +45,7 @@ public class DynamicMechanismTest {
         List<Double> tempBackwardBudgetList = new ArrayList<>(), tempForwardBudgetList;
         List<Integer> tempBackwardWindowSizeList = new ArrayList<>(), tempForwardWindowSizeList;
         ArrayList<ArrayList<Double>> historicalBudgetListList = new ArrayList<>();
+        initializeHistoricalBudgetListList(historicalBudgetListList, userSize);
         for (int i = 0; i < timeUpperBound; i++) {
             System.out.printf("Time slot %d\n", i);
             dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);

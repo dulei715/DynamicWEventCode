@@ -141,6 +141,10 @@ public abstract class DynamicWindowSizeMechanism {
 
     }
 
+    public StreamNoiseCountData getReleaseNoiseCountMap() {
+        return this.lastReleaseNoiseCountMap;
+    }
+
 
 
 
