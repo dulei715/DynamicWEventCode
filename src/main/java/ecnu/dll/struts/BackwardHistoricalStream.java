@@ -40,7 +40,7 @@ public class BackwardHistoricalStream {
     public Double getHistoricalCalculationBudgetSum(int beforeLength) {
         Double result = 0D;
         Iterator<Double> iterator = this.historicalCalculationBudgetQueue.descendingIterator();
-        for (int i = 0; i < beforeLength; i++) {
+        for (int i = 0; i < beforeLength && iterator.hasNext(); i++) {
             result += iterator.next();
         }
         return result;
@@ -48,10 +48,14 @@ public class BackwardHistoricalStream {
     public Double getHistoricalPublicationBudgetSum(int beforeLength) {
         Double result = 0D;
         Iterator<Double> iterator = this.historicalPublicationBudgetQueue.descendingIterator();
-        for (int i = 0; i < beforeLength; i++) {
+        for (int i = 0; i < beforeLength && iterator.hasNext(); i++) {
             result += iterator.next();
         }
         return result;
+    }
+
+    public Double getHistoricalBudgetSum(int beforeLength) {
+        return this.getHistoricalCalculationBudgetSum(beforeLength) + this.getHistoricalPublicationBudgetSum(beforeLength);
     }
 
 }

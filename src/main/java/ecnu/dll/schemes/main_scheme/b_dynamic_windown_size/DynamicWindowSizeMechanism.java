@@ -145,6 +145,16 @@ public abstract class DynamicWindowSizeMechanism {
         return this.lastReleaseNoiseCountMap;
     }
 
+    // for test
+    public List<Double> getHistoricalPrivacyBudgetSum(int beforeLength) {
+        List<Double> historicalBudgetSumList = new ArrayList<>();
+        Double tempSum;
+        for (int i = 0; i < this.userSize; i++) {
+            tempSum = this.backwardHistoricalStreamList.get(i).getHistoricalBudgetSum(beforeLength);
+            historicalBudgetSumList.add(tempSum);
+        }
+        return historicalBudgetSumList;
+    }
 
 
 
