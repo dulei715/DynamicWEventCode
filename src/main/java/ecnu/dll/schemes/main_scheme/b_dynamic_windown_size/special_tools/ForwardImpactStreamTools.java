@@ -1,5 +1,6 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools;
 
+import ecnu.dll.struts.BackwardHistoricalStream;
 import ecnu.dll.struts.ImpactElement;
 import ecnu.dll.struts.ForwardImpactStream;
 
@@ -36,4 +37,55 @@ public class ForwardImpactStreamTools {
         }
         return result;
     }
+
+    /**
+     * 此处的forwardImpactStream是已经更新了的（加入了当前的forward信息），backwardHistoricalStream是还未更新的（虽然也不影响）
+     * @param forwardImpactStream
+     * @param backwardHistoricalStream
+     * @return
+     */
+    public static Double getMinimalForwardRemainPublicationBudget(ForwardImpactStream forwardImpactStream, BackwardHistoricalStream backwardHistoricalStream) {
+        Double forwardMinimalRemain = Double.MAX_VALUE;
+        Iterator<ImpactElement> impactElementIterator = forwardImpactStream.forwardImpactElementIterator();
+        ImpactElement tempElement;
+        Double tempForwardTotalBudget, tempForwardRemain;
+        Integer currentTime = forwardImpactStream.getCurrentTime(), tempImpactTime;
+        while (impactElementIterator.hasNext()) {
+            tempElement = impactElementIterator.next();
+            tempImpactTime = tempElement.getTimeSlot();
+            tempForwardTotalBudget = tempElement.getTotalPrivacyBudget();
+            tempForwardRemain = tempForwardTotalBudget / 2 - backwardHistoricalStream.getHistoricalPublicationBudgetSum(currentTime - tempImpactTime);
+            forwardMinimalRemain = Math.min(forwardMinimalRemain, tempForwardRemain);
+        }
+        return forwardMinimalRemain;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
