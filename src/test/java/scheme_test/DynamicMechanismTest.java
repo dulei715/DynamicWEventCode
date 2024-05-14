@@ -51,8 +51,10 @@ public class DynamicMechanismTest {
             System.out.printf("Time slot %d\n", i);
             dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
             tempRealMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
-            TestTools.generateAndSetLegalBackwardPrivacyBudgetAndWindowSizeList(this.random, userSize, windowSizeUpperBound, i, historicalBudgetListList, tempBackwardBudgetList, tempBackwardWindowSizeList);
-            addCurrentElementListToHistoricalBudgetListList(historicalBudgetListList, tempBackwardBudgetList);
+//            TestTools.generateAndSetLegalBackwardPrivacyBudgetAndWindowSizeList(this.random, userSize, windowSizeUpperBound, i, historicalBudgetListList, tempBackwardBudgetList, tempBackwardWindowSizeList);
+//            addCurrentElementListToHistoricalBudgetListList(historicalBudgetListList, tempBackwardBudgetList);
+            tempBackwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
+            tempBackwardBudgetList = TestTools.generateLegalBackwardPrivacyBudgetByWindowSize(this.random, pdbd.getBackwardHistoricalStreamList(), tempBackwardWindowSizeList);
             tempForwardBudgetList = TestTools.generateEpsilonList(this.random, userSize);
             tempForwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
             boolean isPublication = pdbd.updateNextPublicationResult(dataElementList, tempBackwardBudgetList, tempBackwardWindowSizeList, tempForwardBudgetList, tempForwardWindowSizeList);

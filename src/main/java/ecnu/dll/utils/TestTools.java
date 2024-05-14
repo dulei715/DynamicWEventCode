@@ -1,5 +1,7 @@
 package ecnu.dll.utils;
 
+import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicWindowSizeMechanism;
+import ecnu.dll.struts.BackwardHistoricalStream;
 import ecnu.dll.struts.StreamDataElement;
 
 import java.math.BigDecimal;
@@ -68,34 +70,50 @@ public class TestTools {
         return windowSizeList;
     }
 
-    public static void generateAndSetLegalBackwardPrivacyBudgetAndWindowSizeList(Random random, int userSize, int windowSizeUpperBound, int currentTime, ArrayList<ArrayList<Double>> historicalBudgetListList, List<Double> budgetList, List<Integer> windowSizeList) {
-        budgetList.clear();
-        windowSizeList.clear();
-        Double tempTotalBudgets, randomDouble, remainBudget;
-        Integer randomInt;
-        List<Double> tempHistoricalBudgetList;
+//    @Deprecated
+//    public static void generateAndSetLegalBackwardPrivacyBudgetAndWindowSizeList(Random random, int userSize, int windowSizeUpperBound, int currentTime, ArrayList<ArrayList<Double>> historicalBudgetListList, List<Double> budgetList, List<Integer> windowSizeList) {
+//        budgetList.clear();
+//        windowSizeList.clear();
+//        Double tempTotalBudgets, randomDouble, remainBudget;
+//        Integer randomInt;
+//        List<Double> tempHistoricalBudgetList;
+//        for (int i = 0; i < userSize; i++) {
+//            tempHistoricalBudgetList = historicalBudgetListList.get(i);
+//            while (true) {
+//                randomDouble = random.nextDouble();
+//                if (randomDouble < 0.01) {
+//                    continue;
+//                }
+//                randomInt = random.nextInt(windowSizeUpperBound) + 1;
+//                tempTotalBudgets = 0D;
+//                for (int j = Math.max(0, currentTime-randomInt);  j < currentTime; ++j) {
+//                    tempTotalBudgets += tempHistoricalBudgetList.get(j);
+//                }
+//                randomDouble = BigDecimal.valueOf(randomDouble*10).setScale(2, RoundingMode.HALF_UP).doubleValue();
+//                remainBudget = randomDouble - tempTotalBudgets;
+//                if (remainBudget < 0.01) {
+//                    continue;
+//                }
+//                break;
+//            }
+//            budgetList.add(randomDouble);
+//            windowSizeList.add(randomInt);
+//        }
+//    }
+    public static List<Double> generateLegalBackwardPrivacyBudgetByWindowSize(Random random, List<BackwardHistoricalStream> backwardHistoricalStreamList, List<Integer> backwardWindowSizeList) {
+        List<Double> backwardNewBudgetList = new ArrayList<>();
+        Double tempTotalBudgets, randomDouble;
+        Integer userSize = backwardWindowSizeList.size(), tempWindowSize;
+        BackwardHistoricalStream tempStream;
         for (int i = 0; i < userSize; i++) {
-            tempHistoricalBudgetList = historicalBudgetListList.get(i);
-            while (true) {
-                randomDouble = random.nextDouble();
-                if (randomDouble < 0.01) {
-                    continue;
-                }
-                randomInt = random.nextInt(windowSizeUpperBound) + 1;
-                tempTotalBudgets = 0D;
-                for (int j = Math.max(0, currentTime-randomInt);  j < currentTime; ++j) {
-                    tempTotalBudgets += tempHistoricalBudgetList.get(j);
-                }
-                randomDouble = BigDecimal.valueOf(randomDouble*10).setScale(2, RoundingMode.HALF_UP).doubleValue();
-                remainBudget = randomDouble - tempTotalBudgets;
-                if (remainBudget < 0.01) {
-                    continue;
-                }
-                break;
-            }
-            budgetList.add(randomDouble);
-            windowSizeList.add(randomInt);
+            tempStream = backwardHistoricalStreamList.get(i);
+            tempWindowSize = backwardWindowSizeList.get(i);
+            tempTotalBudgets = tempStream.getHistoricalMaxBudgetSumWithinCalculationAndPublication(tempWindowSize-1)*2;
+            while ((randomDouble = random.nextDouble())<0.01);
+            randomDouble = BigDecimal.valueOf(randomDouble*10).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            backwardNewBudgetList.add(tempTotalBudgets + randomDouble);
         }
+        return backwardNewBudgetList;
     }
 
 }

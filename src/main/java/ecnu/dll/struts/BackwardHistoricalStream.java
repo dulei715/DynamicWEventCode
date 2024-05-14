@@ -32,6 +32,7 @@ public class BackwardHistoricalStream {
     }
 
     public void addElement(Double calculationPrivacyBudget, Double predictionPrivacyBudget) {
+        ++this.currentTime;
         this.historicalCalculationBudgetQueue.addLast(calculationPrivacyBudget);
         this.historicalPublicationBudgetQueue.addLast(predictionPrivacyBudget);
         this.checkAndDrop();
@@ -56,6 +57,12 @@ public class BackwardHistoricalStream {
 
     public Double getHistoricalBudgetSum(int beforeLength) {
         return this.getHistoricalCalculationBudgetSum(beforeLength) + this.getHistoricalPublicationBudgetSum(beforeLength);
+    }
+
+    public Double getHistoricalMaxBudgetSumWithinCalculationAndPublication(int beforeLength) {
+        Double calculationBudgetSum = this.getHistoricalCalculationBudgetSum(beforeLength);
+        Double publicationBudgetSum = this.getHistoricalPublicationBudgetSum(beforeLength);
+        return Math.max(calculationBudgetSum, publicationBudgetSum);
     }
 
 }

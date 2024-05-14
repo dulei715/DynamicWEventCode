@@ -30,6 +30,10 @@ public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMech
             tempMinimalForwardBudgetRemain = ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
             tempMinimalBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
 
+//            if (tempMinimalBackwardBudgetRemain < 0 || tempMinimalForwardBudgetRemain < 0) {
+//                System.out.println("woc...");
+//            }
+
             this.publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain) / 2);
 
         }

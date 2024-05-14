@@ -39,7 +39,11 @@ public abstract class DynamicWindowSizeMechanism {
         this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
     }
 
-//    protected List<>
+    public List<BackwardHistoricalStream> getBackwardHistoricalStreamList() {
+        return backwardHistoricalStreamList;
+    }
+
+    //    protected List<>
 
     protected void updateForwardImpactStreamList(List<Double> forwardBudgetList,
                                        List<Integer> forwardWindowSizeList) {
@@ -115,6 +119,12 @@ public abstract class DynamicWindowSizeMechanism {
         if (dissimilarity > Math.sqrt(minimalEpsilonAndError[1])) {
             sampleIndexList = PersonalizedDPTools.sampleIndex(this.publicationPrivacyBudgetList, minimalEpsilonAndError[0]);
             sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
+
+//            System.out.println(minimalEpsilonAndError[0] + "; " + minimalEpsilonAndError[1]);
+            if (minimalEpsilonAndError[0] < 0) {
+                System.out.println(minimalEpsilonAndError[0]);
+            }
+
             releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
             return true;
