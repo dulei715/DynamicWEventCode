@@ -4,7 +4,7 @@ import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.utils.TestTools;
 import org.junit.Test;
 

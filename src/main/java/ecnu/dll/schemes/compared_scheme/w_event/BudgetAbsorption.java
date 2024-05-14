@@ -1,10 +1,8 @@
 package ecnu.dll.schemes.compared_scheme.w_event;
 
-import cn.edu.dll.collection.ListUtils;
-import ecnu.dll.struts.StreamBudgetData;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamBudgetData;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BudgetAbsorption extends WEventMechanism {

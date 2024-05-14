@@ -1,22 +1,22 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.stream_data;
 
 import java.util.List;
 import java.util.TreeMap;
 
-public class StreamNoiseCountData {
+public class StreamCountData {
     protected Integer timeSlot;
-    protected TreeMap<String, Double> dataMap;
+    protected TreeMap<String, Integer> dataMap;
 
-    public StreamNoiseCountData(Integer timeSlot, TreeMap<String, Double> dataMap) {
+    public StreamCountData(Integer timeSlot, TreeMap<String, Integer> dataMap) {
         this.timeSlot = timeSlot;
         this.dataMap = dataMap;
     }
 
-    public StreamNoiseCountData(Integer timeSlot, List<String> dataType) {
+    public StreamCountData(Integer timeSlot, List<String> dataType) {
         this.timeSlot = timeSlot;
         this.dataMap = new TreeMap<>();
         for (String keyName : dataType) {
-            this.dataMap.put(keyName, 0D);
+            this.dataMap.put(keyName, 0);
         }
     }
 
@@ -29,15 +29,15 @@ public class StreamNoiseCountData {
         this.timeSlot = timeSlot;
     }
 
-    public TreeMap<String, Double> getDataMap() {
+    public TreeMap<String, Integer> getDataMap() {
         return dataMap;
     }
 
-    public void setDataMap(TreeMap<String, Double> dataMap) {
+    public void setDataMap(TreeMap<String, Integer> dataMap) {
         this.dataMap = dataMap;
     }
 
-    public void addEntry(String key, Double value) {
+    public void addEntry(String key, Integer value) {
         this.dataMap.put(key, value);
     }
 }

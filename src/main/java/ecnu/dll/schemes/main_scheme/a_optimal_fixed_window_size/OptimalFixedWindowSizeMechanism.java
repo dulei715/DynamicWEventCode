@@ -3,8 +3,8 @@ package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
-import ecnu.dll.struts.StreamNoiseCountData;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.List;
 import java.util.TreeMap;

@@ -3,7 +3,7 @@ package scheme_test;
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.utils.TestTools;
 import org.junit.Test;
 

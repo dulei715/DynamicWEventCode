@@ -1,7 +1,7 @@
 package basic_test;
 
 import cn.edu.dll.basic.BasicCalculation;
-import ecnu.dll.struts.ForwardImpactStream;
+import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 import org.junit.Test;
 
 import java.util.Random;

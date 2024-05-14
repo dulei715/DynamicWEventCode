@@ -1,8 +1,8 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools;
 
-import ecnu.dll.struts.BackwardHistoricalStream;
-import ecnu.dll.struts.ImpactElement;
-import ecnu.dll.struts.ForwardImpactStream;
+import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
+import ecnu.dll.struts.direct_stream.ImpactElement;
+import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 
 import java.util.Iterator;
 import java.util.List;

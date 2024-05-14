@@ -1,9 +1,9 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.direct_stream;
 
 public class ImpactElement implements Comparable<ImpactElement> {
-    private Integer timeSlot;
-    private Double totalPrivacyBudget;
-    private Integer windowSize;
+    protected Integer timeSlot;
+    protected Double totalPrivacyBudget;
+    protected Integer windowSize;
 
     public ImpactElement(Integer timeSlot, Double totalPrivacyBudget, Integer windowSize) {
         this.timeSlot = timeSlot;

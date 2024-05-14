@@ -2,7 +2,7 @@ package basic_test;
 
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 import org.junit.Test;
 
 import java.util.ArrayList;

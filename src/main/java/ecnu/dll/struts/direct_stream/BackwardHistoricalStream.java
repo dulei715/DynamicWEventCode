@@ -1,4 +1,4 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.direct_stream;
 
 import ecnu.dll._config.Constant;
 

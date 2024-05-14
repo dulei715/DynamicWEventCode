@@ -3,8 +3,8 @@ package ecnu.dll.schemes.compared_scheme.w_event;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
-import ecnu.dll.struts.StreamDataElement;
-import ecnu.dll.struts.StreamNoiseCountData;
+import ecnu.dll.struts.stream_data.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 import java.util.TreeMap;

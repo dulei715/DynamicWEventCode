@@ -1,10 +1,10 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.direct_stream;
 
 import java.util.*;
 
 public class ForwardImpactStream {
-    private Integer currentTime;
-    private HashMap<Integer, ImpactElement> impactStream;
+    protected Integer currentTime;
+    protected HashMap<Integer, ImpactElement> impactStream;
 
     public ForwardImpactStream() {
         this.impactStream = new HashMap<>();
@@ -16,7 +16,7 @@ public class ForwardImpactStream {
         this.currentTime = -1;
     }
 
-    private void updateStream() {
+    protected void updateStream() {
         Iterator<Map.Entry<Integer, ImpactElement>> elementIterator = this.impactStream.entrySet().iterator();
         ImpactElement element;
         while (elementIterator.hasNext()) {
@@ -41,7 +41,11 @@ public class ForwardImpactStream {
         if (timeSlot > this.currentTime) {
             throw new RuntimeException("The time slot " + timeSlot + " has not achieved!");
         }
-        return this.impactStream.get(timeSlot);
+        ImpactElement resultElement = this.impactStream.get(timeSlot);
+        if (resultElement == null) {
+            throw new RuntimeException("The element at time slot " + timeSlot + " has been removed!");
+        }
+        return resultElement;
     }
 
     public Iterator<ImpactElement> forwardImpactElementIterator() {
@@ -63,6 +67,10 @@ public class ForwardImpactStream {
             return null;
         }
         return element.getWindowSize();
+    }
+
+    public void updateUsage() {
+
     }
 
 

@@ -1,4 +1,4 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.stream_data;
 
 import java.util.ArrayList;
 import java.util.List;

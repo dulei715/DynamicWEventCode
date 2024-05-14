@@ -1,13 +1,14 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size;
 
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools.ForwardImpactStreamTools;
-import ecnu.dll.struts.BackwardHistoricalStream;
-import ecnu.dll.struts.ForwardImpactStream;
+import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
+import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMechanism{
+
     public PersonalizedDynamicBudgetDistribution(List<String> dataTypeList, int userSize) {
         super(dataTypeList, userSize);
     }

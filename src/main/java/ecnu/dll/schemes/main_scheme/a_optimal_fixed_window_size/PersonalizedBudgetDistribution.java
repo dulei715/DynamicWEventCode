@@ -3,7 +3,7 @@ package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.ArrayList;
 import java.util.Deque;

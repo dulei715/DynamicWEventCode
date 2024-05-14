@@ -1,8 +1,7 @@
 package ecnu.dll.utils;
 
-import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicWindowSizeMechanism;
-import ecnu.dll.struts.BackwardHistoricalStream;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

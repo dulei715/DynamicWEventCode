@@ -1,4 +1,4 @@
-package ecnu.dll.struts;
+package ecnu.dll.struts.stream_data;
 
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.statistic.StatisticTool;

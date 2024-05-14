@@ -1,8 +1,8 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 
 import cn.edu.dll.collection.ListUtils;
-import ecnu.dll.struts.StreamBudgetData;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamBudgetData;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.ArrayList;
 import java.util.List;

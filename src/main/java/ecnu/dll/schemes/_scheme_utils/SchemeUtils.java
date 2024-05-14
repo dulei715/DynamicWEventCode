@@ -1,9 +1,8 @@
 package ecnu.dll.schemes._scheme_utils;
 
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
-import cn.edu.dll.map.MapUtils;
 import cn.edu.dll.statistic.StatisticTool;
-import ecnu.dll.struts.StreamNoiseCountData;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 import java.util.Map;

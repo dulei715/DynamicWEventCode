@@ -1,7 +1,7 @@
 package ecnu.dll.schemes._scheme_utils;
 
 import cn.edu.dll.statistic.StatisticTool;
-import ecnu.dll.struts.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.ArrayList;
 import java.util.List;

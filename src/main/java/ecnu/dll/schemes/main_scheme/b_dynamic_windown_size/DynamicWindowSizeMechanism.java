@@ -4,10 +4,10 @@ import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools.ForwardImpactStreamTools;
-import ecnu.dll.struts.BackwardHistoricalStream;
-import ecnu.dll.struts.ForwardImpactStream;
-import ecnu.dll.struts.StreamDataElement;
-import ecnu.dll.struts.StreamNoiseCountData;
+import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
+import ecnu.dll.struts.direct_stream.ForwardImpactStream;
+import ecnu.dll.struts.stream_data.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,15 @@ public abstract class DynamicWindowSizeMechanism {
         this.userSize = userSize;
         this.forwardImpactStreamList = new ArrayList<>(userSize);
         this.backwardHistoricalStreamList = new ArrayList<>();
-        for (int i = 0; i < userSize; i++) {
+        initializeStream();
+        this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
+    }
+
+    protected void initializeStream() {
+        for (int i = 0; i < this.userSize; i++) {
             this.forwardImpactStreamList.add(new ForwardImpactStream());
             this.backwardHistoricalStreamList.add(new BackwardHistoricalStream());
         }
-        this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
     }
 
     public List<BackwardHistoricalStream> getBackwardHistoricalStreamList() {
@@ -109,7 +113,7 @@ public abstract class DynamicWindowSizeMechanism {
         TreeMap<String, Integer> sampleCountMap;
         Double[] minimalEpsilonAndError;
         List<Integer> sampleIndexList;
-        setPublicationPrivacyBudgetList(backwardBudgetList, backwardWindowSizeList);
+        this.setPublicationPrivacyBudgetList(backwardBudgetList, backwardWindowSizeList);
         minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(this.publicationPrivacyBudgetList);
 
         TreeMap<String, Double> releaseDataMap;
@@ -121,9 +125,9 @@ public abstract class DynamicWindowSizeMechanism {
             sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
 
 //            System.out.println(minimalEpsilonAndError[0] + "; " + minimalEpsilonAndError[1]);
-            if (minimalEpsilonAndError[0] < 0) {
-                System.out.println(minimalEpsilonAndError[0]);
-            }
+//            if (minimalEpsilonAndError[0] < 0) {
+//                System.out.println(minimalEpsilonAndError[0]);
+//            }
 
             releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);

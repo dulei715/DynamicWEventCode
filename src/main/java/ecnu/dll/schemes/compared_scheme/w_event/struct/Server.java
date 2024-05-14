@@ -1,6 +1,6 @@
 package ecnu.dll.schemes.compared_scheme.w_event.struct;
 
-import ecnu.dll.struts.StreamNoiseCountData;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 public class Server {
     protected int windowSize = -1;
