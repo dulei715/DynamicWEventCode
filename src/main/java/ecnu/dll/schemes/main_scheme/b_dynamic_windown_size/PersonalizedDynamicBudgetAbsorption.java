@@ -32,8 +32,28 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
 
     @Override
     protected void setPublicationPrivacyBudgetList(List<Double> backwardBudgetList, List<Integer> backwardWindowSizeList) {
+//        List<Double> minimalAbsorbBudgetList = new ArrayList<>(this.userSize);
+        Double tempMinimalForwardBudget, tempValue, tempBackwardBudgetRemain, tempBackwardBudget;
+        Integer tempBackwardWindowSize;
+        ForwardImpactStream tempImpactStream;
+        BackwardHistoricalStream tempBackwardStream;
+        ImpactElement tempImpactElement;
+        Iterator<ImpactElement> tempIterator;
+        this.publicationPrivacyBudgetList = new ArrayList<>();
         for (int i = 0; i < this.userSize; i++) {
-
+            tempImpactStream = this.forwardImpactStreamList.get(i);
+            tempIterator = tempImpactStream.forwardImpactElementIterator();
+            tempMinimalForwardBudget = Double.MAX_VALUE;
+            while (tempIterator.hasNext()) {
+                tempImpactElement = tempIterator.next();
+                tempValue = (this.currentTime - tempImpactElement.getTimeSlot()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
+                tempMinimalForwardBudget = Math.min(tempMinimalForwardBudget, tempValue);
+            }
+            tempBackwardBudget = backwardBudgetList.get(i);
+            tempBackwardStream = this.backwardHistoricalStreamList.get(i);
+            tempBackwardWindowSize = backwardWindowSizeList.get(i);
+            tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
+            this.publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudget, tempBackwardBudgetRemain));
         }
     }
 
@@ -57,10 +77,6 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         }
     }
 
-    @Override
-    protected boolean mechanismPartB(List<StreamDataElement<Boolean>> nextDataElementList, List<Double> backwardBudgetList, List<Integer> backwardWindowSizeList, Double dissimilarity) {
-        
-    }
 
     @Override
     public boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> nextDataElementList, List<Double> backwardBudgetList, List<Integer> backwardWindowSizeList, List<Double> forwardBudgetList, List<Integer> forwardWindowSizeList) {
@@ -70,9 +86,9 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         Double dissimilarity = mechanismPartA(nextDataElementList, backwardBudgetList, backwardWindowSizeList);
         // M_{t,2}
         Double maxPublicationBudgetSum;
-        setMaxPublicationBudgetUsageSumToNullifiedList();
-        double averageNullified = ListUtils.sum(this.nullifiedTimeStampList) / this.userSize;
-        if (this.currentTime <= averageNullified) {
+        this.setMaxPublicationBudgetUsageSumToNullifiedList();
+        double maximalNullified = ListUtils.getMaximalValue(this.nullifiedTimeStampList, 0D);
+        if (this.currentTime <= maximalNullified) {
             return false;
         }
         this.setPublicationPrivacyBudgetList(backwardBudgetList, backwardWindowSizeList);

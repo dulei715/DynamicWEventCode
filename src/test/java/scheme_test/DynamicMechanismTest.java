@@ -2,6 +2,7 @@ package scheme_test;
 
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
+import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.utils.TestTools;
@@ -39,31 +40,54 @@ public class DynamicMechanismTest {
         TreeMap<String, Integer> tempRealMapResult;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
-//        budgetList = TestTools.generateEpsilonList(this.random, userSize);
-//        windowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
         PersonalizedDynamicBudgetDistribution pdbd = new PersonalizedDynamicBudgetDistribution(dataElementList.get(0).getKeyList(), userSize);
-        List<Double> tempBackwardBudgetList = new ArrayList<>(), tempForwardBudgetList;
-        List<Integer> tempBackwardWindowSizeList = new ArrayList<>(), tempForwardWindowSizeList;
-//        ArrayList<ArrayList<Double>> historicalBudgetListList = new ArrayList<>();
-//        initializeHistoricalBudgetListList(historicalBudgetListList, userSize);
+        List<Double> tempBackwardBudgetList, tempForwardBudgetList;
+        List<Integer> tempBackwardWindowSizeList, tempForwardWindowSizeList;
         List<Double> historicalBudgetSumList = new ArrayList<>();
         for (int i = 0; i < timeUpperBound; i++) {
             System.out.printf("Time slot %d\n", i);
             dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
             tempRealMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
-//            TestTools.generateAndSetLegalBackwardPrivacyBudgetAndWindowSizeList(this.random, userSize, windowSizeUpperBound, i, historicalBudgetListList, tempBackwardBudgetList, tempBackwardWindowSizeList);
-//            addCurrentElementListToHistoricalBudgetListList(historicalBudgetListList, tempBackwardBudgetList);
             tempBackwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
             tempBackwardBudgetList = TestTools.generateLegalBackwardPrivacyBudgetByWindowSize(this.random, pdbd.getBackwardHistoricalStreamList(), tempBackwardWindowSizeList);
             tempForwardBudgetList = TestTools.generateEpsilonList(this.random, userSize);
             tempForwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
             boolean isPublication = pdbd.updateNextPublicationResult(dataElementList, tempBackwardBudgetList, tempBackwardWindowSizeList, tempForwardBudgetList, tempForwardWindowSizeList);
-//            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
             MyPrint.showMap(pdbd.getReleaseNoiseCountMap().getDataMap());
-//            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
-//            MyPrint.showList(budgetList);
-//            MyPrint.showList(windowSizeList);
+            MyPrint.showSplitLine("*", 50);
+            MyPrint.showMap(tempRealMapResult);
+            MyPrint.showSplitLine("*", 150);
+        }
+    }
+
+    @Test
+    public void personalizeDynamicPrivacyBudgetAbsorptionTest() {
+        int userSize = 100;
+        int typeSize = 5;
+        int windowSizeUpperBound = 6;
+
+        int timeUpperBound = 100;
+
+        List<StreamDataElement<Boolean>> dataElementList;
+        TreeMap<String, Integer> tempRealMapResult;
+
+        dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+        PersonalizedDynamicBudgetAbsorption pdba = new PersonalizedDynamicBudgetAbsorption(dataElementList.get(0).getKeyList(), userSize);
+        List<Double> tempBackwardBudgetList, tempForwardBudgetList;
+        List<Integer> tempBackwardWindowSizeList, tempForwardWindowSizeList;
+        List<Double> historicalBudgetSumList = new ArrayList<>();
+        for (int i = 0; i < timeUpperBound; i++) {
+            System.out.printf("Time slot %d\n", i);
+            dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+            tempRealMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
+            tempBackwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
+            tempBackwardBudgetList = TestTools.generateLegalBackwardPrivacyBudgetByWindowSize(this.random, pdba.getBackwardHistoricalStreamList(), tempBackwardWindowSizeList);
+            tempForwardBudgetList = TestTools.generateEpsilonList(this.random, userSize);
+            tempForwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
+            boolean isPublication = pdba.updateNextPublicationResult(dataElementList, tempBackwardBudgetList, tempBackwardWindowSizeList, tempForwardBudgetList, tempForwardWindowSizeList);
+            System.out.println(isPublication);
+            MyPrint.showMap(pdba.getReleaseNoiseCountMap().getDataMap());
             MyPrint.showSplitLine("*", 50);
             MyPrint.showMap(tempRealMapResult);
             MyPrint.showSplitLine("*", 150);
