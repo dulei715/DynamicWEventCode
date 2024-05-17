@@ -56,8 +56,9 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
         for (int i = 0; i < lastTimePublicationBudgetList.size(); i++) {
             this.nullifiedTimeStampList.add(lastTimePublicationBudgetList.get(i) / (this.privacyBudgetList.get(i) / (2*this.windowSizeList.get(i))) - 1);
         }
-        double averageNullifiedTimeStamp = ListUtils.sum(this.nullifiedTimeStampList) / this.nullifiedTimeStampList.size();
-        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= averageNullifiedTimeStamp) {
+//        double averageNullifiedTimeStamp = ListUtils.sum(this.nullifiedTimeStampList) / this.nullifiedTimeStampList.size();
+        double minimalNullifiedTimeStamp = ListUtils.getMinimalValue(this.nullifiedTimeStampList);
+        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= minimalNullifiedTimeStamp) {
             return false;
         }
         setPublicationPrivacyBudgetList();
