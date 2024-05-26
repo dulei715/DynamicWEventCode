@@ -1,6 +1,10 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size;
 
 import cn.edu.dll.collection.ListUtils;
+import ecnu.dll.schemes._scheme_utils.nullified.AverageNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.MaximalNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.MinimalNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.struts.direct_stream.*;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
@@ -11,9 +15,21 @@ import java.util.List;
 public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechanism{
 
     private List<Double> nullifiedTimeStampList;
+    private NullifiedBound nullifiedBound;
 
-    public PersonalizedDynamicBudgetAbsorption(List<String> dataTypeList, int userSize) {
+    public PersonalizedDynamicBudgetAbsorption(List<String> dataTypeList, int userSize, int nullifiedBoundType) {
         super(dataTypeList, userSize);
+        switch (nullifiedBoundType) {
+            case NullifiedBound.MinimalType:
+                this.nullifiedBound = new MinimalNullifiedBound();
+                break;
+            case NullifiedBound.MaximalType:
+                this.nullifiedBound = new MaximalNullifiedBound();
+                break;
+            default:
+                this.nullifiedBound = new AverageNullifiedBound();
+                break;
+        }
     }
 
     @Override
@@ -87,8 +103,9 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         // M_{t,2}
         Double maxPublicationBudgetSum;
         this.setMaxPublicationBudgetUsageSumToNullifiedList();
-        double maximalNullified = ListUtils.getMaximalValue(this.nullifiedTimeStampList, 0D);
-        if (this.currentTime <= maximalNullified) {
+//        double maximalNullified = ListUtils.getMaximalValue(this.nullifiedTimeStampList, 0D);
+        double nullifiedTimestampBound = this.nullifiedBound.getNullifiedBound(this.nullifiedTimeStampList);
+        if (this.currentTime <= nullifiedTimestampBound) {
             return false;
         }
         this.setPublicationPrivacyBudgetList(backwardBudgetList, backwardWindowSizeList);

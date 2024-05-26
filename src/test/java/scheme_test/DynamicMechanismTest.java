@@ -2,6 +2,7 @@ package scheme_test;
 
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
+import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamDataElement;
@@ -69,11 +70,13 @@ public class DynamicMechanismTest {
 
         int timeUpperBound = 100;
 
+        int nullifiedType = NullifiedBound.AverageType;
+
         List<StreamDataElement<Boolean>> dataElementList;
         TreeMap<String, Integer> tempRealMapResult;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
-        PersonalizedDynamicBudgetAbsorption pdba = new PersonalizedDynamicBudgetAbsorption(dataElementList.get(0).getKeyList(), userSize);
+        PersonalizedDynamicBudgetAbsorption pdba = new PersonalizedDynamicBudgetAbsorption(dataElementList.get(0).getKeyList(), userSize, nullifiedType);
         List<Double> tempBackwardBudgetList, tempForwardBudgetList;
         List<Integer> tempBackwardWindowSizeList, tempForwardWindowSizeList;
         List<Double> historicalBudgetSumList = new ArrayList<>();

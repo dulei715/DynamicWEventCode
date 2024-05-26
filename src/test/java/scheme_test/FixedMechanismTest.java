@@ -2,6 +2,7 @@ package scheme_test;
 
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
+import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamDataElement;
@@ -63,6 +64,8 @@ public class FixedMechanismTest {
         int windowSizeUpperBound = 6;
 
         int timeUpperBound = 100;
+//        int nullifiedType = NullifiedBound.AverageType;
+        int nullifiedType = NullifiedBound.MaximalType;
 
         List<StreamDataElement<Boolean>> dataElementList;
         List<Double> budgetList;
@@ -71,7 +74,7 @@ public class FixedMechanismTest {
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
         budgetList = TestTools.generateEpsilonList(this.random, userSize);
         windowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
-        PersonalizedBudgetAbsorption pba = new PersonalizedBudgetAbsorption(dataElementList.get(0).getKeyList(), budgetList, windowSizeList);
+        PersonalizedBudgetAbsorption pba = new PersonalizedBudgetAbsorption(dataElementList.get(0).getKeyList(), budgetList, windowSizeList, nullifiedType);
         TreeMap<String, Integer> realMapResult;
 
         for (int i = 0; i < timeUpperBound; i++) {

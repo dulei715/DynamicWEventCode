@@ -1,6 +1,10 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 
 import cn.edu.dll.collection.ListUtils;
+import ecnu.dll.schemes._scheme_utils.nullified.AverageNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.MaximalNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.MinimalNullifiedBound;
+import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.struts.stream_data.StreamBudgetData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
@@ -12,7 +16,9 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
     private StreamBudgetData lastTimePublicationBudgetData;
     private List<Double> nullifiedTimeStampList;
 
-    public PersonalizedBudgetAbsorption(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
+    private NullifiedBound nullifiedBound;
+
+    public PersonalizedBudgetAbsorption(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList, int nullifiedBoundType) {
         super(dataTypeList, privacyBudgetList, windowSizeList);
         int userSize = this.privacyBudgetList.size();
         List<Double> lastTimeBudgetList = new ArrayList<>(userSize);
@@ -20,6 +26,17 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
             lastTimeBudgetList.add(this.privacyBudgetList.get(i) / (2*this.windowSizeList.get(i)));
         }
         this.lastTimePublicationBudgetData = new StreamBudgetData(-1, lastTimeBudgetList);
+        switch (nullifiedBoundType) {
+            case NullifiedBound.MinimalType:
+                this.nullifiedBound = new MinimalNullifiedBound();
+                break;
+            case NullifiedBound.MaximalType:
+                this.nullifiedBound = new MaximalNullifiedBound();
+                break;
+            default:
+                this.nullifiedBound = new AverageNullifiedBound();
+                break;
+        }
     }
 
     @Override
@@ -57,8 +74,9 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
             this.nullifiedTimeStampList.add(lastTimePublicationBudgetList.get(i) / (this.privacyBudgetList.get(i) / (2*this.windowSizeList.get(i))) - 1);
         }
 //        double averageNullifiedTimeStamp = ListUtils.sum(this.nullifiedTimeStampList) / this.nullifiedTimeStampList.size();
-        double minimalNullifiedTimeStamp = ListUtils.getMinimalValue(this.nullifiedTimeStampList);
-        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= minimalNullifiedTimeStamp) {
+//        double nullifiedTimeStampBound = ListUtils.getMinimalValue(this.nullifiedTimeStampList);
+        double nullifiedTimeStampBound = nullifiedBound.getNullifiedBound(this.nullifiedTimeStampList);
+        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= nullifiedTimeStampBound) {
             return false;
         }
         setPublicationPrivacyBudgetList();
