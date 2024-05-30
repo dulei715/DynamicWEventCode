@@ -6,6 +6,7 @@ import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
+import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools.ForwardImpactStreamTools;
 import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
 import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 import ecnu.dll.struts.stream_data.StreamDataElement;
@@ -138,6 +139,29 @@ public class DynamicMechanismTest {
         }
     }
 
+    protected void setCalculationPrivacyBudgetList(List<Double> calculationPrivacyBudgetList, List<Double> backwardBudgetList,
+                                                   List<Integer> backwardWindowSizeList, List<ForwardImpactStream> forwardImpactStreamList, List<BackwardHistoricalStream> backwardHistoricalStreamList){
+        Double tempBackwardBudget, tempForwardAverageBudget, tempBackwardBudgetRemain, tempCalculationBudget;
+        Integer tempBackwardWindowSize;
+        ForwardImpactStream tempForwardStream;
+        BackwardHistoricalStream tempBackwardStream;
+
+        // todo: alter it to subclass
+        int userSize = backwardBudgetList.size();
+        for (int userID = 0; userID < userSize; ++userID) {
+            tempForwardStream = forwardImpactStreamList.get(userID);
+            tempBackwardStream = backwardHistoricalStreamList.get(userID);
+            tempBackwardWindowSize = backwardWindowSizeList.get(userID);
+            tempBackwardBudget = backwardBudgetList.get(userID);
+
+            tempForwardAverageBudget = ForwardImpactStreamTools.getMinimalHalfAverageBudgetInWindow(tempForwardStream);
+            tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalCalculationBudgetSum(tempBackwardWindowSize-1);
+            tempCalculationBudget = Math.min(tempForwardAverageBudget, Math.max(tempBackwardBudgetRemain, 0));
+            calculationPrivacyBudgetList.add(tempCalculationBudget);
+        }
+    }
+
+
     @Test
     public void middleStep() {
         int basicUserSize = 3;
@@ -152,17 +176,31 @@ public class DynamicMechanismTest {
 //        MyPrint.show2DimensionArray(averageBudgetPairMatrix, ", ");
         List<ForwardImpactStream> forwardImpactStreamList = new ArrayList<>();
         List<BackwardHistoricalStream> backwardHistoricalStreamList = new ArrayList<>();
+        for (int i = 0; i < basicUserSize; i++) {
+            forwardImpactStreamList.add(new ForwardImpactStream());
+            backwardHistoricalStreamList.add(new BackwardHistoricalStream());
+        }
         List<Double> tempForwardBudgetList;
         List<Integer> tempForwardWindowSizeList;
-        for (int t = 1; t <= timeStampSize; t++) {
+        List<Double> tempBackwardBudgetList;
+        List<Integer> tempBackwardWindowSizeList;
+        List<Double> tempCalculationPrivacyBudgetList;
+        for (int t = 0; t < timeStampSize; t++) {
+            tempBackwardBudgetList = new ArrayList<>();
+            tempBackwardWindowSizeList = new ArrayList<>();
             tempForwardBudgetList = new ArrayList<>();
             tempForwardWindowSizeList = new ArrayList<>();
             for (int i = 0; i < basicUserSize; i++) {
+                tempBackwardBudgetList.add(data[i][t].getBackwardBudget());
+                tempBackwardWindowSizeList.add(data[i][t].getBackwardWindowSize());
                 tempForwardBudgetList.add(data[i][t].getForwardBudget());
                 tempForwardWindowSizeList.add(data[i][t].getForwardWindowSize());
             }
             updateForwardImpactStreamList(forwardImpactStreamList, tempForwardBudgetList, tempForwardWindowSizeList);
-            
+
+            tempCalculationPrivacyBudgetList = new ArrayList<>();
+            setCalculationPrivacyBudgetList(tempCalculationPrivacyBudgetList, tempBackwardBudgetList, tempBackwardWindowSizeList, forwardImpactStreamList, backwardHistoricalStreamList);
+            MyPrint.showList(tempCalculationPrivacyBudgetList, "; ");
         }
     }
 
