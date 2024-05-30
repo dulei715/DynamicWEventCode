@@ -204,11 +204,19 @@ public class DynamicMechanismTest {
             updateForwardImpactStreamList(forwardImpactStreamList, tempForwardBudgetList, tempForwardWindowSizeList);
 
             tempCalculationPrivacyBudgetList = new ArrayList<>();
+
+            // M_1
             tempRemainBudgetListPair = setCalculationPrivacyBudgetList(tempCalculationPrivacyBudgetList, tempBackwardBudgetList, tempBackwardWindowSizeList, forwardImpactStreamList, backwardHistoricalStreamList);
 //            MyPrint.showList(tempCalculationPrivacyBudgetList, "; ");
 //            MyPrint.showSplitLine("*", 50);
             MyPrint.showList(tempRemainBudgetListPair, "; ");
             MyPrint.showSplitLine("*", 50);
+
+
+            // M_2
+
+
+
 
 
         }
