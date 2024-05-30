@@ -139,12 +139,14 @@ public class DynamicMechanismTest {
         }
     }
 
-    protected void setCalculationPrivacyBudgetList(List<Double> calculationPrivacyBudgetList, List<Double> backwardBudgetList,
+    protected List<BasicPair<Double, Double>> setCalculationPrivacyBudgetList(List<Double> calculationPrivacyBudgetList, List<Double> backwardBudgetList,
                                                    List<Integer> backwardWindowSizeList, List<ForwardImpactStream> forwardImpactStreamList, List<BackwardHistoricalStream> backwardHistoricalStreamList){
         Double tempBackwardBudget, tempForwardAverageBudget, tempBackwardBudgetRemain, tempCalculationBudget;
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempForwardStream;
         BackwardHistoricalStream tempBackwardStream;
+        List<BasicPair<Double, Double>> result = new ArrayList<>();
+        BasicPair<Double, Double> tempPair;
 
         // todo: alter it to subclass
         int userSize = backwardBudgetList.size();
@@ -157,8 +159,10 @@ public class DynamicMechanismTest {
             tempForwardAverageBudget = ForwardImpactStreamTools.getMinimalHalfAverageBudgetInWindow(tempForwardStream);
             tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalCalculationBudgetSum(tempBackwardWindowSize-1);
             tempCalculationBudget = Math.min(tempForwardAverageBudget, Math.max(tempBackwardBudgetRemain, 0));
+            result.add(new BasicPair<>(tempBackwardBudgetRemain, tempForwardAverageBudget));
             calculationPrivacyBudgetList.add(tempCalculationBudget);
         }
+        return result;
     }
 
 
@@ -185,6 +189,7 @@ public class DynamicMechanismTest {
         List<Double> tempBackwardBudgetList;
         List<Integer> tempBackwardWindowSizeList;
         List<Double> tempCalculationPrivacyBudgetList;
+        List<BasicPair<Double, Double>> tempRemainBudgetListPair;
         for (int t = 0; t < timeStampSize; t++) {
             tempBackwardBudgetList = new ArrayList<>();
             tempBackwardWindowSizeList = new ArrayList<>();
@@ -199,8 +204,13 @@ public class DynamicMechanismTest {
             updateForwardImpactStreamList(forwardImpactStreamList, tempForwardBudgetList, tempForwardWindowSizeList);
 
             tempCalculationPrivacyBudgetList = new ArrayList<>();
-            setCalculationPrivacyBudgetList(tempCalculationPrivacyBudgetList, tempBackwardBudgetList, tempBackwardWindowSizeList, forwardImpactStreamList, backwardHistoricalStreamList);
-            MyPrint.showList(tempCalculationPrivacyBudgetList, "; ");
+            tempRemainBudgetListPair = setCalculationPrivacyBudgetList(tempCalculationPrivacyBudgetList, tempBackwardBudgetList, tempBackwardWindowSizeList, forwardImpactStreamList, backwardHistoricalStreamList);
+//            MyPrint.showList(tempCalculationPrivacyBudgetList, "; ");
+//            MyPrint.showSplitLine("*", 50);
+            MyPrint.showList(tempRemainBudgetListPair, "; ");
+            MyPrint.showSplitLine("*", 50);
+
+
         }
     }
 
