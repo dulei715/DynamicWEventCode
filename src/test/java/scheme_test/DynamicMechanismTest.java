@@ -1,11 +1,15 @@
 package scheme_test;
 
 import cn.edu.dll.io.print.MyPrint;
+import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
+import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
+import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 import ecnu.dll.struts.stream_data.StreamDataElement;
+import ecnu.dll.struts.test.BackwardForwardData;
 import ecnu.dll.utils.TestTools;
 import org.junit.Test;
 
@@ -95,5 +99,66 @@ public class DynamicMechanismTest {
             MyPrint.showMap(tempRealMapResult);
             MyPrint.showSplitLine("*", 150);
         }
+    }
+
+    public static BasicPair<Double, Double>[][] getAverageBudgets(BackwardForwardData[][] data) {
+        int rowSize = data.length;
+        int colSize = data[0].length;
+        BasicPair<Double, Double>[][] result = new BasicPair[rowSize][colSize];
+        BackwardForwardData tempData;
+        for (int i = 0; i < rowSize; i++) {
+            for (int j = 0; j < colSize; j++) {
+                tempData = data[i][j];
+                result[i][j] = new BasicPair<>(tempData.getBackwardBudget()/(2*tempData.getBackwardWindowSize()), tempData.getForwardBudget()/(2*tempData.getForwardWindowSize()));
+            }
+        }
+        return result;
+    }
+
+    public void updateForwardImpactStreamList(List<ForwardImpactStream> forwardImpactStreamList, List<Double> forwardBudgetList,
+                                                 List<Integer> forwardWindowSizeList) {
+        ForwardImpactStream tempForwardStream;
+        Double tempForwardBudget;
+        Integer tempForwardWindowSize;
+        int userSize = forwardWindowSizeList.size();
+        for (int userID = 0; userID < userSize; ++userID) {
+            tempForwardBudget = forwardBudgetList.get(userID);
+            tempForwardWindowSize = forwardWindowSizeList.get(userID);
+            tempForwardStream = forwardImpactStreamList.get(userID);
+            tempForwardStream.addElement(tempForwardBudget, tempForwardWindowSize);
+        }
+    }
+
+    protected void updateBackwardHistoricalStreamList(int userSize, List<Double> calculationPrivacyBudgetList, List<Double> publicationPrivacyBudgetList, List<BackwardHistoricalStream> backwardHistoricalStreamList) {
+        Double tempCalculationBudget, tempPublicationPrivacyBudget;
+        for (int userID = 0; userID < userSize; ++userID) {
+            tempCalculationBudget = calculationPrivacyBudgetList.get(userID);
+            tempPublicationPrivacyBudget = publicationPrivacyBudgetList.get(userID);
+            backwardHistoricalStreamList.get(userID).addElement(tempCalculationBudget, tempPublicationPrivacyBudget);
+        }
+    }
+
+    @Test
+    public void middleStep() {
+        int basicUserSize = 3;
+        int timeStampSize = 5;
+        BackwardForwardData[][] data = new BackwardForwardData[][] {
+                new BackwardForwardData[] {new BackwardForwardData(1.0, 1, 2.4, 4), new BackwardForwardData(2.4, 2, 3.2, 4), new BackwardForwardData(2.8, 2, 4.2, 3), new BackwardForwardData(1.2, 2, 2.4, 3), new BackwardForwardData(1.0, 5, 0.8, 2)},
+                new BackwardForwardData[] {new BackwardForwardData(0.6, 1, 1.6, 2), new BackwardForwardData(1.6, 2, 2.4, 2), new BackwardForwardData(0.0, 0, 0.0, 0), new BackwardForwardData(0.0, 0, 0.0, 0), new BackwardForwardData(0.0, 0, 0.0, 0)},
+                new BackwardForwardData[] {new BackwardForwardData(2.0, 1, 1.2, 3), new BackwardForwardData(1.2, 2, 3.0, 3), new BackwardForwardData(0.0, 0, 0.0, 0), new BackwardForwardData(0.0, 0, 0.0, 0), new BackwardForwardData(0.0, 0, 0.0, 0)},
+        };
+        int[] groupSizeArray = new int[]{33, 33, 33};
+        BasicPair<Double, Double>[][] averageBudgetPairMatrix = getAverageBudgets(data);
+//        MyPrint.show2DimensionArray(averageBudgetPairMatrix, ", ");
+        List<ForwardImpactStream> forwardImpactStreamList = new ArrayList<>();
+        List<BackwardHistoricalStream> backwardHistoricalStreamList = new ArrayList<>();
+        for (int t = 1; t <= timeStampSize; t++) {
+            
+        }
+    }
+
+    @Test
+    public void testPersonalizedDynamicBudgetDistribution() {
+
     }
 }
