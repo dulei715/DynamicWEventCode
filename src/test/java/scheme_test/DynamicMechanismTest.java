@@ -152,7 +152,16 @@ public class DynamicMechanismTest {
 //        MyPrint.show2DimensionArray(averageBudgetPairMatrix, ", ");
         List<ForwardImpactStream> forwardImpactStreamList = new ArrayList<>();
         List<BackwardHistoricalStream> backwardHistoricalStreamList = new ArrayList<>();
+        List<Double> tempForwardBudgetList;
+        List<Integer> tempForwardWindowSizeList;
         for (int t = 1; t <= timeStampSize; t++) {
+            tempForwardBudgetList = new ArrayList<>();
+            tempForwardWindowSizeList = new ArrayList<>();
+            for (int i = 0; i < basicUserSize; i++) {
+                tempForwardBudgetList.add(data[i][t].getForwardBudget());
+                tempForwardWindowSizeList.add(data[i][t].getForwardWindowSize());
+            }
+            updateForwardImpactStreamList(forwardImpactStreamList, tempForwardBudgetList, tempForwardWindowSizeList);
             
         }
     }
