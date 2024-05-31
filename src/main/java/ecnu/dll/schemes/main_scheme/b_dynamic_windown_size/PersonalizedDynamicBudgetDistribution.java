@@ -16,7 +16,7 @@ public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMech
     @Override
     protected void setPublicationPrivacyBudgetList(List<Double> backwardBudgetList,
                                                    List<Integer> backwardWindowSizeList) {
-        Double tempBackwardBudget, tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain;
+        Double tempBackwardBudget, tempMinimalCandidateForwardBudget, tempMinimalCandidateBackwardBudget;
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempForwardStream;
         BackwardHistoricalStream tempBackwardStream;
@@ -28,10 +28,10 @@ public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMech
             tempBackwardBudget = backwardBudgetList.get(userID);
             tempBackwardWindowSize = backwardWindowSizeList.get(userID);
 
-            tempMinimalForwardBudgetRemain = ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
-            tempMinimalBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
+            tempMinimalCandidateForwardBudget = 0.5 * ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
+            tempMinimalCandidateBackwardBudget = 0.5 * (tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1));
 
-            this.publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain) / 2);
+            this.publicationPrivacyBudgetList.add(Math.min(tempMinimalCandidateForwardBudget, tempMinimalCandidateBackwardBudget));
         }
     }
 }
