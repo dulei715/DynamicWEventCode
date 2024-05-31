@@ -196,8 +196,9 @@ public class DynamicMechanismTest {
 
     protected List<BasicPair<Double, Double>> setPublicationPrivacyBudgetList(int size, List<Double> publicationPrivacyBudgetList) {
         List<BasicPair<Double,Double>> result = new ArrayList<>();
+        publicationPrivacyBudgetList.clear();
         for (int i = 0; i < size; i++) {
-            result.add(new BasicPair<Double, Double>(0D, 0D));
+            result.add(new BasicPair<>(0D, 0D));
             publicationPrivacyBudgetList.add(0D);
         }
         return result;
@@ -262,13 +263,12 @@ public class DynamicMechanismTest {
 
             // M_2
             tempPublicationPrivacyBudgetList = new ArrayList<>();
-            if (isPublic[t]) {
-                publicationListPair = setPublicationPrivacyBudgetList(tempBackwardBudgetList, tempBackwardWindowSizeList, tempPublicationPrivacyBudgetList, forwardImpactStreamList, backwardHistoricalStreamList);
-                minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(tempPublicationPrivacyBudgetList);
-            } else {
+            publicationListPair = setPublicationPrivacyBudgetList(tempBackwardBudgetList, tempBackwardWindowSizeList, tempPublicationPrivacyBudgetList, forwardImpactStreamList, backwardHistoricalStreamList);
+            minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(tempPublicationPrivacyBudgetList);
+            MyPrint.showList(publicationListPair, "; ");
+            if (!isPublic[t]) {
                 publicationListPair = setPublicationPrivacyBudgetList(tempBackwardBudgetList.size(), tempPublicationPrivacyBudgetList);
             }
-            MyPrint.showList(publicationListPair, "; ");
 //            System.out.println(minimalEpsilonAndError[0]);
 //            MyPrint.showList(tempPublicationPrivacyBudgetList, "! ");
 
