@@ -8,9 +8,7 @@ import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedDynamicBudgetDistribution;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools.ForwardImpactStreamTools;
-import ecnu.dll.struts.direct_stream.BackwardHistoricalStream;
-import ecnu.dll.struts.direct_stream.ForwardImpactStream;
-import ecnu.dll.struts.direct_stream.ImpactElement;
+import ecnu.dll.struts.direct_stream.*;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.struts.test.BackwardForwardData;
 import ecnu.dll.utils.TestTools;
@@ -190,18 +188,18 @@ public class DynamicMechanismTest {
             tempBackwardBudget = backwardBudgetList.get(userID);
             tempBackwardWindowSize = backwardWindowSizeList.get(userID);
 
-            tempMinimalForwardBudgetRemain = 0.5 * ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
-            tempMinimalBackwardBudgetRemain = 0.5 * (tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1));
+            tempMinimalForwardBudgetRemain = ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
+            tempMinimalBackwardBudgetRemain = (tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1));
 
             result.add(new BasicPair(tempMinimalBackwardBudgetRemain, tempMinimalForwardBudgetRemain));
 
-            publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain));
+            publicationPrivacyBudgetList.add(0.5*Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain));
         }
         return result;
     }
 
 
-        @Test
+    @Test
     public void middleStepForPDBD() {
         int basicUserSize = 3;
         int timeStampSize = 5;
@@ -292,7 +290,7 @@ public class DynamicMechanismTest {
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempImpactStream;
         BackwardHistoricalStream tempBackwardStream;
-        ImpactElement tempImpactElement;
+        ImpactElementAbsorption tempImpactElement;
         Iterator<ImpactElement> tempIterator;
 //        this.publicationPrivacyBudgetList = new ArrayList<>();
         List<BasicPair<Double, Double>> result = new ArrayList<>();
@@ -302,18 +300,45 @@ public class DynamicMechanismTest {
             tempIterator = tempImpactStream.forwardImpactElementIterator();
             tempMinimalForwardBudget = Double.MAX_VALUE;
             while (tempIterator.hasNext()) {
-                tempImpactElement = tempIterator.next();
-                tempValue = (currentTime - tempImpactElement.getTimeSlot()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
+                tempImpactElement = (ImpactElementAbsorption)tempIterator.next();
+                tempValue = (currentTime - tempImpactElement.getRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
                 tempMinimalForwardBudget = Math.min(tempMinimalForwardBudget, tempValue);
             }
             tempBackwardBudget = backwardBudgetList.get(i);
             tempBackwardStream = backwardHistoricalStreamList.get(i);
             tempBackwardWindowSize = backwardWindowSizeList.get(i);
             tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
-            result.add(new BasicPair<Double, Double>(tempBackwardBudgetRemain, tempMinimalForwardBudget));
+            result.add(new BasicPair<>(tempBackwardBudgetRemain, tempMinimalForwardBudget));
             publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudget, tempBackwardBudgetRemain));
         }
         return result;
+    }
+
+    protected void setMaxPublicationBudgetUsageSumToNullifiedList(List<Double> nullifiedTimeStampList, List<ForwardImpactStream> forwardImpactStreamList) {
+
+        Double tempNullified, tempMaxNullified;
+        ImpactElementAbsorption element;
+        ForwardImpactStream forwardImpactStream;
+        Iterator<ImpactElement> impactElementIterator;
+        int userSize = forwardImpactStreamList.size();
+        for (int i = 0; i < userSize; i++) {
+            forwardImpactStream = forwardImpactStreamList.get(i);
+            impactElementIterator = forwardImpactStream.forwardImpactElementIterator();
+            tempMaxNullified = -1D;
+            while (impactElementIterator.hasNext()) {
+                element = (ImpactElementAbsorption) impactElementIterator.next();
+                tempNullified = element.getPublicationBudgetUsage() / (element.getTotalPrivacyBudget() / (2 * element.getWindowSize())) - 1 + element.getTimeSlot();
+                tempMaxNullified = Math.max(tempMaxNullified, tempNullified);
+            }
+            nullifiedTimeStampList.add(tempMaxNullified);
+        }
+    }
+
+    protected void updateImpactStreamUsageList(List<ForwardImpactStream> forwardImpactStreamList, List<Double> publicationPrivacyBudgetList) {
+        int userSize = forwardImpactStreamList.size();
+        for (int i = 0; i < userSize; i++) {
+            ((ForwardImpactStreamAbsorption)forwardImpactStreamList.get(i)).updateStreamUsageAndRightBorder(publicationPrivacyBudgetList.get(i));
+        }
     }
 
     @Test
@@ -330,7 +355,7 @@ public class DynamicMechanismTest {
         List<ForwardImpactStream> forwardImpactStreamList = new ArrayList<>();
         List<BackwardHistoricalStream> backwardHistoricalStreamList = new ArrayList<>();
         for (int i = 0; i < basicUserSize; i++) {
-            forwardImpactStreamList.add(new ForwardImpactStream());
+            forwardImpactStreamList.add(new ForwardImpactStreamAbsorption());
             backwardHistoricalStreamList.add(new BackwardHistoricalStream());
         }
         List<Double> tempForwardBudgetList;
@@ -339,6 +364,7 @@ public class DynamicMechanismTest {
         List<Integer> tempBackwardWindowSizeList;
         List<Double> tempCalculationPrivacyBudgetList, tempPublicationPrivacyBudgetList;
         List<BasicPair<Double, Double>> tempRemainBudgetListPair, publicationListPair;
+        List<Double> nullifiedTimeStampList;
         boolean[] isPublic = new boolean[]{
                 true, false, true, false, true
         };
@@ -368,6 +394,9 @@ public class DynamicMechanismTest {
 
 
             // M_2
+            nullifiedTimeStampList = new ArrayList<>();
+            setMaxPublicationBudgetUsageSumToNullifiedList(nullifiedTimeStampList, forwardImpactStreamList);
+
             tempPublicationPrivacyBudgetList = new ArrayList<>();
             publicationListPair = setPublicationPrivacyBudgetListForPDBA(t, tempBackwardBudgetList, tempBackwardWindowSizeList, tempPublicationPrivacyBudgetList, forwardImpactStreamList, backwardHistoricalStreamList);
             minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(tempPublicationPrivacyBudgetList);
@@ -380,6 +409,7 @@ public class DynamicMechanismTest {
 
 
             updateBackwardHistoricalStreamList(tempCalculationPrivacyBudgetList, tempPublicationPrivacyBudgetList, backwardHistoricalStreamList);
+            updateImpactStreamUsageList(forwardImpactStreamList, tempPublicationPrivacyBudgetList);
 
             MyPrint.showSplitLine("*", 50);
 

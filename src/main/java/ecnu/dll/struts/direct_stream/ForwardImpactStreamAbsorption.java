@@ -1,6 +1,7 @@
 package ecnu.dll.struts.direct_stream;
 
 public class ForwardImpactStreamAbsorption extends ForwardImpactStream{
+
     @Override
     public void addElement(Double totalPrivacyBudget, Integer windowSize) {
         ++this.currentTime;
@@ -8,7 +9,7 @@ public class ForwardImpactStreamAbsorption extends ForwardImpactStream{
         updateStream();
     }
 
-    public void updateStreamUsage(Double currentPublicationBudgetUsage) {
+    public void updateStreamUsageAndRightBorder(Double currentPublicationBudgetUsage) {
         for (ImpactElement impactElement : impactStream.values()) {
             ((ImpactElementAbsorption) impactElement).updatePublicationBudgetUsage(currentPublicationBudgetUsage);
         }

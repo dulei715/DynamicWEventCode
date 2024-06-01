@@ -1,6 +1,5 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size;
 
-import cn.edu.dll.collection.ListUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.AverageNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.MaximalNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.MinimalNullifiedBound;
@@ -42,7 +41,7 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
 
     protected void updateImpactStreamUsageList() {
         for (int i = 0; i < this.userSize; i++) {
-            ((ForwardImpactStreamAbsorption)this.forwardImpactStreamList.get(i)).updateStreamUsage(this.publicationPrivacyBudgetList.get(i));
+            ((ForwardImpactStreamAbsorption)this.forwardImpactStreamList.get(i)).updateStreamUsageAndRightBorder(this.publicationPrivacyBudgetList.get(i));
         }
     }
 
@@ -53,7 +52,7 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempImpactStream;
         BackwardHistoricalStream tempBackwardStream;
-        ImpactElement tempImpactElement;
+        ImpactElementAbsorption tempImpactElement;
         Iterator<ImpactElement> tempIterator;
         this.publicationPrivacyBudgetList = new ArrayList<>();
         for (int i = 0; i < this.userSize; i++) {
@@ -61,8 +60,8 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
             tempIterator = tempImpactStream.forwardImpactElementIterator();
             tempMinimalForwardBudget = Double.MAX_VALUE;
             while (tempIterator.hasNext()) {
-                tempImpactElement = tempIterator.next();
-                tempValue = (this.currentTime - tempImpactElement.getTimeSlot()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
+                tempImpactElement = (ImpactElementAbsorption) tempIterator.next();
+                tempValue = (this.currentTime - tempImpactElement.getRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
                 tempMinimalForwardBudget = Math.min(tempMinimalForwardBudget, tempValue);
             }
             tempBackwardBudget = backwardBudgetList.get(i);
@@ -83,10 +82,11 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         for (int i = 0; i < this.userSize; i++) {
             forwardImpactStream = this.forwardImpactStreamList.get(i);
             impactElementIterator = forwardImpactStream.forwardImpactElementIterator();
-            tempMaxNullified = 0D;
+//            tempMaxNullified = 0D;
+            tempMaxNullified = -1D;
             while (impactElementIterator.hasNext()) {
                 element = (ImpactElementAbsorption) impactElementIterator.next();
-                tempNullified = element.getPublicationBudgetUsage() / (element.getTotalPrivacyBudget() / (2 * element.getWindowSize())) - 1 + element.getTimeSlot();
+                tempNullified = element.getRightBorder();
                 tempMaxNullified = Math.max(tempMaxNullified, tempNullified);
             }
             this.nullifiedTimeStampList.add(tempMaxNullified);
