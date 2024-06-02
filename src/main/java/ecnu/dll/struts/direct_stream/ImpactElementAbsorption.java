@@ -1,12 +1,16 @@
 package ecnu.dll.struts.direct_stream;
 
 public class ImpactElementAbsorption extends ImpactElement{
+
+    // 用于记录M_2中的budget使用情况
     protected Double publicationBudgetUsage;
-    protected Double rightBorder;
+    protected Double publicationBudgetRemain;
+    protected Double publicationRightBorder;
     public ImpactElementAbsorption(Integer timeSlot, Double totalPrivacyBudget, Integer windowSize) {
         super(timeSlot, totalPrivacyBudget, windowSize);
         this.publicationBudgetUsage = 0D;
-        this.rightBorder = timeSlot - 1D;
+        this.publicationRightBorder = timeSlot - 1D;
+        this.publicationBudgetRemain = totalPrivacyBudget / 2;
     }
 
     public Double getPublicationBudgetUsage() {
@@ -14,9 +18,14 @@ public class ImpactElementAbsorption extends ImpactElement{
     }
     public void updatePublicationBudgetUsage(Double budget) {
         this.publicationBudgetUsage += budget;
-        this.rightBorder = Math.ceil(this.publicationBudgetUsage / (this.totalPrivacyBudget / (2*this.windowSize))) + this.timeSlot - 1;
+        this.publicationBudgetRemain -= budget;
+        this.publicationRightBorder = Math.ceil(this.publicationBudgetUsage / (this.totalPrivacyBudget / (2*this.windowSize))) + this.timeSlot - 1;
     }
-    public Double getRightBorder() {
-        return this.rightBorder;
+    public Double getPublicationRightBorder() {
+        return this.publicationRightBorder;
+    }
+
+    public Double getPublicationBudgetRemain() {
+        return publicationBudgetRemain;
     }
 }

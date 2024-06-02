@@ -47,8 +47,7 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
 
     @Override
     protected void setPublicationPrivacyBudgetList(List<Double> backwardBudgetList, List<Integer> backwardWindowSizeList) {
-//        List<Double> minimalAbsorbBudgetList = new ArrayList<>(this.userSize);
-        Double tempMinimalForwardBudget, tempValue, tempBackwardBudgetRemain, tempBackwardBudget;
+        Double tempMaximalForwardBudget, tempValue, tempMinimalBorder, tempPublicationBudgetRemain, tempForwardBudgetRemain, tempBackwardBudgetRemain, tempBackwardBudget;
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempImpactStream;
         BackwardHistoricalStream tempBackwardStream;
@@ -58,17 +57,21 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         for (int i = 0; i < this.userSize; i++) {
             tempImpactStream = this.forwardImpactStreamList.get(i);
             tempIterator = tempImpactStream.forwardImpactElementIterator();
-            tempMinimalForwardBudget = Double.MAX_VALUE;
+            tempMaximalForwardBudget = 0D;
+            tempMinimalBorder = Double.MAX_VALUE;
             while (tempIterator.hasNext()) {
                 tempImpactElement = (ImpactElementAbsorption) tempIterator.next();
-                tempValue = (this.currentTime - tempImpactElement.getRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
-                tempMinimalForwardBudget = Math.min(tempMinimalForwardBudget, tempValue);
+                tempPublicationBudgetRemain = tempImpactElement.getPublicationBudgetRemain();
+                tempMinimalBorder = Math.min(tempMinimalBorder, tempPublicationBudgetRemain);
+                tempValue = (this.currentTime - tempImpactElement.getPublicationRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / 2 / tempImpactElement.getWindowSize();
+                tempMaximalForwardBudget = Math.max(tempMaximalForwardBudget, tempValue);
             }
+            tempForwardBudgetRemain = Math.min(tempMaximalForwardBudget, tempMinimalBorder);
             tempBackwardBudget = backwardBudgetList.get(i);
             tempBackwardStream = this.backwardHistoricalStreamList.get(i);
             tempBackwardWindowSize = backwardWindowSizeList.get(i);
             tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
-            this.publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudget, tempBackwardBudgetRemain));
+            this.publicationPrivacyBudgetList.add(Math.min(tempForwardBudgetRemain, tempBackwardBudgetRemain));
         }
     }
 
@@ -86,7 +89,7 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
             tempMaxNullified = -1D;
             while (impactElementIterator.hasNext()) {
                 element = (ImpactElementAbsorption) impactElementIterator.next();
-                tempNullified = element.getRightBorder();
+                tempNullified = element.getPublicationRightBorder();
                 tempMaxNullified = Math.max(tempMaxNullified, tempNullified);
             }
             this.nullifiedTimeStampList.add(tempMaxNullified);

@@ -204,9 +204,9 @@ public class DynamicMechanismTest {
         int basicUserSize = 3;
         int timeStampSize = 5;
         BackwardForwardData[][] data = new BackwardForwardData[][] {
-                new BackwardForwardData[] {new BackwardForwardData(1.0, 1, 2.4, 4), new BackwardForwardData(2.4, 2, 3.2, 4), new BackwardForwardData(2.8, 2, 4.2, 3), new BackwardForwardData(1.2, 2, 2.4, 3), new BackwardForwardData(3.0, 5, 0.8, 2)},
-                new BackwardForwardData[] {new BackwardForwardData(0.6, 1, 1.6, 2), new BackwardForwardData(1.6, 2, 2.4, 2), new BackwardForwardData(3.2, 2, 2.8, 2), new BackwardForwardData(2.1, 3, 2.8, 2), new BackwardForwardData(3.6, 3, 2.0, 2)},
-                new BackwardForwardData[] {new BackwardForwardData(2.0, 1, 1.2, 3), new BackwardForwardData(1.2, 2, 3.0, 3), new BackwardForwardData(1.8, 3, 1.2, 2), new BackwardForwardData(1.6, 2, 0.6, 3), new BackwardForwardData(2.4, 4, 1.8, 3)},
+                new BackwardForwardData[] {new BackwardForwardData(1.0, 1, 2.4, 4), new BackwardForwardData(2.4, 2, 3.2, 4), new BackwardForwardData(2.8, 2, 4.2, 3), new BackwardForwardData(2.4, 2, 2.4, 3), new BackwardForwardData(3.0, 5, 0.8, 2)},
+                new BackwardForwardData[] {new BackwardForwardData(0.6, 1, 1.6, 2), new BackwardForwardData(1.6, 2, 2.4, 2), new BackwardForwardData(3.2, 2, 2.8, 2), new BackwardForwardData(4.2, 3, 2.8, 2), new BackwardForwardData(3.6, 3, 2.0, 2)},
+                new BackwardForwardData[] {new BackwardForwardData(2.0, 1, 1.2, 3), new BackwardForwardData(1.2, 2, 3.0, 3), new BackwardForwardData(1.8, 3, 1.2, 2), new BackwardForwardData(3.2, 2, 0.6, 3), new BackwardForwardData(2.4, 4, 1.8, 3)},
         };
         int[] groupSizeArray = new int[]{33, 33, 33};
         BasicPair<Double, Double>[][] averageBudgetPairMatrix = getAverageBudgets(data);
@@ -285,31 +285,33 @@ public class DynamicMechanismTest {
     }
 
     protected List<BasicPair<Double, Double>> setPublicationPrivacyBudgetListForPDBA(int currentTime, List<Double> backwardBudgetList, List<Integer> backwardWindowSizeList, List<Double> publicationPrivacyBudgetList, List<ForwardImpactStream> forwardImpactStreamList, List<BackwardHistoricalStream> backwardHistoricalStreamList) {
-//        List<Double> minimalAbsorbBudgetList = new ArrayList<>(this.userSize);
-        Double tempMinimalForwardBudget, tempValue, tempBackwardBudgetRemain, tempBackwardBudget;
+        Double tempMaximalForwardBudget, tempValue, tempMinimalBorder, tempHalfTotalBudget, tempForwardBudgetRemain, tempBackwardBudgetRemain, tempBackwardBudget;
         Integer tempBackwardWindowSize;
         ForwardImpactStream tempImpactStream;
         BackwardHistoricalStream tempBackwardStream;
         ImpactElementAbsorption tempImpactElement;
         Iterator<ImpactElement> tempIterator;
-//        this.publicationPrivacyBudgetList = new ArrayList<>();
         List<BasicPair<Double, Double>> result = new ArrayList<>();
-        int userSize = backwardBudgetList.size();
+        Integer userSize = backwardBudgetList.size();
         for (int i = 0; i < userSize; i++) {
             tempImpactStream = forwardImpactStreamList.get(i);
             tempIterator = tempImpactStream.forwardImpactElementIterator();
-            tempMinimalForwardBudget = Double.MAX_VALUE;
+            tempMaximalForwardBudget = 0D;
+            tempMinimalBorder = Double.MAX_VALUE;
             while (tempIterator.hasNext()) {
-                tempImpactElement = (ImpactElementAbsorption)tempIterator.next();
-                tempValue = (currentTime - tempImpactElement.getRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / (2 * tempImpactElement.getWindowSize());
-                tempMinimalForwardBudget = Math.min(tempMinimalForwardBudget, tempValue);
+                tempImpactElement = (ImpactElementAbsorption) tempIterator.next();
+                tempHalfTotalBudget = tempImpactElement.getTotalPrivacyBudget() / 2;
+                tempMinimalBorder = Math.min(tempMinimalBorder, tempHalfTotalBudget);
+                tempValue = (currentTime - tempImpactElement.getPublicationRightBorder()) * tempHalfTotalBudget / tempImpactElement.getWindowSize();
+                tempMaximalForwardBudget = Math.max(tempMaximalForwardBudget, tempValue);
             }
+            tempForwardBudgetRemain = Math.min(tempMaximalForwardBudget, tempMinimalBorder);
             tempBackwardBudget = backwardBudgetList.get(i);
             tempBackwardStream = backwardHistoricalStreamList.get(i);
             tempBackwardWindowSize = backwardWindowSizeList.get(i);
             tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
-            result.add(new BasicPair<>(tempBackwardBudgetRemain, tempMinimalForwardBudget));
-            publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudget, tempBackwardBudgetRemain));
+            result.add(new BasicPair<>(tempBackwardBudgetRemain, tempForwardBudgetRemain));
+            publicationPrivacyBudgetList.add(Math.min(tempForwardBudgetRemain, tempBackwardBudgetRemain));
         }
         return result;
     }
@@ -346,9 +348,9 @@ public class DynamicMechanismTest {
         int basicUserSize = 3;
         int timeStampSize = 5;
         BackwardForwardData[][] data = new BackwardForwardData[][] {
-                new BackwardForwardData[] {new BackwardForwardData(1.0, 1, 2.4, 4), new BackwardForwardData(2.4, 2, 3.2, 4), new BackwardForwardData(2.8, 2, 4.2, 3), new BackwardForwardData(1.2, 2, 2.4, 3), new BackwardForwardData(3.0, 5, 0.8, 2)},
-                new BackwardForwardData[] {new BackwardForwardData(0.6, 1, 1.6, 2), new BackwardForwardData(1.6, 2, 2.4, 2), new BackwardForwardData(3.2, 2, 2.8, 2), new BackwardForwardData(2.1, 3, 2.8, 2), new BackwardForwardData(3.6, 3, 2.0, 2)},
-                new BackwardForwardData[] {new BackwardForwardData(2.0, 1, 1.2, 3), new BackwardForwardData(1.2, 2, 3.0, 3), new BackwardForwardData(1.8, 3, 1.2, 2), new BackwardForwardData(1.6, 2, 0.6, 3), new BackwardForwardData(2.4, 4, 1.8, 3)},
+                new BackwardForwardData[] {new BackwardForwardData(1.0, 1, 2.4, 4), new BackwardForwardData(2.4, 2, 3.2, 4), new BackwardForwardData(2.8, 2, 4.2, 3), new BackwardForwardData(2.4, 2, 2.4, 3), new BackwardForwardData(3.0, 5, 0.8, 2)},
+                new BackwardForwardData[] {new BackwardForwardData(0.6, 1, 1.6, 2), new BackwardForwardData(1.6, 2, 2.4, 2), new BackwardForwardData(3.2, 2, 2.8, 2), new BackwardForwardData(4.2, 3, 2.8, 2), new BackwardForwardData(3.6, 3, 2.0, 2)},
+                new BackwardForwardData[] {new BackwardForwardData(2.0, 1, 1.2, 3), new BackwardForwardData(1.2, 2, 3.0, 3), new BackwardForwardData(1.8, 3, 1.2, 2), new BackwardForwardData(3.2, 2, 0.6, 3), new BackwardForwardData(2.4, 4, 1.8, 3)},
         };
         int[] groupSizeArray = new int[]{33, 33, 33};
         BasicPair<Double, Double>[][] averageBudgetPairMatrix = getAverageBudgets(data);
@@ -401,6 +403,7 @@ public class DynamicMechanismTest {
             publicationListPair = setPublicationPrivacyBudgetListForPDBA(t, tempBackwardBudgetList, tempBackwardWindowSizeList, tempPublicationPrivacyBudgetList, forwardImpactStreamList, backwardHistoricalStreamList);
             minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(tempPublicationPrivacyBudgetList);
             MyPrint.showList(publicationListPair, "; ");
+            MyPrint.showList(nullifiedTimeStampList, " # ");
             if (!isPublic[t]) {
                 publicationListPair = setPublicationPrivacyBudgetListForPDBA(tempBackwardBudgetList.size(), tempPublicationPrivacyBudgetList);
             }
