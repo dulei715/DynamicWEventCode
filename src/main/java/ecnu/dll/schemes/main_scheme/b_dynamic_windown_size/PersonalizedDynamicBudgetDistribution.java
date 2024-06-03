@@ -28,10 +28,10 @@ public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMech
             tempBackwardBudget = backwardBudgetList.get(userID);
             tempBackwardWindowSize = backwardWindowSizeList.get(userID);
 
-            tempMinimalCandidateForwardBudget = ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
+            tempMinimalCandidateForwardBudget = 0.5*ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
             tempMinimalCandidateBackwardBudget = (tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1));
 
-            this.publicationPrivacyBudgetList.add(0.5*Math.min(tempMinimalCandidateForwardBudget, tempMinimalCandidateBackwardBudget));
+            this.publicationPrivacyBudgetList.add(Math.min(tempMinimalCandidateForwardBudget, tempMinimalCandidateBackwardBudget));
         }
     }
 }

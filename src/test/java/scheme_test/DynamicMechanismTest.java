@@ -188,12 +188,12 @@ public class DynamicMechanismTest {
             tempBackwardBudget = backwardBudgetList.get(userID);
             tempBackwardWindowSize = backwardWindowSizeList.get(userID);
 
-            tempMinimalForwardBudgetRemain = ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
+            tempMinimalForwardBudgetRemain = 0.5*ForwardImpactStreamTools.getMinimalForwardRemainPublicationBudget(tempForwardStream, tempBackwardStream);
             tempMinimalBackwardBudgetRemain = (tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1));
 
             result.add(new BasicPair(tempMinimalBackwardBudgetRemain, tempMinimalForwardBudgetRemain));
 
-            publicationPrivacyBudgetList.add(0.5*Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain));
+            publicationPrivacyBudgetList.add(Math.min(tempMinimalForwardBudgetRemain, tempMinimalBackwardBudgetRemain));
         }
         return result;
     }
