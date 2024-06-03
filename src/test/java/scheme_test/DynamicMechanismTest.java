@@ -403,6 +403,7 @@ public class DynamicMechanismTest {
             publicationListPair = setPublicationPrivacyBudgetListForPDBA(t, tempBackwardBudgetList, tempBackwardWindowSizeList, tempPublicationPrivacyBudgetList, forwardImpactStreamList, backwardHistoricalStreamList);
             minimalEpsilonAndError = SchemeUtils.selectOptimalBudget(tempPublicationPrivacyBudgetList);
             MyPrint.showList(publicationListPair, "; ");
+            // 此处timestamp从0开始，而论文中例子从1开始，因此这个现实结果对应论文中要+1
             MyPrint.showList(nullifiedTimeStampList, " # ");
             if (!isPublic[t]) {
                 publicationListPair = setPublicationPrivacyBudgetListForPDBA(tempBackwardBudgetList.size(), tempPublicationPrivacyBudgetList);
