@@ -1,9 +1,13 @@
 package ecnu.dll.run;
 
+import cn.edu.dll.result.ExperimentResult;
+
 public class Main {
     /**
      * 自变量指标
-     *      1.
+     *      1. window 种类数
+     *      2. privacy budget 种类数
+     *
      * 因变量指标：
      *      1. Runing time
      *      2. MRE, MAE
@@ -21,4 +25,10 @@ public class Main {
      *          (3) PDBD
      *          (4) PDBA
      */
+    public static void main(String[] args) {
+        ExperimentResult experimentResult = new ExperimentResult();
+        experimentResult.addPair("aaa", "1");
+        experimentResult.addPair("bbb", "2");
+        System.out.println(experimentResult);
+    }
 }

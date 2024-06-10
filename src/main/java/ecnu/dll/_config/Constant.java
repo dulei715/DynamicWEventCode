@@ -22,7 +22,31 @@ public class Constant {
 
 
     // constant for Personalized Dynamic Budget Distribution (Absorption)
-    public static Integer MAX_BACKWARD_WINDOW_SIZE = 100;
+    public static Integer MAX_BACKWARD_WINDOW_SIZE = 201;
+
+    public static Double PRIVACY_LOWER_BOUND = 0.1;
+    public static Double PRIVACY_UPPER_BOUND = 10D;
+    public static Integer WINDOW_LOWER_BOUND = 20;
+    public static Integer WINDOW_UPPER_BOUND = 100;
+
+
+
+    public static Double MIN_UNION_PRIVACY_BUDGET = 0.1D;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
