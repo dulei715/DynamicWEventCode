@@ -19,15 +19,31 @@ public class Constant {
     public static Double R_VARIANCE = Math.pow(10, 6);
 
 
+    // constant for experiment result title
+    public static final String MechanismName = "Name";
+    public static final String TimeCost = "Time Cost";
+    public static final String MRE = "MRE";
+
+    public static final String  budgetDistributionName = "BD";
+    public static final String  budgetAbsorptionName = "BA";
+    public static final String  personalizedBudgetDistributionName = "PBD";
+    public static final String  personalizedBudgetAbsorptionName = "PBA";
+    public static final String  dynamicPersonalizedBudgetDistributionName = "DPBD";
+    public static final String  dynamicPersonalizedBudgetAbsorptionName = "DPBA";
+
+
+
+
+
 
 
     // constant for Personalized Dynamic Budget Distribution (Absorption)
-    public static Integer MAX_BACKWARD_WINDOW_SIZE = 201;
+    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 201;
 
-    public static Double PRIVACY_LOWER_BOUND = 0.1;
-    public static Double PRIVACY_UPPER_BOUND = 10D;
-    public static Integer WINDOW_LOWER_BOUND = 20;
-    public static Integer WINDOW_UPPER_BOUND = 100;
+    public static final Double PRIVACY_LOWER_BOUND = 0.1;
+    public static final Double PRIVACY_UPPER_BOUND = 10D;
+    public static final Integer WINDOW_LOWER_BOUND = 20;
+    public static final Integer WINDOW_UPPER_BOUND = 100;
 
 
 
