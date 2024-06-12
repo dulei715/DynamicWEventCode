@@ -7,9 +7,9 @@ import ecnu.dll.struts.direct_stream.ForwardImpactStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMechanism{
+public class PersonalizedPersonalizedDynamicBudgetDistribution extends PersonalizedDynamicWindowSizeMechanism {
 
-    public PersonalizedDynamicBudgetDistribution(List<String> dataTypeList, int userSize) {
+    public PersonalizedPersonalizedDynamicBudgetDistribution(List<String> dataTypeList, int userSize) {
         super(dataTypeList, userSize);
     }
 
@@ -33,5 +33,10 @@ public class PersonalizedDynamicBudgetDistribution extends DynamicWindowSizeMech
 
             this.publicationPrivacyBudgetList.add(Math.min(tempMinimalCandidateForwardBudget, tempMinimalCandidateBackwardBudget));
         }
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "PDBD";
     }
 }

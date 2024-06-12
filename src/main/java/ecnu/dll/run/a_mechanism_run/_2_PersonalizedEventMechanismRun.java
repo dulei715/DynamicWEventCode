@@ -1,20 +1,26 @@
 package ecnu.dll.run.a_mechanism_run;
 
-import cn.edu.dll.basic.BasicArrayUtil;
+import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.statistic.StatisticTool;
 import ecnu.dll._config.Constant;
-import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
+import ecnu.dll.schemes.compared_scheme.w_event.WEventMechanism;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedEventMechanism;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BDRun {
-    public static ExperimentResult run(List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, List<StreamCountData> rawPublicationList, Double privacyBudget, Integer windowSize) {
-        BudgetDistribution scheme = new BudgetDistribution(dataType, privacyBudget, windowSize);
+public class _2_PersonalizedEventMechanismRun {
+    public static ExperimentResult run(Class clazz, List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, List<StreamCountData> rawPublicationList, List<Double> privacyBudgetList, List<Integer> windowSizeList) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Constructor constructor = clazz.getDeclaredConstructor(List.class, List.class, List.class);
+//        WEventMechanism scheme = new BudgetDistribution(dataType, privacyBudget, windowSize);
+        PersonalizedEventMechanism scheme = (PersonalizedEventMechanism) constructor.newInstance(dataType, privacyBudgetList, windowSizeList);
+
         ExperimentResult experimentResult = new ExperimentResult();
         int timeUpperBound = dataList.size();
         StreamCountData rawPublicationData;
@@ -29,8 +35,10 @@ public class BDRun {
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;
-        experimentResult.addPair(Constant.MechanismName, Constant.budgetDistributionName);
+        experimentResult.addPair(Constant.MechanismName, scheme.getSimpleName());
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
+        experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(ListUtils.getMinimalValue(privacyBudgetList)));
+        experimentResult.addPair(Constant.WindowSize, String.valueOf(ListUtils.getMaximalValue(windowSizeList, 1)));
         for (int i = 0; i < timeUpperBound; i++) {
             rawPublicationData = rawPublicationList.get(i);
             publicationData = publicationList.get(i);

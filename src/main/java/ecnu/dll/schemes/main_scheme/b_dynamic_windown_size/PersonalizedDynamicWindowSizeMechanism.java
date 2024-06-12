@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public abstract class DynamicWindowSizeMechanism {
+public abstract class PersonalizedDynamicWindowSizeMechanism {
     protected int userSize;
     protected int currentTime;
 //    protected List<Double> privacyBudgetList;
@@ -28,7 +28,7 @@ public abstract class DynamicWindowSizeMechanism {
     protected List<ForwardImpactStream> forwardImpactStreamList;
     protected List<BackwardHistoricalStream> backwardHistoricalStreamList;
 
-    public DynamicWindowSizeMechanism(List<String> dataTypeList, int userSize) {
+    public PersonalizedDynamicWindowSizeMechanism(List<String> dataTypeList, int userSize) {
         this.userSize = userSize;
         this.forwardImpactStreamList = new ArrayList<>(userSize);
         this.backwardHistoricalStreamList = new ArrayList<>();
@@ -170,6 +170,6 @@ public abstract class DynamicWindowSizeMechanism {
         return historicalBudgetSumList;
     }
 
-
+    public abstract String getSimpleName();
 
 }

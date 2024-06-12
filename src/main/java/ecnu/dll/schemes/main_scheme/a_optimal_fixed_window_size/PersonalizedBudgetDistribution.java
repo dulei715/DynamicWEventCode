@@ -10,7 +10,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PersonalizedBudgetDistribution extends OptimalFixedWindowSizeMechanism{
+public class PersonalizedBudgetDistribution extends PersonalizedEventMechanism {
 
     private List<Deque<Double>> publicationHistoricalBudgetList;
 
@@ -98,5 +98,10 @@ public class PersonalizedBudgetDistribution extends OptimalFixedWindowSizeMechan
 //        System.out.println(getWindowStatusString());
 //        System.out.println("window status end...");
         return updateStatus;
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "PBD";
     }
 }

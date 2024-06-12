@@ -22,8 +22,11 @@ public class Constant {
     // constant for experiment result title
     public static final String MechanismName = "Name";
     public static final String TimeCost = "Time Cost";
+    public static final String PrivacyBudget = "Privacy Budget";
+    public static final String WindowSize = "Window Size";
     public static final String MRE = "MRE";
 
+    public static final String  nonPrivacyName = "Non-Privacy";
     public static final String  budgetDistributionName = "BD";
     public static final String  budgetAbsorptionName = "BA";
     public static final String  personalizedBudgetDistributionName = "PBD";

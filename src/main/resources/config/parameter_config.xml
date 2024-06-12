@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root id="rootName">
+    <candidateSet>
+        <attribute name="PrivacyBudgetUpperBound">
+            <value name="default">10</value>
+        </attribute>
+        <attribute name="WindowSizeLowerBound">
+            <value name="default">1</value>
+        </attribute>
+    </candidateSet>
+    <independentVariables>
+        <attribute name="PrivacyBudget">
+            <dataType>java.lang.Double</dataType>
+            <single name="default">1.5</single>
+            <single name="1">2.5</single>
+            <variance name="default">0.5,1,1.5,2,2.5</variance>
+            <variance name="1">0.1,0.325,0.55,0.775,1.0</variance>
+        </attribute>
+        <attribute name="WindowSize">
+            <dataType>java.lang.Integer</dataType>
+            <single name="default">30</single>
+            <single name="1">120</single>
+            <variance name="default">10,20,30,40,50</variance>
+            <variance name="1">40,80,120,160,200</variance>
+        </attribute>
+        <attribute name="UserType">
+            <!--for dynamic mechanisms-->
+            <dataType>java.lang.Integer</dataType>
+            <single name="default">10</single>
+            <variance name="default">1,5,10,15,20</variance>
+        </attribute>
+        <attribute name=""></attribute>
+    </independentVariables>
+
+    <dependentVariables>
+        <attribute name="Name">
+            <dataType>java.lang.String</dataType>
+            <defaultValue>Non-Name</defaultValue>
+        </attribute>
+        <attribute name="TimeCost">
+            <dataType>java.lang.Long</dataType>
+            <defaultValue>0</defaultValue>
+        </attribute>
+        <attribute name="MRE">
+            <dataType>java.lang.Double</dataType>
+            <defaultValue>0</defaultValue>
+        </attribute>
+    </dependentVariables>
+</root>

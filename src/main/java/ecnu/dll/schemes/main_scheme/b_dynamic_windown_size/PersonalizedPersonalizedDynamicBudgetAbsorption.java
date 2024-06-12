@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechanism{
+public class PersonalizedPersonalizedDynamicBudgetAbsorption extends PersonalizedDynamicWindowSizeMechanism {
 
     private List<Double> nullifiedTimeStampList;
     private NullifiedBound nullifiedBound;
 
-    public PersonalizedDynamicBudgetAbsorption(List<String> dataTypeList, int userSize, int nullifiedBoundType) {
+    public PersonalizedPersonalizedDynamicBudgetAbsorption(List<String> dataTypeList, int userSize, int nullifiedBoundType) {
         super(dataTypeList, userSize);
         switch (nullifiedBoundType) {
             case NullifiedBound.MinimalType:
@@ -117,5 +117,10 @@ public class PersonalizedDynamicBudgetAbsorption extends DynamicWindowSizeMechan
         this.updateBackwardHistoricalStreamList();
         this.updateImpactStreamUsageList();
         return updateStatus;
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "PDBA";
     }
 }

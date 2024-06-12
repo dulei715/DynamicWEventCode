@@ -1,6 +1,5 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 
-import cn.edu.dll.collection.ListUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.AverageNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.MaximalNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.MinimalNullifiedBound;
@@ -11,7 +10,7 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanism{
+public class PersonalizedBudgetAbsorption extends PersonalizedEventMechanism {
 
     private StreamBudgetData lastTimePublicationBudgetData;
     private List<Double> nullifiedTimeStampList;
@@ -37,6 +36,10 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
                 this.nullifiedBound = new AverageNullifiedBound();
                 break;
         }
+    }
+
+    public PersonalizedBudgetAbsorption(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
+        this(dataTypeList, privacyBudgetList, windowSizeList, NullifiedBound.MaximalType);
     }
 
     @Override
@@ -81,5 +84,10 @@ public class PersonalizedBudgetAbsorption extends OptimalFixedWindowSizeMechanis
         }
         setPublicationPrivacyBudgetList();
         return mechanismPartB(nextDataElementList, dissimilarity);
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "PBA";
     }
 }

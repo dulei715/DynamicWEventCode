@@ -62,5 +62,6 @@ public abstract class WEventMechanism {
         return mechanismPartB(nextDataElementList, dissimilarity);
     }
 
+    public abstract String getSimpleName();
 
 }

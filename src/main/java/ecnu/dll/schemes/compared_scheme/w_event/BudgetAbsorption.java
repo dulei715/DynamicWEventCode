@@ -35,4 +35,9 @@ public class BudgetAbsorption extends WEventMechanism {
         setPublicationPrivacyBudget();
         return mechanismPartB(nextDataElementList, dissimilarity);
     }
+
+    @Override
+    public String getSimpleName() {
+        return "BA";
+    }
 }

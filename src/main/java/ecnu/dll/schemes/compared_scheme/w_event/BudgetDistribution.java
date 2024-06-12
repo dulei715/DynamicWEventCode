@@ -42,4 +42,9 @@ public class BudgetDistribution extends WEventMechanism {
         }
         return updateStatus;
     }
+
+    @Override
+    public String getSimpleName() {
+        return "BD";
+    }
 }

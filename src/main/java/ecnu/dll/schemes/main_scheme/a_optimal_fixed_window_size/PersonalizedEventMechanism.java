@@ -9,7 +9,7 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.util.List;
 import java.util.TreeMap;
 
-public abstract class OptimalFixedWindowSizeMechanism {
+public abstract class PersonalizedEventMechanism {
 
     protected int currentTime;
     protected List<Double> privacyBudgetList;
@@ -20,7 +20,7 @@ public abstract class OptimalFixedWindowSizeMechanism {
     protected List<Double> calculationPrivacyBudgetList;
     protected List<Double> publicationPrivacyBudgetList;
 
-    public OptimalFixedWindowSizeMechanism(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
+    public PersonalizedEventMechanism(List<String> dataTypeList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
         this.currentTime = -1;
         this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
         this.privacyBudgetList = privacyBudgetList;
@@ -82,5 +82,7 @@ public abstract class OptimalFixedWindowSizeMechanism {
 
         return false;
     }
+
+    public abstract String getSimpleName();
 
 }
