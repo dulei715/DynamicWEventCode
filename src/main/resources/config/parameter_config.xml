@@ -7,6 +7,12 @@
         <attribute name="WindowSizeLowerBound">
             <value name="default">1</value>
         </attribute>
+        <attribute name="BackwardPrivacyBudgetUpperBoundDifference">
+            <value name="default">10</value>
+        </attribute>
+        <attribute name="BackwardPrivacyBudgetLowerBoundDifference">
+            <value name="default">0.1</value>
+        </attribute>
     </candidateSet>
     <independentVariables>
         <attribute name="PrivacyBudget">

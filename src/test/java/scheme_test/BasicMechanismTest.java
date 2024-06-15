@@ -1,5 +1,6 @@
 package scheme_test;
 
+import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.result.ExperimentResult;

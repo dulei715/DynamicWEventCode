@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class _2_PersonalizedEventMechanismRun {
+    /**
+     * dataList 的外层List代表timestamp，内层list代表user
+     */
     public static ExperimentResult run(Class clazz, List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, List<StreamCountData> rawPublicationList, List<Double> privacyBudgetList, List<Integer> windowSizeList) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor constructor = clazz.getDeclaredConstructor(List.class, List.class, List.class);
 //        WEventMechanism scheme = new BudgetDistribution(dataType, privacyBudget, windowSize);

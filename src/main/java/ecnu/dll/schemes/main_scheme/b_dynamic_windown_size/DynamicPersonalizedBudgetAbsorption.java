@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PersonalizedPersonalizedDynamicBudgetAbsorption extends PersonalizedDynamicWindowSizeMechanism {
+public class DynamicPersonalizedBudgetAbsorption extends DynamicPersonalizedWindowSizeMechanism {
 
     private List<Double> nullifiedTimeStampList;
     private NullifiedBound nullifiedBound;
 
-    public PersonalizedPersonalizedDynamicBudgetAbsorption(List<String> dataTypeList, int userSize, int nullifiedBoundType) {
+    public DynamicPersonalizedBudgetAbsorption(List<String> dataTypeList, Integer userSize, Integer nullifiedBoundType) {
         super(dataTypeList, userSize);
         switch (nullifiedBoundType) {
             case NullifiedBound.MinimalType:
@@ -29,6 +29,9 @@ public class PersonalizedPersonalizedDynamicBudgetAbsorption extends Personalize
                 this.nullifiedBound = new AverageNullifiedBound();
                 break;
         }
+    }
+    public DynamicPersonalizedBudgetAbsorption(List<String> dataTypeList, Integer userSize) {
+        this(dataTypeList, userSize, NullifiedBound.MaximalType);
     }
 
     @Override
@@ -71,6 +74,34 @@ public class PersonalizedPersonalizedDynamicBudgetAbsorption extends Personalize
             tempBackwardStream = this.backwardHistoricalStreamList.get(i);
             tempBackwardWindowSize = backwardWindowSizeList.get(i);
             tempBackwardBudgetRemain = tempBackwardBudget / 2 - tempBackwardStream.getHistoricalPublicationBudgetSum(tempBackwardWindowSize-1);
+            this.publicationPrivacyBudgetList.add(Math.min(tempForwardBudgetRemain, tempBackwardBudgetRemain));
+        }
+    }
+
+    @Override
+    protected void setPublicationPrivacyBudgetListWithRemainBackwardBudget(List<Double> remainBackwardBudgetList) {
+        Double tempMaximalForwardBudget, tempValue, tempMinimalBorder, tempPublicationBudgetRemain, tempForwardBudgetRemain, tempBackwardBudgetRemain, tempRemainBackwardBudget;
+        Integer tempBackwardWindowSize;
+        ForwardImpactStream tempImpactStream;
+        BackwardHistoricalStream tempBackwardStream;
+        ImpactElementAbsorption tempImpactElement;
+        Iterator<ImpactElement> tempIterator;
+        this.publicationPrivacyBudgetList = new ArrayList<>();
+        for (int i = 0; i < this.userSize; i++) {
+            tempImpactStream = this.forwardImpactStreamList.get(i);
+            tempIterator = tempImpactStream.forwardImpactElementIterator();
+            tempMaximalForwardBudget = 0D;
+            tempMinimalBorder = Double.MAX_VALUE;
+            while (tempIterator.hasNext()) {
+                tempImpactElement = (ImpactElementAbsorption) tempIterator.next();
+                tempPublicationBudgetRemain = tempImpactElement.getPublicationBudgetRemain();
+                tempMinimalBorder = Math.min(tempMinimalBorder, tempPublicationBudgetRemain);
+                tempValue = (this.currentTime - tempImpactElement.getPublicationRightBorder()) * tempImpactElement.getTotalPrivacyBudget() / 2 / tempImpactElement.getWindowSize();
+                tempMaximalForwardBudget = Math.max(tempMaximalForwardBudget, tempValue);
+            }
+            tempForwardBudgetRemain = Math.min(tempMaximalForwardBudget, tempMinimalBorder);
+            tempRemainBackwardBudget = remainBackwardBudgetList.get(i);
+            tempBackwardBudgetRemain = tempRemainBackwardBudget / 2;
             this.publicationPrivacyBudgetList.add(Math.min(tempForwardBudgetRemain, tempBackwardBudgetRemain));
         }
     }

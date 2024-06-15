@@ -5,8 +5,8 @@ import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
-import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedPersonalizedDynamicBudgetAbsorption;
-import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.PersonalizedPersonalizedDynamicBudgetDistribution;
+import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetAbsorption;
+import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetDistribution;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.special_tools.ForwardImpactStreamTools;
 import ecnu.dll.struts.direct_stream.*;
 import ecnu.dll.struts.stream_data.StreamDataElement;
@@ -43,7 +43,7 @@ public class DynamicMechanismTest {
         TreeMap<String, Integer> tempRealMapResult;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
-        PersonalizedPersonalizedDynamicBudgetDistribution pdbd = new PersonalizedPersonalizedDynamicBudgetDistribution(dataElementList.get(0).getKeyList(), userSize);
+        DynamicPersonalizedBudgetDistribution pdbd = new DynamicPersonalizedBudgetDistribution(dataElementList.get(0).getKeyList(), userSize);
         List<Double> tempBackwardBudgetList, tempForwardBudgetList;
         List<Integer> tempBackwardWindowSizeList, tempForwardWindowSizeList;
         List<Double> historicalBudgetSumList = new ArrayList<>();
@@ -78,7 +78,7 @@ public class DynamicMechanismTest {
         TreeMap<String, Integer> tempRealMapResult;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
-        PersonalizedPersonalizedDynamicBudgetAbsorption pdba = new PersonalizedPersonalizedDynamicBudgetAbsorption(dataElementList.get(0).getKeyList(), userSize, nullifiedType);
+        DynamicPersonalizedBudgetAbsorption pdba = new DynamicPersonalizedBudgetAbsorption(dataElementList.get(0).getKeyList(), userSize, nullifiedType);
         List<Double> tempBackwardBudgetList, tempForwardBudgetList;
         List<Integer> tempBackwardWindowSizeList, tempForwardWindowSizeList;
         List<Double> historicalBudgetSumList = new ArrayList<>();

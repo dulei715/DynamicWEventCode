@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class _1_WEventMechanismRun {
+    /**
+     * dataList 的外层List代表timestamp，内层list代表user
+     */
     public static ExperimentResult run(Class clazz, List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, List<StreamCountData> rawPublicationList, Double privacyBudget, Integer windowSize) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor constructor = clazz.getDeclaredConstructor(List.class, Double.class, Integer.class);
 //        WEventMechanism scheme = new BudgetDistribution(dataType, privacyBudget, windowSize);
