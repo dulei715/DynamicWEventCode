@@ -5,6 +5,7 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.result.ExperimentResult;
 import ecnu.dll.run.b_parameter_run.ChangeBudgetRun;
+import ecnu.dll.run.b_parameter_run.ChangeWindowSizeRun;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
@@ -154,6 +155,35 @@ public class BasicMechanismTest {
         }
 
         List<ExperimentResult> result = ChangeBudgetRun.run(dataType, dataList, privacyBudgetList, windowSize);
+        MyPrint.showList(result, ConstantValues.LINE_SPLIT);
+
+    }
+
+    @Test
+    public void resultChangeWindowSizeTest() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        int userSize = 100;
+        int typeSize = 5;
+
+        double privacyBudget = 1.0;
+        List<Integer> windowSizeList = Arrays.asList(4, 5, 10, 12, 3, 20);
+
+        int timeUpperBound = 100;
+
+        List<StreamDataElement<Boolean>> dataElementList;
+
+        dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+        List<String> dataType = dataElementList.get(0).getKeyList();
+
+        NonPrivacyMechanism scheme = new NonPrivacyMechanism(dataType);
+        TreeMap<String, Integer> realMapResult;
+        List<List<StreamDataElement<Boolean>>> dataList = new ArrayList<>();
+        for (int i = 0; i < timeUpperBound; i++) {
+//            System.out.println(i);
+            dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+            dataList.add(dataElementList);
+        }
+
+        List<ExperimentResult> result = ChangeWindowSizeRun.run(dataType, dataList, privacyBudget, windowSizeList);
         MyPrint.showList(result, ConstantValues.LINE_SPLIT);
 
     }
