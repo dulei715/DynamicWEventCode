@@ -1,4 +1,4 @@
-package ecnu.dll.run.b_parameter_run;
+package ecnu.dll.run.b_parameter_run.basic;
 
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.struct.pair.PurePair;

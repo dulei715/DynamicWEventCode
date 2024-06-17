@@ -1,10 +1,15 @@
 package ecnu.dll._config;
 
+import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.basic.RandomUtil;
+import cn.edu.dll.collection.SetUtils;
+import cn.edu.dll.struct.pair.IdentityPurePair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ParameterUtils {
     public static List<Double> generateDoubleList(Double lowerBound, Double upperBound, int typeSize, int groupElementSize, int sizeUpperBound) {
@@ -24,6 +29,58 @@ public class ParameterUtils {
                 if (currentSize >= sizeUpperBound) {
                     return resultList;
                 }
+            }
+        }
+        return resultList;
+    }
+
+    public static List<Double> generateDoubleList(List<Double> doubleTypeList, Integer totalSize, Double... ratios) {
+        Integer typeSize = doubleTypeList.size();
+        Integer ratioSize = ratios.length;
+        Double tempDouble, tempRatio;
+        Integer tempSize;
+        List<Double> resultList = new ArrayList<>();
+        if (typeSize > 1) {
+            Double ratioSum = BasicArrayUtil.getSum(ratios);
+            if (ratioSize != typeSize - 1 || ratioSum > 1) {
+                throw new RuntimeException("The ratios are invalid!");
+            }
+            for (int i = 0; i < ratios.length; i++) {
+                tempDouble = doubleTypeList.get(i);
+                tempSize = (int) (Math.round(totalSize * ratios[i]));
+                for (int j = 0; j < tempSize; j++) {
+                    resultList.add(tempDouble);
+                }
+            }
+            tempRatio = 1.0 - ratioSum;
+        } else {
+            tempRatio = 1.0;
+        }
+        tempDouble = doubleTypeList.get(doubleTypeList.size()-1);
+        tempSize = (int) (Math.round(totalSize * tempRatio));
+        for (int j = 0; j < tempSize; j++) {
+            resultList.add(tempDouble);
+        }
+        return resultList;
+    }
+
+    public static List<Double> generateRandomDoubleList(IdentityPurePair<Double> doublePair, Integer totalSize, Double ratio) {
+        Double firstDouble, secondDouble;
+        Integer tempSize;
+        List<Double> resultList = new ArrayList<>();
+        if (ratio < 0 || ratio > 1) {
+            throw new RuntimeException("The ratios are invalid!");
+        }
+        firstDouble = doublePair.getKey();
+        secondDouble = doublePair.getValue();
+        tempSize = (int) (Math.round(totalSize * ratio));
+        List<Integer> firstDoubleIndexList = RandomUtil.getRandomIntegerArrayWithoutRepeat(0, totalSize - 1, tempSize);
+        Set<Integer> firstDoubleIndexSet = new HashSet<>(firstDoubleIndexList);
+        for (int i = 0; i < totalSize; i++) {
+            if (firstDoubleIndexSet.contains(i)) {
+                resultList.add(firstDouble);
+            } else {
+                resultList.add(secondDouble);
             }
         }
         return resultList;
@@ -80,6 +137,36 @@ public class ParameterUtils {
         return resultList;
     }
 
+    public static List<Integer> generateIntegerList(List<Integer> integerList, Integer totalSize, Double... ratios) {
+        Integer typeSize = integerList.size();
+        Integer ratioSize = ratios.length;
+        Integer tempInteger, tempSize;
+        Double tempRatio;
+        List<Integer> resultList = new ArrayList<>();
+        if (typeSize > 1) {
+            Double ratioSum = BasicArrayUtil.getSum(ratios);
+            if (ratioSize != typeSize - 1 || ratioSum > 1) {
+                throw new RuntimeException("The ratios are invalid!");
+            }
+            for (int i = 0; i < ratios.length; i++) {
+                tempInteger = integerList.get(i);
+                tempSize = (int) (Math.round(totalSize * ratios[i]));
+                for (int j = 0; j < tempSize; j++) {
+                    resultList.add(tempInteger);
+                }
+            }
+            tempRatio = 1.0 - ratioSum;
+        } else {
+            tempRatio = 1.0;
+        }
+        tempInteger = integerList.get(integerList.size()-1);
+        tempSize = (int) (Math.round(totalSize * tempRatio));
+        for (int j = 0; j < tempSize; j++) {
+            resultList.add(tempInteger);
+        }
+        return resultList;
+    }
+
 
 
 
@@ -87,7 +174,7 @@ public class ParameterUtils {
      * for forward and backward privacy
      */
 
-    //这里doubleListLowerBound是按照typeSize和sizeUpperBound分好的组（每组中，元素对应的doubleListLowerBound相等）
+    // 这里doubleListLowerBound是按照typeSize和sizeUpperBound分好的组（每组中，元素对应的doubleListLowerBound相等）
     /*
      * 返回的结果外层List代表timestamp，内层list代表user
      */
@@ -106,6 +193,22 @@ public class ParameterUtils {
         }
         return MatrixArray.getTransposition(result);
     }
+
+    /*
+     * 这里 doubleTypeListForOneItem 代表一个item里出现的 double的种类数，每个item完全一样
+     */
+    public static List<List<Double>> generateBudgetListListWithIdentityUsersAndTwoTypeBudgetsInRandomTimestamps(IdentityPurePair<Double> doublePair, int itemSize, int resultSize, Double ratio) {
+        if (ratio < 0 || ratio > 1) {
+            throw new RuntimeException("Invalid ratio!");
+        }
+        List<List<Double>> resultList = new ArrayList<>();
+        List<Double> itemDoubleList = generateRandomDoubleList(doublePair, resultSize, ratio);
+        for (int i = 0; i < itemSize; i++) {
+            resultList.add(itemDoubleList);
+        }
+        return MatrixArray.getTransposition(resultList);
+    }
+
     public static List<List<Integer>> generateRandomIntegerList(Integer lowerBound, List<Integer> integerListUpperBound, int elementSizeInAGroup, int resultSize) {
         List<List<Integer>> result = new ArrayList<>(resultSize);
         List<Integer> tempList;

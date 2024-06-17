@@ -1,11 +1,10 @@
 package scheme_test;
 
-import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.result.ExperimentResult;
-import ecnu.dll.run.b_parameter_run.ChangeBudgetRun;
-import ecnu.dll.run.b_parameter_run.ChangeWindowSizeRun;
+import ecnu.dll.run.b_parameter_run.basic.ChangeBudgetRun;
+import ecnu.dll.run.b_parameter_run.basic.ChangeWindowSizeRun;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
