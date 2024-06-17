@@ -64,23 +64,23 @@ public class ParameterUtils {
         return resultList;
     }
 
-    public static List<Double> generateRandomDoubleList(IdentityPurePair<Double> doublePair, Integer totalSize, Double ratio) {
-        Double firstDouble, secondDouble;
+    public static <T> List<T> generateRandomList(IdentityPurePair<T> doublePair, Integer totalSize, Double ratio) {
+        T firstElement, secondElement;
         Integer tempSize;
-        List<Double> resultList = new ArrayList<>();
+        List<T> resultList = new ArrayList<>();
         if (ratio < 0 || ratio > 1) {
             throw new RuntimeException("The ratios are invalid!");
         }
-        firstDouble = doublePair.getKey();
-        secondDouble = doublePair.getValue();
+        firstElement = doublePair.getKey();
+        secondElement = doublePair.getValue();
         tempSize = (int) (Math.round(totalSize * ratio));
-        List<Integer> firstDoubleIndexList = RandomUtil.getRandomIntegerArrayWithoutRepeat(0, totalSize - 1, tempSize);
-        Set<Integer> firstDoubleIndexSet = new HashSet<>(firstDoubleIndexList);
+        List<Integer> firstElementIndexList = RandomUtil.getRandomIntegerArrayWithoutRepeat(0, totalSize - 1, tempSize);
+        Set<Integer> firstElementIndexSet = new HashSet<>(firstElementIndexList);
         for (int i = 0; i < totalSize; i++) {
-            if (firstDoubleIndexSet.contains(i)) {
-                resultList.add(firstDouble);
+            if (firstElementIndexSet.contains(i)) {
+                resultList.add(firstElement);
             } else {
-                resultList.add(secondDouble);
+                resultList.add(secondElement);
             }
         }
         return resultList;
@@ -202,9 +202,20 @@ public class ParameterUtils {
             throw new RuntimeException("Invalid ratio!");
         }
         List<List<Double>> resultList = new ArrayList<>();
-        List<Double> itemDoubleList = generateRandomDoubleList(doublePair, resultSize, ratio);
+        List<Double> itemDoubleList = generateRandomList(doublePair, resultSize, ratio);
         for (int i = 0; i < itemSize; i++) {
             resultList.add(itemDoubleList);
+        }
+        return MatrixArray.getTransposition(resultList);
+    }
+    public static List<List<Integer>> generateWindowSizeListListWithIdentityUsersAndTwoTypeWindowSizeInRandomTimestamps(IdentityPurePair<Integer> integerPair, int itemSize, int resultSize, Double ratio) {
+        if (ratio < 0 || ratio > 1) {
+            throw new RuntimeException("Invalid ratio!");
+        }
+        List<List<Integer>> resultList = new ArrayList<>();
+        List<Integer> itemIntegerList = generateRandomList(integerPair, resultSize, ratio);
+        for (int i = 0; i < itemSize; i++) {
+            resultList.add(itemIntegerList);
         }
         return MatrixArray.getTransposition(resultList);
     }

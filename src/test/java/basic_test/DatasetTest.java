@@ -2,7 +2,12 @@ package basic_test;
 
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.dataset.DataSetHandler;
+import ecnu.dll.dataset.struct.TrajectoryBean;
+import ecnu.dll.dataset.struct.TrajectoryBeanUtils;
+import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import org.junit.Test;
+
+import java.util.List;
 
 public class DatasetTest {
     @Test
@@ -31,5 +36,14 @@ public class DatasetTest {
         int size = 100;
         Double[] result = DataSetHandler.getLogSequence(valueA, valueB, size);
         MyPrint.showArray(result);
+    }
+
+    @Test
+    public void fun4() {
+        String path = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\T-drive Taxi Trajectories\\combineData.csv";
+//        List<String> result = CSVReadEnhanced.readStringData(path);
+        List<TrajectoryBean> result = CSVReadEnhanced.readDataToBeanList(path, new TrajectoryBean());
+        System.out.println(result.size());
+        TrajectoryBeanUtils.getInfo(result);
     }
 }

@@ -52,4 +52,13 @@
             <defaultValue>0</defaultValue>
         </attribute>
     </dependentVariables>
+
+<!--    <dataset name="realDataset">-->
+<!--        <bean id="beanModel" name="defaultTrajectory" type="ecnu.dll.dataset.struct.TrajectoryBean">-->
+<!--            <field name="userID" type="java.lang.Integer">0</field>-->
+<!--            <field name="timestamp" type="java.lang.Long">0</field>-->
+<!--            <field name="longitude" type="java.lang.Double">0</field>-->
+<!--            <field name="latitude" type="java.lang.Double">0</field>-->
+<!--        </bean>-->
+<!--    </dataset>-->
 </root>
