@@ -1,4 +1,4 @@
-package ecnu.dll.dataset.struct;
+package ecnu.dll.dataset.real.datasetA;
 
 import cn.edu.dll.basic.DateUtil;
 import cn.edu.dll.struct.bean_structs.BeanInterface;

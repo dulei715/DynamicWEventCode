@@ -1,6 +1,5 @@
-package ecnu.dll.dataset.struct;
+package ecnu.dll.dataset.real.datasetA;
 
-import cn.edu.dll.map.MapUtils;
 import cn.edu.dll.struct.pair.IdentityPair;
 
 import java.util.List;
@@ -18,8 +17,12 @@ public class TrajectoryBeanUtils {
             tempPosition = trajectoryBean.getPosition();
             minLongitude = Math.min(minLongitude, tempPosition[0]);
             maxLongitude = Math.max(maxLongitude, tempPosition[0]);
+//            if (tempPosition[0] >= 1) {
+//            }
             minLatitude = Math.min(minLatitude, tempPosition[1]);
             maxLatitude = Math.max(maxLatitude, tempPosition[1]);
+//            if (tempPosition[1] >= 1) {
+//            }
 
 //            tempKey = new IdentityPair<>(tempPosition[0], tempPosition[1]);
 //            tempSize = treeMap.getOrDefault(tempKey, 0);
@@ -27,9 +30,11 @@ public class TrajectoryBeanUtils {
 //            treeMap.put(tempKey, tempSize);
         }
 //        System.out.println(treeMap.size());
-        System.out.println("minLongitude: " + minLongitude);
-        System.out.println("maxLongitude: " + maxLongitude);
-        System.out.println("minLatitude: " + minLatitude);
+        System.out.print("differ_longitude: " + (maxLongitude-minLongitude) + "; ");
+        System.out.print("differ_latitude: " + (maxLatitude-minLatitude) + "; ");
+        System.out.print("minLongitude: " + minLongitude + "; ");
+        System.out.print("maxLongitude: " + maxLongitude + "; ");
+        System.out.print("minLatitude: " + minLatitude + "; ");
         System.out.println("maxLatitude: " + maxLatitude);
         return null;
     }

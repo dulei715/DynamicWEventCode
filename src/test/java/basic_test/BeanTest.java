@@ -3,7 +3,7 @@ package basic_test;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.CSVRead;
-import ecnu.dll.dataset.struct.TrajectoryBean;
+import ecnu.dll.dataset.real.datasetA.TrajectoryBean;
 import org.junit.Test;
 
 import java.util.List;

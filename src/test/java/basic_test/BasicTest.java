@@ -1,8 +1,14 @@
 package basic_test;
 
 import cn.edu.dll.io.print.MyPrint;
+import cn.edu.dll.io.read.BasicRead;
+import ecnu.dll.dataset.real.datasetB.spatial_tools.CheckInStringTool;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class BasicTest {
@@ -80,6 +86,73 @@ public class BasicTest {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+    }
+
+    @Test
+    public void fun7() {
+        Instant now = Instant.now();
+//        System.out.println(now);
+        ZoneId zoneId = ZoneId.of("Asia/Shanghai"); // 定义时区
+        ZonedDateTime zonedDateTime = now.atZone(zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = zonedDateTime.format(formatter);
+        System.out.println("UTC Time: " + now);
+        System.out.println("Time in Shanghai: " + formattedTime);
+
+    }
+
+    @Test
+    public void fun8() {
+        // Tue, 3 Jun 2008 11:05:30 GMT
+//        String dataString = "Tue Apr 03 18:00:06 +0000 2012";
+        String dataString = "Tue, 3 Apr 2012 18:00:06 GMT";
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dataString, formatter);
+        System.out.println(zonedDateTime);
+    }
+    @Test
+    public void fun9() {
+        // Tue, 3 Jun 2008 11:05:30 GMT
+        String dataString = "Tue Apr 03 18:00:06 +0000 2012";
+//        String dataString = "Tue, 3 Apr 2012 18:00:06 GMT";
+        String newDataString = CheckInStringTool.toRFC1132(dataString);
+        System.out.println(newDataString);
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(newDataString, formatter);
+        System.out.println(zonedDateTime);
+
+    }
+    @Test
+    public void fun10() {
+        // Tue, 3 Jun 2008 11:05:30 GMT
+        String dataString = "Tue Apr 03 18:00:06 +0000 2012";
+//        String newDataString = CheckInStringTool.toRFC1132(dataString);
+        System.out.println(dataString);
+        String dateTime = CheckInStringTool.toZonedDateTime(dataString);
+        System.out.println(dateTime);
+
+    }
+    @Test
+    public void fun11() {
+        // Tue, 3 Jun 2008 11:05:30 GMT
+        String dataString = "Tue Apr 03 18:00:06 +0000 2012";
+//        String newDataString = CheckInStringTool.toRFC1132(dataString);
+        System.out.println(dataString);
+        long dateTime = CheckInStringTool.toTimestamp(dataString);
+        System.out.println(dateTime);
+        Date date = new Date(dateTime);
+        System.out.println(date);
+
+    }
+
+    @Test
+    public void fun12() {
+        String dataPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Checkins.txt";
+        BasicRead basicRead = new BasicRead();
+        basicRead.startReading(dataPath);
+        List<String> recordList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        System.out.println(recordList.size());
     }
 
 
