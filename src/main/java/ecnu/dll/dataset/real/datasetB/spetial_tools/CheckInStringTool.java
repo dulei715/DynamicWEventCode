@@ -1,4 +1,4 @@
-package ecnu.dll.dataset.real.datasetB.spatial_tools;
+package ecnu.dll.dataset.real.datasetB.spetial_tools;
 
 import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.basic.StringUtil;
@@ -8,7 +8,6 @@ import cn.edu.dll.io.print.MyPrint;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +44,9 @@ public class CheckInStringTool {
         stringBuilder.append(dataArray[0]).append(", ");
         stringBuilder.append(dataArray[2]).append(" ");
         stringBuilder.append(dataArray[1]).append(" ");
+//        if (dataArray.length <= 5) {
+//            System.out.println("error!");
+//        }
         stringBuilder.append(dataArray[5]).append(" ");
         stringBuilder.append(dataArray[3]).append(" ");
         stringBuilder.append("GMT");

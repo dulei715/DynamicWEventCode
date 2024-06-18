@@ -4,7 +4,7 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll.dataset.real.datasetB.basic_struct.CityBean;
-import ecnu.dll.dataset.real.datasetB.spatial_tools.CheckInStringTool;
+import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import org.junit.Test;
 
 import java.util.ArrayList;

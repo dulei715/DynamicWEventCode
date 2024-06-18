@@ -7,7 +7,7 @@ import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll.dataset.DataSetHandler;
 import ecnu.dll.dataset.real.datasetA.TrajectoryBean;
 import ecnu.dll.dataset.real.datasetA.TrajectoryBeanUtils;
-import ecnu.dll.dataset.real.datasetB.spatial_tools.CheckInStringTool;
+import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import org.junit.Test;
 

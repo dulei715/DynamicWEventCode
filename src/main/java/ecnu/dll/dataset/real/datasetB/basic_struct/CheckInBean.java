@@ -1,6 +1,6 @@
 package ecnu.dll.dataset.real.datasetB.basic_struct;
 
-import ecnu.dll.dataset.real.datasetB.spatial_tools.CheckInStringTool;
+import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 
 import java.util.Date;
 
