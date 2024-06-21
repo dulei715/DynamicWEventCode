@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root id="rootName">
+    <datasets>
+        <basicPath>/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/0_dataset</basicPath>
+        <fileName name="checkIn">CheckIn_dataset_TIST2015</fileName>
+        <fileName name="trajectories">T-drive Taxi Trajectories</fileName>
+    </datasets>
     <candidateSet>
         <attribute name="PrivacyBudgetUpperBound">
             <value name="default">10</value>

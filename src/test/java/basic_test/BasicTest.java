@@ -3,6 +3,8 @@ package basic_test;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
+import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import org.junit.Test;
 
@@ -13,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class BasicTest {
+
     @Test
     public void fun1() {
         System.out.println("Hello Test!");
@@ -148,30 +151,10 @@ public class BasicTest {
 
     @Test
     public void fun12() {
-//        String dataPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Checkins.txt";
-        String dataPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Cities.txt";
-        BasicRead basicRead = new BasicRead();
-        basicRead.startReading(dataPath);
-        List<String> recordList = basicRead.readAllWithoutLineNumberRecordInFile();
-        basicRead.endReading();
-        System.out.println(recordList.size());
+        System.out.println(ConfigureUtils.getProjectPath());
     }
-    @Test
-    public void fun13() {
-        String dataPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Cities.txt";
-        BasicRead basicRead = new BasicRead();
-        basicRead.startReading(dataPath);
-//        List<String> recordList = basicRead.readAllWithoutLineNumberRecordInFile();
-        List<String> recordList;
-        do {
-            recordList = basicRead.readGivenLineSize(10);
-            MyPrint.showList(recordList, ConstantValues.LINE_SPLIT);
-            MyPrint.showSplitLine("*", 150);
-        } while (recordList != null && !recordList.isEmpty() && recordList.size() >= 10);
 
-        basicRead.endReading();
-//        System.out.println(recordList.size());
-    }
+
 
 
 

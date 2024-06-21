@@ -1,8 +1,6 @@
 package ecnu.dll.run;
 
-import cn.edu.dll.result.ExperimentResult;
-
-public class Main {
+public class Run {
     /**
      *
      * 自变量指标
@@ -43,9 +41,6 @@ public class Main {
      *
      */
     public static void main(String[] args) {
-        ExperimentResult experimentResult = new ExperimentResult();
-        experimentResult.addPair("aaa", "1");
-        experimentResult.addPair("bbb", "2");
-        System.out.println(experimentResult);
+        System.out.println("Hello Run!");
     }
 }

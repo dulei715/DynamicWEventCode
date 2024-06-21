@@ -6,6 +6,9 @@ import org.dom4j.Element;
 
 public class ConfigureUtils {
     private static XMLConfigure xmlConfigure = new XMLConfigure("config/parameter_config.xml");
+    public static String getProjectPath() {
+        return System.getProperty("user.dir");
+    }
     public static Double getPrivacyBudgetUpperBound() {
         Document document = xmlConfigure.getDocument();
         Element candidateSet = document.getRootElement().element("candidateSet");
@@ -51,9 +54,21 @@ public class ConfigureUtils {
         return result;
     }
 
+    public static String getDatasetBasicPath() {
+        Document document = xmlConfigure.getDocument();
+        Element elemnet = (Element)document.selectNodes("//datasets/basicPath").get(0);
+        return elemnet.getTextTrim();
+    }
+
+    public static String getDatasetFileName(String tagName) {
+        Document document = xmlConfigure.getDocument();
+        Element element = (Element)document.selectNodes("//datasets/fileName[@name='" + tagName + "']").get(0);
+        return element.getTextTrim();
+    }
 
 
-    public static void main(String[] args) {
+
+    public static void main0(String[] args) {
         Double privacyBudgetUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
         System.out.println(privacyBudgetUpperBound);
         Integer windowSizeLowerBound = ConfigureUtils.getWindowSizeLowerBound();
@@ -62,5 +77,14 @@ public class ConfigureUtils {
         System.out.println(backUpperBound);
         Double backLowerBound = ConfigureUtils.getBackwardPrivacyBudgetLowerBoundDifference();
         System.out.println(backLowerBound);
+    }
+
+    public static void main(String[] args) {
+//        String datasetBasicPath = ConfigureUtils.getDatasetBasicPath();
+//        System.out.println(datasetBasicPath);
+//        String fileName = ConfigureUtils.getDatasetFileName("trajectories");
+//        String fileName = ConfigureUtils.getDatasetFileName("checkIn");
+//        System.out.println(fileName);
+        System.out.println(ConfigureUtils.getProjectPath());
     }
 }

@@ -1,5 +1,7 @@
 package important_test;
 
+import _test_data.TestData;
+import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
@@ -15,7 +17,7 @@ import java.util.TreeMap;
 public class DatasetCheckInTest {
     @Test
     public void testCity() {
-        String cityFilePath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Cities.txt";
+        String cityFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.checkInFilePath, "dataset_TIST2015_Cities.txt");
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(cityFilePath);
         List<String> recordList = basicRead.readAllWithoutLineNumberRecordInFile();
@@ -30,7 +32,7 @@ public class DatasetCheckInTest {
     }
     @Test
     public void testCityType() {
-        String cityFilePath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015\\dataset_TIST2015_Cities.txt";
+        String cityFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.checkInFilePath, "dataset_TIST2015_Cities.txt");
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(cityFilePath);
         List<String> recordList = basicRead.readAllWithoutLineNumberRecordInFile();
