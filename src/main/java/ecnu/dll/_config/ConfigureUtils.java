@@ -1,14 +1,14 @@
 package ecnu.dll._config;
 
+import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.configure.XMLConfigure;
+import cn.edu.dll.constant_values.ConstantValues;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
 public class ConfigureUtils {
-    private static XMLConfigure xmlConfigure = new XMLConfigure("config/parameter_config.xml");
-    public static String getProjectPath() {
-        return System.getProperty("user.dir");
-    }
+    public static String projectPath = System.getProperty("user.dir");
+    private static XMLConfigure xmlConfigure = new XMLConfigure(StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "development", "config", "parameter_config.xml"));
     public static Double getPrivacyBudgetUpperBound() {
         Document document = xmlConfigure.getDocument();
         Element candidateSet = document.getRootElement().element("candidateSet");
@@ -85,6 +85,6 @@ public class ConfigureUtils {
 //        String fileName = ConfigureUtils.getDatasetFileName("trajectories");
 //        String fileName = ConfigureUtils.getDatasetFileName("checkIn");
 //        System.out.println(fileName);
-        System.out.println(ConfigureUtils.getProjectPath());
+        System.out.println(ConfigureUtils.projectPath);
     }
 }

@@ -151,7 +151,7 @@ public class BasicTest {
 
     @Test
     public void fun12() {
-        System.out.println(ConfigureUtils.getProjectPath());
+        System.out.println(ConfigureUtils.projectPath);
     }
 
 

@@ -1,6 +1,7 @@
 package important_test;
 
-import _test_data.TestData;
+import ecnu.dll._config.Constant;
+import ecnu.dll._config.TestData;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import ecnu.dll.dataset.real.datasetA.TrajectoryBean;
@@ -14,7 +15,7 @@ import java.util.List;
 public class DatasetTrajectoryTest {
     @Test
     public void testTrajectoryItemOfEachUser() {
-        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.trajectoriesFilePath, "taxi_log_2008_by_id");
+        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id");
         File file = new File(basicPath);
         String[] fileNameArray = file.list();
         String tempPath;
@@ -36,7 +37,7 @@ public class DatasetTrajectoryTest {
 
     @Test
     public void testFilterTotalRecord() {
-        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
+        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
         File file = new File(basicPath);
         String[] fileNameArray = file.list();
         String tempPath;
@@ -54,7 +55,7 @@ public class DatasetTrajectoryTest {
 
     @Test
     public void longitudeLatitudeRatio() {
-        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
+        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
         File file = new File(basicPath);
         String[] fileNameArray = file.list();
         String tempPath;

@@ -9,7 +9,6 @@ import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -63,7 +62,7 @@ public class ParameterConfigTest {
 
     @Test
     public void fun1() {
-        Element independentVariableElement = XMLConfigureUtils.getFirstLayerElementByTagName("config/IndependentVariable.xml");
+        Element independentVariableElement = XMLConfigureUtils.getFirstLayerElementByTagName("development/config/IndependentVariable.xml");
         Iterator iterator = independentVariableElement.elementIterator();
 
         while (iterator.hasNext()) {
@@ -74,7 +73,7 @@ public class ParameterConfigTest {
 
     @Test
     public void fun2() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        XMLConfigure xmlConfigure = new XMLConfigure("config/parameter_config.xml");
+        XMLConfigure xmlConfigure = new XMLConfigure("development/config/parameter_config.xml");
         PureTriple<String, Object, List<Object>> result = xmlConfigure.getIndependentData("UserType", "default", "default");
         System.out.println(result.getKey());
         System.out.println(result.getValue());
@@ -83,7 +82,7 @@ public class ParameterConfigTest {
 
     @Test
     public void fun3() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        XMLConfigure xmlConfigure = new XMLConfigure("config/parameter_config.xml");
+        XMLConfigure xmlConfigure = new XMLConfigure("development/config/parameter_config.xml");
         PurePair<String, Object> result = xmlConfigure.getDependentData("TimeCost");
         System.out.println(result.getKey());
         System.out.println(result.getValue());

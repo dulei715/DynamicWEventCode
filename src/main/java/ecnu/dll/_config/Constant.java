@@ -1,6 +1,16 @@
 package ecnu.dll._config;
 
+import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.constant_values.ConstantValues;
+
 public class Constant {
+    public static final String basicDatasetPath = ConfigureUtils.getDatasetBasicPath();
+    public static final String checkInFileName = ConfigureUtils.getDatasetFileName("checkIn");
+    public static final String trajectoriesFileName = ConfigureUtils.getDatasetFileName("trajectories");
+    public static final String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, checkInFileName);
+    public static final String trajectoriesFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, trajectoriesFileName);
+
+
     // constant for RescueDP
     public static Double TAO_1 = 50D;
     public static Double TAO_2 = 0.8D;

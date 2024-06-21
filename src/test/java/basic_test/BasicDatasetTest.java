@@ -1,5 +1,7 @@
 package basic_test;
 
+import ecnu.dll._config.Constant;
+import ecnu.dll._config.TestData;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
@@ -45,7 +47,7 @@ public class BasicDatasetTest {
 
     @Test
     public void fun4() {
-        String path = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\T-drive Taxi Trajectories\\combineData.csv";
+        String path = Constant.trajectoriesFilePath + ConstantValues.FILE_SPLIT + "combineData.csv";
 //        List<String> result = CSVReadEnhanced.readStringData(path);
         List<TrajectoryBean> result = CSVReadEnhanced.readDataToBeanList(path, new TrajectoryBean());
         System.out.println(result.size());
@@ -54,7 +56,7 @@ public class BasicDatasetTest {
 
     @Test
     public void fun5() {
-        String basicPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\T-drive Taxi Trajectories\\taxi_log_2008_by_id_filter";
+        String basicPath = Constant.trajectoriesFilePath + ConstantValues.FILE_SPLIT + "taxi_log_2008_by_id_filter";
         File file = new File(basicPath);
         String[] fileNameArray = file.list();
         String tempPath;
@@ -68,7 +70,7 @@ public class BasicDatasetTest {
 
     @Test
     public void fun6() {
-        String basicPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015";
+        String basicPath = Constant.checkInFilePath;
         String checkInPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "dataset_TIST2015_Checkins.txt");
 //        String checkInPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "dataset_TIST2015_POIs.txt");
         BasicRead basicRead = new BasicRead();
@@ -81,7 +83,7 @@ public class BasicDatasetTest {
     }
     @Test
     public void fun7() {
-        String basicPath = "E:\\1.学习\\4.数据集\\3.dataset_for_dynamic_w_event\\0_dataset\\CheckIn_dataset_TIST2015";
+        String basicPath = Constant.checkInFilePath;
         String checkInPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "dataset_TIST2015_Checkins.txt");
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(checkInPath);

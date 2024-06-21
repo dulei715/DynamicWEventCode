@@ -1,11 +1,11 @@
 package basic_test;
 
-import _test_data.TestData;
+import ecnu.dll._config.Constant;
+import ecnu.dll._config.TestData;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
-import ecnu.dll._config.ConfigureUtils;
 import org.junit.Test;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class DatasetTest {
 
     @Test
     public void fun1() {
-        String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.basicDatasetPath, TestData.checkInFileName);
+        String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, Constant.checkInFileName);
         String dataPath = StringUtil.join(ConstantValues.FILE_SPLIT, checkInFilePath, "dataset_TIST2015_Cities.txt");
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(dataPath);
@@ -25,7 +25,7 @@ public class DatasetTest {
     }
     @Test
     public void fun2() {
-        String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, TestData.basicDatasetPath, TestData.checkInFileName);
+        String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, Constant.checkInFileName);
         String dataPath = StringUtil.join(ConstantValues.FILE_SPLIT, checkInFilePath, "dataset_TIST2015_Cities.txt");
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(dataPath);
