@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    The path of this file is <Project Path>/../config/parameter_config.xml
+    or <Project Path>/deployment/config/parameter_config.xml
+ -->
 <root id="rootName">
     <datasets>
-        <basicPath>/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/0_dataset</basicPath>
+        <basicPath type="relative">..;0.dataset</basicPath>
+        <basicPath type="absolute" name="ab1">;Users;admin;MainFiles;1.Research;dataset;3_stream_dp;0_dataset</basicPath>
         <fileName name="checkIn">CheckIn_dataset_TIST2015</fileName>
-        <fileName name="trajectories">T-drive Taxi Trajectories</fileName>
+        <fileName name="trajectories">T-drive_Taxi_Trajectories</fileName>
     </datasets>
     <candidateSet>
         <attribute name="PrivacyBudgetUpperBound">

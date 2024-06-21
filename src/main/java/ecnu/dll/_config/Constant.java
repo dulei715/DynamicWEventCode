@@ -1,15 +1,43 @@
 package ecnu.dll._config;
 
 import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.configure.XMLConfigure;
 import cn.edu.dll.constant_values.ConstantValues;
 
-public class Constant {
-    public static final String basicDatasetPath = ConfigureUtils.getDatasetBasicPath();
-    public static final String checkInFileName = ConfigureUtils.getDatasetFileName("checkIn");
-    public static final String trajectoriesFileName = ConfigureUtils.getDatasetFileName("trajectories");
-    public static final String checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, checkInFileName);
-    public static final String trajectoriesFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, trajectoriesFileName);
+import java.io.File;
 
+public class Constant {
+    public static String projectPath = System.getProperty("user.dir");
+    public static String configPath;
+    public static XMLConfigure xmlConfigure;
+    public static String basicDatasetPath;
+    public static String checkInFileName;
+    public static String trajectoriesFileName;
+    public static String checkInFilePath;
+    public static String trajectoriesFilePath;
+
+    static {
+        configPath = StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "config", "parameter_config.xml");
+        File configFile = new File(configPath);
+        if (!configFile.exists()) {
+            configPath = StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "deployment", "config", "parameter_config.xml");
+            String pathA = configFile.getAbsolutePath();
+            configFile = new File(configPath);
+            if (!configFile.exists()) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("Not find the parameter_config.xml").append(ConstantValues.LINE_SPLIT);
+                stringBuilder.append("Neither path '").append(pathA).append("' nor path '").append(configFile.getAbsolutePath()).append("' ");
+                stringBuilder.append("exists!");
+                throw new RuntimeException(stringBuilder.toString());
+            }
+        }
+        xmlConfigure = new XMLConfigure(configPath);
+        basicDatasetPath = ConfigureUtils.getDatasetBasicPath();
+        checkInFileName = ConfigureUtils.getDatasetFileName("checkIn");
+        trajectoriesFileName = ConfigureUtils.getDatasetFileName("trajectories");
+        checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, checkInFileName);
+        trajectoriesFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, trajectoriesFileName);
+    }
 
     // constant for RescueDP
     public static Double TAO_1 = 50D;
@@ -62,7 +90,11 @@ public class Constant {
 
     public static Double MIN_UNION_PRIVACY_BUDGET = 0.1D;
 
-
+    public static void main(String[] args) {
+//        System.out.println(configPath);
+        String datasetBasicPath = ConfigureUtils.getDatasetBasicPath();
+        System.out.println(datasetBasicPath);
+    }
 
 
 

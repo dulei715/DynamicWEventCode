@@ -56,7 +56,7 @@
               <mainClass>_5_statistic.Main</mainClass>
             </manifest>
           </archive>
-          <outputDirectory>development</outputDirectory>
+          <outputDirectory>deployment</outputDirectory>
         </configuration>
         <executions>
           <!-- 配置执行器 -->

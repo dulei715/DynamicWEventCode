@@ -4,6 +4,7 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import org.junit.Test;
@@ -151,7 +152,7 @@ public class BasicTest {
 
     @Test
     public void fun12() {
-        System.out.println(ConfigureUtils.projectPath);
+        System.out.println(Constant.projectPath);
     }
 
 
