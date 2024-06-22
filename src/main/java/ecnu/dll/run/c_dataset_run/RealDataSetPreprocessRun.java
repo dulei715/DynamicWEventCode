@@ -49,7 +49,7 @@ public class RealDataSetPreprocessRun {
         CheckInBeanUtils.transformSplitFilesToCountry(Constant.checkInFilePath, splitDirectory, outputDataSuperPath);
     }
 
-    
+
 
     public static void main1(String[] args) {
         int unitSize = 204800;

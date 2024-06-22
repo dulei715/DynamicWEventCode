@@ -10,10 +10,8 @@ import ecnu.dll.dataset.real.datasetB.basic_struct.CityBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.File;
+import java.util.*;
 
 public class DatasetCheckInTest {
     @Test
@@ -54,5 +52,13 @@ public class DatasetCheckInTest {
         }
         MyPrint.showMap(cityBeanMap);
         System.out.println(cityBeanMap.size());
+    }
+
+    @Test
+    public void testCountryStatistic() {
+        Map<String, Integer> countryStatisticMap = new HashMap<>();
+        String filterFileDirectory = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join");
+        File fileDirectoryFile = new File(filterFileDirectory);
+        File[] fileArray = fileDirectoryFile.listFiles();
     }
 }
