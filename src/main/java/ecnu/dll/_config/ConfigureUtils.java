@@ -66,7 +66,7 @@ public class ConfigureUtils {
         Document document = Constant.xmlConfigure.getDocument();
         Element relativePathElement = (Element) document.selectNodes("//datasets/basicPath[@type='relative']").get(0);
         String relativePath = relativePathElement.getTextTrim(), absolutePath;
-        relativePath = relativePath.replaceAll(";", ConstantValues.FILE_SPLIT);
+        relativePath = relativePath.replace(";", ConstantValues.FILE_SPLIT);
         absolutePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.projectPath, relativePath);
         File datasetFile = new File(absolutePath);
         if (datasetFile.exists()) {
@@ -75,7 +75,7 @@ public class ConfigureUtils {
         List<Element> elemnetList = document.selectNodes("//datasets/basicPath[@type='absolute']");
         for (Element element : elemnetList) {
             absolutePath = element.getTextTrim();
-            absolutePath = absolutePath.replaceAll(";", ConstantValues.FILE_SPLIT);
+            absolutePath = absolutePath.replace(";", ConstantValues.FILE_SPLIT);
             datasetFile = new File(absolutePath);
             if (datasetFile.exists()) {
                 return datasetFile.getAbsolutePath();
