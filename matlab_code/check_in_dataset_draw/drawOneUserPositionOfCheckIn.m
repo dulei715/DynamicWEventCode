@@ -1,4 +1,5 @@
 function y = drawOneUserPositionOfCheckIn(file)
+% draw POI.txt
 % matrix = importdata(file, 'Delimiter', '\t');
 matrix = readtable(file);
 if isempty(matrix)
