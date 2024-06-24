@@ -1,9 +1,9 @@
-function y = drawUsersPosition(basicPath, fileNumber) 
+function y = drawUsersPositionOfTrajectory(basicPath, fileNumber) 
 fig = figure;
 hold on;
 for i = 1:fileNumber
     tempFile = [basicPath,num2str(i),'.txt'];
-    drawOneUserPosition(tempFile);
+    drawOneUserPositionOfTrajectory(tempFile);
 end
 figure_FontSize = 25;
 set(get(gca,'XLabel'),'FontSize',figure_FontSize,'FontName','Times New Roman');

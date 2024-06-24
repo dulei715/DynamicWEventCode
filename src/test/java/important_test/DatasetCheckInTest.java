@@ -56,9 +56,33 @@ public class DatasetCheckInTest {
 
     @Test
     public void testCountryStatistic() {
-        Map<String, Integer> countryStatisticMap = new HashMap<>();
         String filterFileDirectory = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join");
         File fileDirectoryFile = new File(filterFileDirectory);
         File[] fileArray = fileDirectoryFile.listFiles();
+        BasicRead basicRead = new BasicRead(",");
+        List<String> dataList;
+        String[] dataSplitArray;
+        Integer tempCount;
+        Map<String, Integer> countryStatisticMap = new HashMap<>();
+        for (File file : fileArray) {
+            basicRead.startReading(file.getAbsolutePath());
+            dataList = basicRead.readAllWithoutLineNumberRecordInFile();
+            for (String data : dataList) {
+                dataSplitArray = data.split(basicRead.INPUT_SPLIT_SYMBOL);
+                tempCount = countryStatisticMap.getOrDefault(dataSplitArray[1],0);
+                ++tempCount;
+                countryStatisticMap.put(dataSplitArray[1],tempCount);
+            }
+        }
+        System.out.println(countryStatisticMap.size());
+        MyPrint.showMap(countryStatisticMap);
+
     }
+
+
+
+
+
+
+
 }

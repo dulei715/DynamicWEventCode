@@ -90,6 +90,10 @@ public class Constant {
 
     public static Double MIN_UNION_PRIVACY_BUDGET = 0.1D;
 
+
+
+    public static Double Sample_Ratio_For_Picture = 0.01;
+
     public static void main(String[] args) {
 //        System.out.println(configPath);
         String datasetBasicPath = ConfigureUtils.getDatasetBasicPath();

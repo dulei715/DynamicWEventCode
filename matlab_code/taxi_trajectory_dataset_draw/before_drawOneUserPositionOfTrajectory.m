@@ -1,4 +1,4 @@
-function y = drawOneUserPosition(file)
+function y = drawOneUserPositionOfTrajectory(file)
 matrix = importdata(file,',', 0);
 if isempty(matrix)
     return;

@@ -5,6 +5,7 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.Constant;
+import ecnu.dll.dataset.real.datasetA.TrajectoryTools;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 
 import java.io.File;
@@ -57,7 +58,15 @@ public class RealDataSetPreprocessRun {
 //        System.out.println("Hello RealDataSetPreprocessRun");
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         dataJoin();
+    }
+
+    public static void main(String[] args) {
+        String inputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
+        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "filter_sample");
+        Double ratio = Constant.Sample_Ratio_For_Picture;
+        int bufferSize = 1000;
+        TrajectoryTools.sampleData(inputDir, outputDir, ratio, bufferSize);
     }
 }
