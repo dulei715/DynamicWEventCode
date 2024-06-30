@@ -10,6 +10,12 @@
         <basicPath type="absolute" name="Huawei-book">E:;dataset;3.dynamicWEvent;0_dataset</basicPath>
         <fileName name="checkIn">CheckIn_dataset_TIST2015</fileName>
         <fileName name="trajectories">T-drive_Taxi_Trajectories</fileName>
+        <fileHandle name="checkIn">
+            <timeSlot unit="minute">10</timeSlot>
+        </fileHandle>
+        <fileHandle name="trajectories">
+            <timeSlot unit="minute">3</timeSlot>
+        </fileHandle>
     </datasets>
     <candidateSet>
         <attribute name="PrivacyBudgetUpperBound">

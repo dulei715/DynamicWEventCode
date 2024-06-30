@@ -169,14 +169,62 @@ public class DatasetCheckInTest {
                 tempUserID = tempBean.getUserID();
                 newTimeStamp = tempBean.getCheckInTimeStamp();
                 oldTimeStamp = currentMap.getOrDefault(tempUserID, 0L);
-                //todo: 添加tag
+                StatisticTool.addElement(differMap, tempUserID, newTimeStamp.compareTo(oldTimeStamp));
+                currentMap.put(tempUserID, newTimeStamp);
             }
             basicRead.endReading();
         }
         System.out.println(k);
-        MyPrint.showMap(differenceMap);
+//        MyPrint.showMap(differMap);
+        for (Map.Entry<Integer, Map<Integer, Integer>> entry : differMap.entrySet()) {
+            Map<Integer, Integer> tempValue = entry.getValue();
+            if (tempValue.size() > 1) {
+                System.out.println(entry.getKey() + "; " + tempValue);
+            }
+        }
 
     }
+
+    @Test
+    public void testEachUserInterval() {
+        String directoryPath = Constant.checkInFilePath;
+        String handledDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, directoryPath, "join");
+        File directoryFile = new File(handledDirectoryPath);
+        File[] files = directoryFile.listFiles();
+        BasicRead basicRead = new BasicRead(",");
+        List<String> lineDataList;
+        CheckInSimplifiedBean tempBean;
+        TreeMap<Long, Integer> differenceMap = new TreeMap<>();
+        Long tempDifference, oldTimeStamp, newTimeStamp;
+        Map<Integer, Long> currentMap = new TreeMap<>();
+        Map<Integer, Map<Long, Integer>> differMap = new TreeMap<>();
+        Integer tempUserID;
+        int k = 0;
+        for (File file : files) {
+            basicRead.startReading(file.getAbsolutePath());
+            lineDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+            for (String line : lineDataList) {
+                ++k;
+                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(line));
+                tempUserID = tempBean.getUserID();
+                newTimeStamp = tempBean.getCheckInTimeStamp();
+                oldTimeStamp = currentMap.getOrDefault(tempUserID, 0L);
+                StatisticTool.addElement(differMap, tempUserID, newTimeStamp - oldTimeStamp);
+                currentMap.put(tempUserID, newTimeStamp);
+            }
+            basicRead.endReading();
+        }
+        System.out.println(k);
+//        MyPrint.showMap(differMap);
+        for (Map.Entry<Integer, Map<Long, Integer>> entry : differMap.entrySet()) {
+            Map<Long, Integer> tempValue = entry.getValue();
+            if (tempValue.size() > 1) {
+                System.out.println(entry.getKey() + "; " + tempValue);
+            }
+        }
+
+    }
+
 
 
 

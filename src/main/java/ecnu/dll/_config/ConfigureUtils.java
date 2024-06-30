@@ -1,13 +1,14 @@
 package ecnu.dll._config;
 
 import cn.edu.dll.basic.StringUtil;
-import cn.edu.dll.configure.XMLConfigure;
 import cn.edu.dll.constant_values.ConstantValues;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigureUtils {
 
@@ -16,6 +17,15 @@ public class ConfigureUtils {
 //        String path = StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "development", "config", "parameter_config.xml");
 //        System.out.println(path);
 //    }
+    public static Map<String, Long> unitSlotMap;
+    static {
+        unitSlotMap = new HashMap<>();
+        unitSlotMap.put("second", 1000L);
+        unitSlotMap.put("minute", 60000L);
+        unitSlotMap.put("hour", 3600000L);
+        unitSlotMap.put("day", 86400000L);
+    }
+
 
     public static Double getPrivacyBudgetUpperBound() {
         Document document = Constant.xmlConfigure.getDocument();
@@ -91,6 +101,14 @@ public class ConfigureUtils {
     }
 
 
+    public static Long getTimeInterval(String datasetName) {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//fileHandle[@name='" + datasetName + "']").get(0);
+        Element subElement = (Element) element.selectNodes("timeSlot").get(0);
+        Long unit = unitSlotMap.get(subElement.attributeValue("unit"));
+        Long time = Long.valueOf(subElement.getTextTrim());
+        return unit * time;
+    }
 
     public static void main0(String[] args) {
         Double privacyBudgetUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
@@ -103,12 +121,17 @@ public class ConfigureUtils {
         System.out.println(backLowerBound);
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
 //        String datasetBasicPath = ConfigureUtils.getDatasetBasicPath();
 //        System.out.println(datasetBasicPath);
 //        String fileName = ConfigureUtils.getDatasetFileName("trajectories");
 //        String fileName = ConfigureUtils.getDatasetFileName("checkIn");
 //        System.out.println(fileName);
         System.out.println(Constant.projectPath);
+    }
+
+    public static void main(String[] args) {
+        Long timeStamp = getTimeInterval("checkIn");
+        System.out.println(timeStamp);
     }
 }
