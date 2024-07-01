@@ -12,6 +12,7 @@
         <fileName name="trajectories">T-drive_Taxi_Trajectories</fileName>
         <fileHandle name="checkIn">
             <timeSlot unit="minute">10</timeSlot>
+<!--            <timeSlot unit="minute">100</timeSlot>-->
         </fileHandle>
         <fileHandle name="trajectories">
             <timeSlot unit="minute">3</timeSlot>

@@ -1,5 +1,8 @@
 package basic_test;
 
+import cn.edu.dll.basic.NumberUtil;
+import cn.edu.dll.basic.RandomUtil;
+import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
@@ -153,6 +156,12 @@ public class BasicTest {
     @Test
     public void fun12() {
         System.out.println(Constant.projectPath);
+    }
+
+    @Test
+    public void fun13() {
+        String data = String.format("haha: %08d", 23);
+        System.out.println(data);
     }
 
 
