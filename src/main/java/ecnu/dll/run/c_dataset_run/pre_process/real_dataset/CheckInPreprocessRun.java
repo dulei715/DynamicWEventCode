@@ -2,19 +2,19 @@ package ecnu.dll.run.c_dataset_run.pre_process.real_dataset;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
-import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
-import cn.edu.dll.struct.pair.IdentityPair;
-import com.sun.javafx.binding.StringFormatter;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetA.TrajectoryTools;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
-import org.apache.hadoop.util.hash.Hash;
+import others.signal_handle.MySignalHandler;
+import others.signal_handle.NoTerminalHandler;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 import java.io.File;
 import java.util.*;
@@ -268,7 +268,21 @@ public class CheckInPreprocessRun {
     }
 
     public static void main(String[] args) {
-        shuffleJoinFilesByTimeSlot();
-//        toExperimentRawData();.
+        SignalHandler handler = new NoTerminalHandler();
+        try {
+            Signal sigTERM = new Signal("TERM");
+            Signal sigINT = new Signal("INT");
+            Signal.handle(sigTERM, handler);
+            Signal.handle(sigINT, handler);
+
+            // 程序主逻辑
+            System.out.println("Program is running...");
+//            shuffleJoinFilesByTimeSlot();
+            Thread.sleep(Integer.MAX_VALUE); // 防止程序立即退出
+            System.out.println("Program finished !");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }

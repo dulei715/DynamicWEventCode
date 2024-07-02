@@ -1,4 +1,4 @@
-package others;
+package others.signal_test;
 
 public class GracefulShutdown {
     public static void main(String[] args) {
