@@ -112,7 +112,7 @@ public class DatasetCheckInTest {
         System.out.println(maxDate);
         System.out.println(minTimeStamp);
         System.out.println(maxTimeStamp);
-        System.out.println((maxTimeStamp-minTimeStamp)/1000.0/60/10);
+        System.out.println((maxTimeStamp-minTimeStamp)/1000.0/60/100);
     }
 
     @Test

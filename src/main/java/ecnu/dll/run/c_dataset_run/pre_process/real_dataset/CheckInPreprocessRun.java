@@ -268,7 +268,7 @@ public class CheckInPreprocessRun {
     }
 
     public static void main(String[] args) {
-        SignalHandler handler = new NoTerminalHandler();
+        SignalHandler handler = new NoTerminalHandler(2);
         try {
             Signal sigTERM = new Signal("TERM");
             Signal sigINT = new Signal("INT");
@@ -277,11 +277,12 @@ public class CheckInPreprocessRun {
 
             // 程序主逻辑
             System.out.println("Program is running...");
-//            shuffleJoinFilesByTimeSlot();
-            Thread.sleep(Integer.MAX_VALUE); // 防止程序立即退出
+            shuffleJoinFilesByTimeSlot();
+//            Thread.sleep(Integer.MAX_VALUE); // 防止程序立即退出
             System.out.println("Program finished !");
         } catch (Exception e) {
             e.printStackTrace();
+//            System.exit(0);
         }
     }
 
