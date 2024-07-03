@@ -11,12 +11,14 @@ import ecnu.dll.dataset.real.datasetA.TrajectoryTools;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
+import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeFilter;
 import others.signal_handle.MySignalHandler;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 
 public class CheckInPreprocessRun {
@@ -248,6 +250,34 @@ public class CheckInPreprocessRun {
         }
     }
 
+    public static void mergeToExperimentRawData(Long filerLong) {
+        String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "shuffle_by_time_slot");
+        File directoryFile = new File(path);
+        File[] files = directoryFile.listFiles(new FileMergeFilter(filerLong));
+//        File[] files = directoryFile.listFiles();
+        BasicRead basicRead = new BasicRead(",");
+        BasicWrite basicWrite = new BasicWrite(",");
+        List<String> tempDataList;
+        CheckInSimplifiedBean tempBean;
+        Map<Integer, BasicPair<Long, String>> userTimeSlotLocationMap = CheckInPreprocessRunUtils.getInitialUserTimeSlotLocationMap(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join"));
+        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+
+        for (File file : files) {
+            basicRead.startReading(file.getAbsolutePath());
+            tempDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+            basicRead.endReading();
+            for (String lineString : tempDataList) {
+                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(lineString));
+                CheckInPreprocessRunUtils.updateLatestTimeSlotData(userTimeSlotLocationMap, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
+            }
+            basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, outputDirectoryPath, file.getName()));
+            for (Map.Entry<Integer, BasicPair<Long, String>> entry : userTimeSlotLocationMap.entrySet()) {
+                basicWrite.writeOneLine(CheckInPreprocessRunUtils.toSimpleCheckInString(entry));
+            }
+            basicWrite.endWriting();
+        }
+    }
+
 
     public static void main1(String[] args) {
         int unitSize = 204800;
@@ -267,7 +297,7 @@ public class CheckInPreprocessRun {
         TrajectoryTools.sampleData(inputDir, outputDir, ratio, bufferSize);
     }
 
-    public static void main(String[] args) {
+    public static void main4(String[] args) {
         SignalHandler handler = new NoTerminalHandler(2);
         try {
             Signal sigTERM = new Signal("TERM");
@@ -279,6 +309,30 @@ public class CheckInPreprocessRun {
             System.out.println("Program is running...");
             shuffleJoinFilesByTimeSlot();
 //            Thread.sleep(Integer.MAX_VALUE); // 防止程序立即退出
+            System.out.println("Program finished !");
+        } catch (Exception e) {
+            e.printStackTrace();
+//            System.exit(0);
+        }
+    }
+    public static void main(String[] args) {
+        SignalHandler handler = new NoTerminalHandler(2);
+        try {
+            Signal sigTERM = new Signal("TERM");
+            Signal sigINT = new Signal("INT");
+            Signal.handle(sigTERM, handler);
+            Signal.handle(sigINT, handler);
+
+            // 程序主逻辑
+            System.out.println("Program is running...");
+            String filterString = args[0];
+            Long filerNumber;
+            if (filterString == null || "".equals(filterString)) {
+                filerNumber = 0L;
+            } else {
+                filerNumber = Long.valueOf(filterString);
+            }
+            mergeToExperimentRawData(filerNumber);
             System.out.println("Program finished !");
         } catch (Exception e) {
             e.printStackTrace();

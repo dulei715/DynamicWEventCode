@@ -13,6 +13,7 @@ import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 
 public class DatasetCheckInTest {
@@ -223,6 +224,36 @@ public class DatasetCheckInTest {
             }
         }
 
+    }
+
+    @Test
+    public void testTimeIntervalOfShuffleByTime() {
+        String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "shuffle_by_time_slot");
+        File directoryFile = new File(path);
+        File[] files = directoryFile.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".txt");
+            }
+        });
+        long smallestTimeStamp, largestTimeStamp, tempTimeStamp;
+        BasicRead basicRead = new BasicRead(",");
+        List<String> tempDataList;
+        CheckInSimplifiedBean tempBean;
+        for (File file : files) {
+            smallestTimeStamp = Long.MAX_VALUE;
+            largestTimeStamp = 0;
+            basicRead.startReading(file.getAbsolutePath());
+            tempDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+            basicRead.endReading();
+            for (String lineString : tempDataList) {
+                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(lineString));
+                tempTimeStamp = tempBean.getCheckInTimeStamp();
+                smallestTimeStamp = Math.min(smallestTimeStamp, tempTimeStamp);
+                largestTimeStamp = Math.max(largestTimeStamp, tempTimeStamp);
+            }
+            System.out.printf("最小值：%d, 最大值：%d, 差：%d\n", smallestTimeStamp, largestTimeStamp, largestTimeStamp-smallestTimeStamp);
+        }
     }
 
 

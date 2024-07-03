@@ -113,6 +113,15 @@ public class CheckInPreprocessRunUtils {
         return result;
     }
 
+    public static String toSimpleCheckInString(Map.Entry<Integer, BasicPair<Long, String>> entry) {
+        StringBuilder stringBuilder = new StringBuilder();
+        BasicPair<Long, String> pairValue = entry.getValue();
+        stringBuilder.append(entry.getKey()).append(",");
+        stringBuilder.append(pairValue.getValue()).append(",");
+        stringBuilder.append(pairValue.getKey());
+        return stringBuilder.toString();
+    }
+
     public static Map<Integer, BasicPair<Long, String>> getInitialUserTimeSlotLocationMap(String directoryPath) {
         File file = new File(directoryPath);
         File[] files = file.listFiles();
@@ -130,8 +139,19 @@ public class CheckInPreprocessRunUtils {
         return result;
     }
 
+    /**
+     * 及支持形如xxx_yyy.txt
+     * 其中yyy是文件编号
+     * @param fileName
+     * @return
+     */
+    public static String extractNumberString(String fileName) {
+        String[] splitString = fileName.split("_");
+        return splitString[splitString.length-1].split("\\.")[0];
+    }
 
-    public static void main(String[] args) {
+
+    public static void main0(String[] args) {
         int cacheSize = 10;
         int timeStamp = 0;
         String inputDirectoryName = "join";
@@ -145,5 +165,13 @@ public class CheckInPreprocessRunUtils {
         File[] inputFiles = fileDirectory.listFiles();
         Map<Integer, BasicPair<Long, String>> result = getInitialUserTimeSlotLocationMap(inputFiles);
         MyPrint.showMap(result);
+    }
+
+    public static void main(String[] args) {
+        String fileName = "timestamp_00002.txt";
+        String numStr = extractNumberString(fileName);
+        System.out.println(numStr);
+        Long longValue = Long.valueOf(numStr);
+        System.out.println(longValue);
     }
 }
