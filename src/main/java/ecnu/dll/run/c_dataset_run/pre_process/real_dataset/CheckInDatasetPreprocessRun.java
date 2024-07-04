@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
 
-public class CheckInPreprocessRun {
+public class CheckInDatasetPreprocessRun {
 
     private static final String checkInDataFileName = "dataset_TIST2015_Checkins.txt";
     public static void dataSplit(int unitSize) {
@@ -212,6 +212,7 @@ public class CheckInPreprocessRun {
         }
     }
 
+    @Deprecated
     public static void toExperimentRawData() {
         int cacheSize = 10;
         int timeStamp = 0;
@@ -315,7 +316,7 @@ public class CheckInPreprocessRun {
 //            System.exit(0);
         }
     }
-    public static void main(String[] args) {
+    public static void main5(String[] args) {
         SignalHandler handler = new NoTerminalHandler(2);
         try {
             Signal sigTERM = new Signal("TERM");
@@ -325,6 +326,47 @@ public class CheckInPreprocessRun {
 
             // 程序主逻辑
             System.out.println("Program is running...");
+            String filterString = args[0];
+            Long filerNumber;
+            if (filterString == null || "".equals(filterString)) {
+                filerNumber = 0L;
+            } else {
+                filerNumber = Long.valueOf(filterString);
+            }
+            mergeToExperimentRawData(filerNumber);
+            System.out.println("Program finished !");
+        } catch (Exception e) {
+            e.printStackTrace();
+//            System.exit(0);
+        }
+    }
+
+    public static void main(String[] args) {
+        SignalHandler handler = new NoTerminalHandler(2);
+        try {
+            Signal sigTERM = new Signal("TERM");
+            Signal sigINT = new Signal("INT");
+            Signal.handle(sigTERM, handler);
+            Signal.handle(sigINT, handler);
+
+            // 程序主逻辑
+            System.out.println("Program is running... ...");
+
+            // 将数据分割成多个文件以方便分批读取到内存进行处理
+            System.out.println("Start data split...");
+            int unitSize = 204800;
+            dataSplit(unitSize);
+
+            // 将数据与country文件链接，组合成 (userID,country,timestamp)的形式
+            System.out.println("Start join...");
+            dataJoin();
+
+            // 将数据按照时间，划分成多个文件
+            System.out.println("Start shuffle...");
+            shuffleJoinFilesByTimeSlot();
+
+            // 保留每个timestamp的用户状态
+            System.out.println("Start merge...");
             String filterString = args[0];
             Long filerNumber;
             if (filterString == null || "".equals(filterString)) {
