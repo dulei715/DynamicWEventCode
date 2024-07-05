@@ -142,6 +142,9 @@ public class CheckInDatasetPreprocessRun {
 
     }
 
+    /**
+     * 将数据按照时间段先后分在不同的文件里（以时间段号命名）
+     */
     public static void shuffleJoinFilesByTimeSlot() {
         int cacheSize = 10;
         int timeStamp = 0;
@@ -251,6 +254,10 @@ public class CheckInDatasetPreprocessRun {
         }
     }
 
+    /**
+     * 根据每个时间段中的数据依次更新每个用户的位置状态并记录该时间段中最晚的用户状态
+     * @param filerLong
+     */
     public static void mergeToExperimentRawData(Long filerLong) {
         String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "shuffle_by_time_slot");
         File directoryFile = new File(path);

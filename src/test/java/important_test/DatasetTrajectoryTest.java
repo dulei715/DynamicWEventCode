@@ -13,6 +13,9 @@ import java.io.File;
 import java.util.List;
 
 public class DatasetTrajectoryTest {
+    /**
+     * 测试所有用户数据量的最大值和最小值
+     */
     @Test
     public void testTrajectoryItemOfEachUser() {
         String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id");
@@ -67,4 +70,13 @@ public class DatasetTrajectoryTest {
             TrajectoryBeanUtils.getInfo(tempList);
         }
     }
+
+    /**
+     *
+     */
+    @Test
+    public void testPositionRange() {
+
+    }
+
 }
