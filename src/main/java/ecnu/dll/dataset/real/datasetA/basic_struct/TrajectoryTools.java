@@ -1,4 +1,4 @@
-package ecnu.dll.dataset.real.datasetA;
+package ecnu.dll.dataset.real.datasetA.basic_struct;
 
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;

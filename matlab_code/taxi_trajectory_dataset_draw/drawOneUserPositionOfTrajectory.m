@@ -3,6 +3,6 @@ matrix = readtable(file);
 if isempty(matrix)
     return;
 end
-latitudes = matrix(:,2).Var2;
-longitudes = matrix(:,1).Var1;
+latitudes = matrix(:,4).Var4;
+longitudes = matrix(:,3).Var3;
 plot(longitudes, latitudes,'.','Color','b');

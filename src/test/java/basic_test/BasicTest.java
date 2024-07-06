@@ -164,6 +164,23 @@ public class BasicTest {
         System.out.println(data);
     }
 
+    @Test
+    public void fun14() {
+//        Date dateA = new Date(1198944000000L);
+//        Date dateB = new Date(1199030399000L);
+        Date dateA = new Date(1201930244000L);
+        Date dateB = new Date(1202463559000L);
+        System.out.println(dateA);
+        System.out.println(dateB);
+    }
+
+    @Test
+    public void fun15() {
+        Long dataA = 1202463559000L;
+        Long dataB = 1201930244000L;
+        System.out.println((dataA-dataB)/1000/60);
+    }
+
 
 
 

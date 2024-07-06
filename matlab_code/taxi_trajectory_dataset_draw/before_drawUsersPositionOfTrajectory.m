@@ -1,10 +1,8 @@
-function y = drawUsersPositionOfTrajectory(basicPath) 
+function y = drawUsersPositionOfTrajectory(basicPath, fileNumber) 
 fig = figure;
 hold on;
-files = dir(basicPath);
-files = files(~[files.isdir]);
-for i = 1:length(files)
-    tempFile = [basicPath,files(i).name];
+for i = 1:fileNumber
+    tempFile = [basicPath,num2str(i),'.txt'];
     drawOneUserPositionOfTrajectory(tempFile);
 end
 figure_FontSize = 25;

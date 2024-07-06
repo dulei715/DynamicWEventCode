@@ -1,4 +1,4 @@
-package ecnu.dll.dataset.real.datasetA;
+package ecnu.dll.dataset.real.datasetA.basic_struct;
 
 import cn.edu.dll.struct.pair.IdentityPair;
 

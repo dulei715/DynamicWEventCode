@@ -1,14 +1,13 @@
 package basic_test;
 
 import ecnu.dll._config.Constant;
-import ecnu.dll._config.TestData;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll.dataset.DataSetHandler;
-import ecnu.dll.dataset.real.datasetA.TrajectoryBean;
-import ecnu.dll.dataset.real.datasetA.TrajectoryBeanUtils;
+import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryBean;
+import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryBeanUtils;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import org.junit.Test;

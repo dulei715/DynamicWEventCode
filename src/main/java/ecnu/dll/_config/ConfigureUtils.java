@@ -110,6 +110,20 @@ public class ConfigureUtils {
         return unit * time;
     }
 
+    public static Integer getTrajectoryLongitudeSize() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//fileHandle[@name='trajectories']").get(0);
+        Element longitudeElement = (Element) element.selectNodes("longitudeSplitSize").get(0);
+//        Element latitudeElement = (Element) element.selectNodes("latitudeSplitSize").get(0);
+        return Integer.valueOf(longitudeElement.getTextTrim());
+    }
+    public static Integer getTrajectoryLatitudeSize() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//fileHandle[@name='trajectories']").get(0);
+        Element latitudeElement = (Element) element.selectNodes("latitudeSplitSize").get(0);
+        return Integer.valueOf(latitudeElement.getTextTrim());
+    }
+
     public static void main0(String[] args) {
         Double privacyBudgetUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
         System.out.println(privacyBudgetUpperBound);
@@ -130,8 +144,15 @@ public class ConfigureUtils {
         System.out.println(Constant.projectPath);
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         Long timeStamp = getTimeInterval("checkIn");
         System.out.println(timeStamp);
+    }
+
+    public static void main(String[] args) {
+        Integer longitudeSize = getTrajectoryLongitudeSize();
+        Integer latitudeSize = getTrajectoryLatitudeSize();
+        System.out.println(longitudeSize);
+        System.out.println(latitudeSize);
     }
 }

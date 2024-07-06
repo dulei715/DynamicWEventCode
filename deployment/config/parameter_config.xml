@@ -16,6 +16,8 @@
         </fileHandle>
         <fileHandle name="trajectories">
             <timeSlot unit="minute">3</timeSlot>
+            <longitudeSplitSize>10</longitudeSplitSize>
+            <latitudeSplitSize>10</latitudeSplitSize>
         </fileHandle>
     </datasets>
     <candidateSet>

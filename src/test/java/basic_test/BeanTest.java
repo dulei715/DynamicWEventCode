@@ -4,9 +4,10 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.CSVRead;
 import ecnu.dll._config.Constant;
-import ecnu.dll.dataset.real.datasetA.TrajectoryBean;
+import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryBean;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.List;
 
 public class BeanTest {
@@ -18,5 +19,14 @@ public class BeanTest {
         List<TrajectoryBean> resultList = CSVRead.readDataToBeanList(filePath, trajectoryBean);
         MyPrint.showList(resultList, ConstantValues.LINE_SPLIT);
 
+    }
+
+    @Test
+    public void fun2() {
+        String dataString = "4,2008-02-02 15:15:04,116.47002,39.90666";
+        TrajectoryBean bean = TrajectoryBean.toTrajectoryBeanWithFormatTime(dataString.split(","));
+        System.out.println(bean);
+        Date date = new Date(bean.getTimestamp());
+        System.out.println(date);
     }
 }

@@ -7,18 +7,16 @@ import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
-import ecnu.dll.dataset.real.datasetA.TrajectoryTools;
+import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryTools;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeFilter;
-import others.signal_handle.MySignalHandler;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.*;
 
 public class CheckInDatasetPreprocessRun {
