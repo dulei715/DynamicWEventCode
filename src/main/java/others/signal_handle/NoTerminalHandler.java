@@ -3,10 +3,16 @@ package others.signal_handle;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class NoTerminalHandler implements SignalHandler {
-    private Integer number = null;
-    public NoTerminalHandler(Integer number) {
-        this.number = number;
+    private Collection<Integer> numberCollection = null;
+    public NoTerminalHandler(Integer... numberArray) {
+        this.numberCollection = new ArrayList<>();
+        for (Integer number : numberArray) {
+            this.numberCollection.add(number);
+        }
     }
 
     @Override
@@ -14,7 +20,7 @@ public class NoTerminalHandler implements SignalHandler {
         // 处理信号，这里只是简单地打印信息
         int signalNumber = signal.getNumber();
         System.out.println("Received signal: " + signal.getName() + ", its signal number is: " + signalNumber);
-        if (this.number != null && this.number.equals(signalNumber)) {
+        if (this.numberCollection.contains(signalNumber)) {
             System.out.println("The program exit with signal number: " + signalNumber);
             System.exit(0);
         }

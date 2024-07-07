@@ -12,6 +12,7 @@ import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeFilter;
+import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.PreprocessRunUtils;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
@@ -111,7 +112,7 @@ public class CheckInDatasetPreprocessRun {
                         tempBean = CheckInSimplifiedBean.toBean(basicRead.split(dataString));
                         tempUserTime = tempBean.getCheckInTimeStamp();
                         if (tempUserTime >= timeSlotLeftBound && tempUserTime < timeSlotRightBound) {
-                            CheckInPreprocessRunUtils.updateLatestTimeSlotData(tempLatestUserTimeSlotLocationMap, tempBean.getUserID(), tempUserTime, tempBean.getCountryName());
+                            PreprocessRunUtils.updateLatestTimeSlotData(tempLatestUserTimeSlotLocationMap, tempBean.getUserID(), tempUserTime, tempBean.getCountryName());
                         }
                     }
 
@@ -240,7 +241,7 @@ public class CheckInDatasetPreprocessRun {
             basicRead.endReading();
             for (String dataLine : tempDataList) {
                 tempBean = CheckInSimplifiedBean.toBean(basicRead.split(dataLine));
-                CheckInPreprocessRunUtils.updateLatestTimeSlotData(userTimeSlotLocationMap, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
+                PreprocessRunUtils.updateLatestTimeSlotData(userTimeSlotLocationMap, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
             }
             basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, outputDirectoryPath, inputFile.getName()));
             for (Map.Entry<Integer, BasicPair<Long, String>> entry : userTimeSlotLocationMap.entrySet()) {
@@ -274,7 +275,7 @@ public class CheckInDatasetPreprocessRun {
             basicRead.endReading();
             for (String lineString : tempDataList) {
                 tempBean = CheckInSimplifiedBean.toBean(basicRead.split(lineString));
-                CheckInPreprocessRunUtils.updateLatestTimeSlotData(userTimeSlotLocationMap, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
+                PreprocessRunUtils.updateLatestTimeSlotData(userTimeSlotLocationMap, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
             }
             basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, outputDirectoryPath, file.getName()));
             for (Map.Entry<Integer, BasicPair<Long, String>> entry : userTimeSlotLocationMap.entrySet()) {

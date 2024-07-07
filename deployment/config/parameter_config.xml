@@ -15,7 +15,7 @@
 <!--            <timeSlot unit="minute">100</timeSlot>-->
         </fileHandle>
         <fileHandle name="trajectories">
-            <timeSlot unit="minute">3</timeSlot>
+            <timeSlot unit="minute">1</timeSlot>
             <longitudeSplitSize>10</longitudeSplitSize>
             <latitudeSplitSize>10</latitudeSplitSize>
         </fileHandle>

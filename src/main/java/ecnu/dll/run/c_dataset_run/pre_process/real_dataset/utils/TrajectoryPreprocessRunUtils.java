@@ -7,6 +7,7 @@ import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
+import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CheckInPreprocessRunUtils {
+public class TrajectoryPreprocessRunUtils {
 
 
 
@@ -24,13 +25,13 @@ public class CheckInPreprocessRunUtils {
         Map<Integer, Map<String, Long>> result = new HashMap<>();
         BasicRead basicRead = new BasicRead(",");
         List<String> tempData;
-        CheckInSimplifiedBean tempBean;
+        TrajectorySimplifiedBean tempBean;
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
             tempData = basicRead.readAllWithoutLineNumberRecordInFile();
             for (String item : tempData) {
-                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(item));
-                PreprocessRunUtils.updateSubMapValue(result, tempBean.getUserID(), tempBean.getCheckInTimeStamp());
+                tempBean = TrajectorySimplifiedBean.toBean(basicRead.split(item));
+                PreprocessRunUtils.updateSubMapValue(result, tempBean.getUserID(), tempBean.getTimestamp());
             }
         }
         return result;
@@ -41,21 +42,21 @@ public class CheckInPreprocessRunUtils {
     public static Map<Integer, BasicPair<Long, String>> getInitialUserTimeSlotLocationMap(File[] files) {
         List<String> tempData;
         BasicRead basicRead = new BasicRead(",");
-        CheckInSimplifiedBean tempBean;
+        TrajectorySimplifiedBean tempBean;
         Map<Integer, BasicPair<Long, String>> result = new TreeMap<>();
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
             tempData = basicRead.readAllWithoutLineNumberRecordInFile();
             for (String dataLine : tempData) {
-                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(dataLine));
-                PreprocessRunUtils.updateMostOriginalTimeSlotData(result, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
+                tempBean = TrajectorySimplifiedBean.toBean(basicRead.split(dataLine));
+                PreprocessRunUtils.updateMostOriginalTimeSlotData(result, tempBean.getUserID(), tempBean.getTimestamp(), tempBean.getAreaIndex()+"");
             }
             basicRead.endReading();
         }
         return result;
     }
 
-    public static String toSimpleCheckInString(Map.Entry<Integer, BasicPair<Long, String>> entry) {
+    public static String toSimpleTrajectoryString(Map.Entry<Integer, BasicPair<Long, String>> entry) {
         StringBuilder stringBuilder = new StringBuilder();
         BasicPair<Long, String> pairValue = entry.getValue();
         stringBuilder.append(entry.getKey()).append(",");
