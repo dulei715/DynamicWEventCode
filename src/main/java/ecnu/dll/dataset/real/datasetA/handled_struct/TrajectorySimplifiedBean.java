@@ -1,6 +1,5 @@
 package ecnu.dll.dataset.real.datasetA.handled_struct;
 
-import cn.edu.dll.struct.pair.IdentityPair;
 
 public class TrajectorySimplifiedBean {
     private Integer userID;

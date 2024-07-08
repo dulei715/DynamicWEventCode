@@ -7,6 +7,7 @@ import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
+import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectoryComplicatedBean;
 import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 
@@ -42,13 +43,13 @@ public class TrajectoryPreprocessRunUtils {
     public static Map<Integer, BasicPair<Long, String>> getInitialUserTimeSlotLocationMap(File[] files) {
         List<String> tempData;
         BasicRead basicRead = new BasicRead(",");
-        TrajectorySimplifiedBean tempBean;
+        TrajectoryComplicatedBean tempBean;
         Map<Integer, BasicPair<Long, String>> result = new TreeMap<>();
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
             tempData = basicRead.readAllWithoutLineNumberRecordInFile();
             for (String dataLine : tempData) {
-                tempBean = TrajectorySimplifiedBean.toBean(basicRead.split(dataLine));
+                tempBean = TrajectoryComplicatedBean.toBean(basicRead.split(dataLine));
                 PreprocessRunUtils.updateMostOriginalTimeSlotData(result, tempBean.getUserID(), tempBean.getTimestamp(), tempBean.getAreaIndex()+"");
             }
             basicRead.endReading();
@@ -76,23 +77,18 @@ public class TrajectoryPreprocessRunUtils {
 
 
 
-    public static void main0(String[] args) {
-        int cacheSize = 10;
-        int timeStamp = 0;
-        String inputDirectoryName = "join";
+    public static void main(String[] args) {
+//        String inputDirectoryName = "taxi_log_2008_by_id";
+        String inputDirectoryName = "extract_data";
         String outputDirectoryName = "runInput";
-        String inputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, inputDirectoryName);
-        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, outputDirectoryName);
-        Long startCheckInTimeSlot = 1333476006000L; // 在/Users/admin/MainFiles/5.GitTrans/2.github_code/DynamicWEventCode/src/test/java/important_test/DatasetCheckInTest.testTime()测试中得到
-        Long endCheckInTimeSlot = 1379373855000L;
-        Long timeInterval = ConfigureUtils.getTimeInterval("checkIn");
+        String inputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, inputDirectoryName);
         File fileDirectory = new File(inputDirectoryPath);
         File[] inputFiles = fileDirectory.listFiles();
         Map<Integer, BasicPair<Long, String>> result = getInitialUserTimeSlotLocationMap(inputFiles);
         MyPrint.showMap(result);
     }
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         String fileName = "timestamp_00002.txt";
         String numStr = PreprocessRunUtils.extractNumberString(fileName);
         System.out.println(numStr);
