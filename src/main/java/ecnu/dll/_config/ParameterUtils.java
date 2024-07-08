@@ -3,6 +3,7 @@ package ecnu.dll._config;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.basic.RandomUtil;
+import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.SetUtils;
 import cn.edu.dll.struct.pair.IdentityPurePair;
 
@@ -12,6 +13,29 @@ import java.util.List;
 import java.util.Set;
 
 public class ParameterUtils {
+
+    public static List<Double> getRandomPrivacyBudget(Double lowerBound, Double upperBound, int size) {
+        List<Double> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            result.add(RandomUtil.getRandomDouble(lowerBound, upperBound));
+        }
+        return result;
+    }
+    public static List<String> getRandomDoubleList(List<Integer> userIDList, Double lowerBound, Double upperBound) {
+        List<String> result = new ArrayList<>(userIDList.size());
+        for (Integer userID : userIDList) {
+            result.add(StringUtil.join(",", userID, RandomUtil.getRandomDouble(lowerBound, upperBound)));
+        }
+        return result;
+    }
+    public static List<String> getRandomIntegerList(List<Integer> userIDList, Integer lowerBound, Integer upperBound) {
+        List<String> result = new ArrayList<>(userIDList.size());
+        for (Integer userID : userIDList) {
+            result.add(StringUtil.join(",", userID, RandomUtil.getRandomInteger(lowerBound, upperBound)));
+        }
+        return result;
+    }
+
     public static List<Double> generateDoubleList(Double lowerBound, Double upperBound, int typeSize, int groupElementSize, int sizeUpperBound) {
         List<Double> resultList = new ArrayList<>();
         Double step = (upperBound - lowerBound) / (typeSize - 1);

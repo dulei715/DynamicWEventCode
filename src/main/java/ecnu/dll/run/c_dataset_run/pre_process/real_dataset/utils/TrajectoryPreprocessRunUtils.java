@@ -12,10 +12,7 @@ import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class TrajectoryPreprocessRunUtils {
 
@@ -72,12 +69,22 @@ public class TrajectoryPreprocessRunUtils {
         return getInitialUserTimeSlotLocationMap(files);
     }
 
+    public static List<Integer> getUserIDList(String userIDDir) {
+        File file = new File(userIDDir);
+        String[] fileNameArray = file.list();
+        List<Integer> result = new ArrayList<>(fileNameArray.length);
+        for (String fileName : fileNameArray) {
+            result.add(Integer.valueOf(fileName.split("\\.")[0]));
+        }
+        return result;
+    }
 
 
 
 
 
-    public static void main(String[] args) {
+
+    public static void main0(String[] args) {
 //        String inputDirectoryName = "taxi_log_2008_by_id";
         String inputDirectoryName = "extract_data";
         String outputDirectoryName = "runInput";
@@ -94,5 +101,12 @@ public class TrajectoryPreprocessRunUtils {
         System.out.println(numStr);
         Long longValue = Long.valueOf(numStr);
         System.out.println(longValue);
+    }
+
+    public static void main(String[] args) {
+        String userIDDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
+        List<Integer> result = getUserIDList(userIDDir);
+        MyPrint.showList(result);
+        System.out.println(result.size());
     }
 }

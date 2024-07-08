@@ -2,10 +2,12 @@ package ecnu.dll._config;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.io.print.MyPrint;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,6 +126,20 @@ public class ConfigureUtils {
         return Integer.valueOf(latitudeElement.getTextTrim());
     }
 
+    public static List<Double> getIndependentPrivacyBudgetList(String varianceName) {
+        Document document = Constant.xmlConfigure.getDocument();;
+        Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='PrivacyBudget']/variance[@name='" + varianceName + "']").get(0);
+        String textTrim = element.getTextTrim();
+        String[] strArr = textTrim.split(",");
+        List<Double> result = new ArrayList<>(strArr.length);
+        for (String str : strArr) {
+            result.add(Double.valueOf(str));
+        }
+        return result;
+    }
+
+
+
     public static void main0(String[] args) {
         Double privacyBudgetUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
         System.out.println(privacyBudgetUpperBound);
@@ -149,10 +165,15 @@ public class ConfigureUtils {
         System.out.println(timeStamp);
     }
 
-    public static void main(String[] args) {
+    public static void main3(String[] args) {
         Integer longitudeSize = getTrajectoryLongitudeSize();
         Integer latitudeSize = getTrajectoryLatitudeSize();
         System.out.println(longitudeSize);
         System.out.println(latitudeSize);
+    }
+
+    public static void main(String[] args) {
+        List<Double> result = getIndependentPrivacyBudgetList("default");
+        MyPrint.showList(result);
     }
 }

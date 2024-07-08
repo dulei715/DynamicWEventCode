@@ -7,6 +7,26 @@ import ecnu.dll._config.Constant;
 import java.io.File;
 
 public class FormatFileName {
+
+    /**
+     * 仅支持非负数
+     */
+    public static String getFormatNumberString(Integer value, Integer begin, Integer size) {
+        Integer mostValue = begin + size - 1;
+        int digitNumber = 0;
+        if (value <= 0) {
+            return String.valueOf(0);
+        }
+        for(; mostValue > 0; mostValue /= 10, ++digitNumber);
+        return String.format("%0"+digitNumber+"d", value);
+    }
+
+    public static String extractNumString(String originalName, String leftSplit, String rightSplit) {
+        int left = originalName.lastIndexOf(leftSplit);
+        int right = originalName.lastIndexOf(rightSplit);
+        return originalName.substring(left+1, right);
+    }
+
     public static String formatFileName(String originalName, String leftSplit, String rightSplit, int digitNumber) {
         int leftIndex;
         if ("".equals(leftSplit)) {
@@ -22,7 +42,7 @@ public class FormatFileName {
     }
 
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         String directoryPath = args[0];
         String leftSplit = args[1];
         String rightSplit = args[2];
@@ -41,5 +61,17 @@ public class FormatFileName {
             tempNewFile = new File(file.getParentFile(), tempNewName);
             file.renameTo(tempNewFile);
         }
+    }
+
+    public static void main2(String[] args) {
+        String result = getFormatNumberString(12, 5, 100);
+        System.out.println(result);
+    }
+
+    public static void main(String[] args) {
+        String originalName = "time_090.txt";
+        String result = extractNumString(originalName, "_", ".");
+        System.out.println(result);
+
     }
 }
