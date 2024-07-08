@@ -53,7 +53,9 @@
             <!--for dynamic mechanisms-->
             <dataType>java.lang.Integer</dataType>
             <single name="default">10</single>
-            <variance name="default">1,5,10,15,20</variance>
+            <variance name="default">1,300,600,900,1200</variance>
+            <single name="1">600</single>
+            <variance name="1">1,5,10,15,20</variance>
         </attribute>
         <attribute name=""></attribute>
     </independentVariables>

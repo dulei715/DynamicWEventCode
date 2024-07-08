@@ -385,9 +385,10 @@ public class TrajectoryDatasetPreprocessRun {
      */
     public static void mergeToExperimentRawData() {
         int threadSizeUpperBound = 10;
-        String inputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
+        String initializedInputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
+        String inputDirectoryName = "extract_data";
         String outputDirectoryName = "runInput";
-        File direcoryFile = new File(inputDirectoryPath);
+        File direcoryFile = new File(initializedInputDirectoryPath);
         int fileSize = direcoryFile.listFiles(new TxtFilter()).length;
 //        int fileSize = 8888;
         long startFileID, endFileID;
@@ -402,11 +403,11 @@ public class TrajectoryDatasetPreprocessRun {
         for (int i = 0; i < startIndexSize; i++) {
             startFileID = threadStartFileID.get(i);
             endFileID = i == startIndexSize - 1 ? fileSize - 1 : threadStartFileID.get(i+1) - 1;
-            System.out.printf("startFileID: %d, endFileID: %d\n", startFileID, endFileID);
-//            tempRunnable = new TrajectoryMergeThread(startFileID, endFileID, inputDirectoryPath, outputDirectoryName);
-//            tempTread = new Thread(tempRunnable);
-//            tempTread.start();
-//            System.out.println("Start merge thread " + tempTread.getId());
+//            System.out.printf("startFileID: %d, endFileID: %d\n", startFileID, endFileID);
+            tempRunnable = new TrajectoryMergeThread(startFileID, endFileID, initializedInputDirectoryPath, inputDirectoryName, outputDirectoryName);
+            tempTread = new Thread(tempRunnable);
+            tempTread.start();
+            System.out.println("Start merge thread " + tempTread.getId());
         }
     }
 

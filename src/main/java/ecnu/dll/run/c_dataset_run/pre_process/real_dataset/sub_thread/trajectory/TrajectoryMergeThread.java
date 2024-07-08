@@ -18,25 +18,27 @@ import java.util.Map;
 public class TrajectoryMergeThread implements Runnable{
     private Long fileNumberStart;
     private Long fileNumberEnd;
-    private String inputDirectoryPath;
+    private String initializedInputDirectoryPath;
+    private String inputDirectoryName;
     private String outputDirectoryName;
 
-    public TrajectoryMergeThread(Long fileNumberStart, Long fileNumberEnd, String inputDirectoryPath, String outputDirectoryName) {
+    public TrajectoryMergeThread(Long fileNumberStart, Long fileNumberEnd, String initializedInputDirectoryPath, String inputDirectoryName, String outputDirectoryName) {
         this.fileNumberStart = fileNumberStart;
         this.fileNumberEnd = fileNumberEnd;
-        this.inputDirectoryPath = inputDirectoryPath;
+        this.initializedInputDirectoryPath = initializedInputDirectoryPath;
+        this.inputDirectoryName = inputDirectoryName;
         this.outputDirectoryName = outputDirectoryName;
     }
 
     public void mergeToRawData() {
 //        String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
-        File directoryFile = new File(inputDirectoryPath);
+        File directoryFile = new File(initializedInputDirectoryPath);
         File[] files = directoryFile.listFiles(new FileMergeEnhancedFilter(fileNumberStart, fileNumberEnd));
         BasicRead basicRead = new BasicRead(",");
         BasicWrite basicWrite = new BasicWrite(",");
         List<String> tempDataList;
         TrajectorySimplifiedBean tempBean;
-        Map<Integer, BasicPair<Long, String>> userTimeSlotLocationMap = TrajectoryPreprocessRunUtils.getInitialUserTimeSlotLocationMap(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "extract_data"));
+        Map<Integer, BasicPair<Long, String>> userTimeSlotLocationMap = TrajectoryPreprocessRunUtils.getInitialUserTimeSlotLocationMap(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, inputDirectoryName));
         String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, outputDirectoryName);
 
         for (File file : files) {
