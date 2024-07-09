@@ -1,10 +1,15 @@
-package ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils;
+package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils;
 
+import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.io.read.BasicRead;
+import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
+import ecnu.dll.utils.FormatFileName;
+import ecnu.dll.utils.filters.TxtFilter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.File;
+import java.util.*;
 
 public class PreprocessRunUtils {
     public static final String LowBoundKey = "lowerBound";
@@ -88,5 +93,39 @@ public class PreprocessRunUtils {
             result.put(rawKey,newValue);
         }
         return result;
+    }
+
+    public static void recordUserInfo(String datasetPath) {
+        String userReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput", "timestamp_0000.txt");
+
+        BasicRead basicRead = new BasicRead(",");
+        List<String> tempData, userIDList = new ArrayList<>();
+        basicRead.startReading(userReadDirPath);
+        tempData = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        String userIDString;
+        for (String line : tempData) {
+            userIDString = basicRead.split(line)[0];
+            userIDList.add(userIDString);
+        }
+        BasicWrite basicWrite = new BasicWrite(",");
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user.txt"));
+        basicWrite.writeStringListWithoutSize(userIDList);
+        basicWrite.endWriting();
+    }
+
+    public static void recordTimeStampInfo(String datasetPath) {
+        String timeStampReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput");
+
+        TreeSet<Integer> timeStampSet = new TreeSet<>();
+        File dirFile = new File(timeStampReadDirPath);
+        File[] files = dirFile.listFiles(new TxtFilter());
+        for (File file : files) {
+            timeStampSet.add(Integer.valueOf(FormatFileName.extractNumString(file.getName(), "_", ".")));
+        }
+        BasicWrite basicWrite = new BasicWrite(",");
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "time_stamp.txt"));
+        basicWrite.writeStringListWithoutSize(new ArrayList<>(timeStampSet));
+        basicWrite.endWriting();
     }
 }

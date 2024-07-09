@@ -138,6 +138,18 @@ public class ConfigureUtils {
         return result;
     }
 
+    public static List<Integer> getIndependentWindowSizeList(String varianceName) {
+        Document document = Constant.xmlConfigure.getDocument();;
+        Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='WindowSize']/variance[@name='" + varianceName + "']").get(0);
+        String textTrim = element.getTextTrim();
+        String[] strArr = textTrim.split(",");
+        List<Integer> result = new ArrayList<>(strArr.length);
+        for (String str : strArr) {
+            result.add(Integer.valueOf(str));
+        }
+        return result;
+    }
+
 
 
     public static void main0(String[] args) {

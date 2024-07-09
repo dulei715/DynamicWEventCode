@@ -1,7 +1,8 @@
-package ecnu.dll.run.c_dataset_run.pre_process._parameter_generation;
+package ecnu.dll.run.c_dataset_run.utils;
 
 import java.util.List;
 
+@Deprecated
 public class CrossIndex {
     private List<Double> privacyBudgetList;
     private Integer defaultPrivacyBudgetIndex;

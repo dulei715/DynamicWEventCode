@@ -1,4 +1,4 @@
-package ecnu.dll.run.c_dataset_run.pre_process.real_dataset.sub_thread.trajectory;
+package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -7,9 +7,9 @@ import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeEnhancedFilter;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.PreprocessRunUtils;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.TrajectoryPreprocessRunUtils;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.FileMergeEnhancedFilter;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.PreprocessRunUtils;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.TrajectoryPreprocessRunUtils;
 
 import java.io.File;
 import java.util.List;

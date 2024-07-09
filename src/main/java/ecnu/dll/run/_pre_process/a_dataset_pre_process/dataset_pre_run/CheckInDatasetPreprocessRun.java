@@ -1,4 +1,4 @@
-package ecnu.dll.run.c_dataset_run.pre_process.real_dataset;
+package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -10,10 +10,11 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryTools;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeFilter;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.PreprocessRunUtils;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.TxtFilter;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.CheckInPreprocessRunUtils;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.PreprocessRunUtils;
+import ecnu.dll.utils.CatchSignal;
+import ecnu.dll.utils.FormatFileName;
+import ecnu.dll.utils.filters.TxtFilter;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
@@ -347,37 +348,73 @@ public class CheckInDatasetPreprocessRun {
 //        }
 //    }
 
-    public static void main(String[] args) {
-        SignalHandler handler = new NoTerminalHandler(2);
-        try {
-            Signal sigTERM = new Signal("TERM");
-            Signal sigINT = new Signal("INT");
-            Signal.handle(sigTERM, handler);
-            Signal.handle(sigINT, handler);
+    public static void recordCountryInfo() {
+        String countryReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join");
 
-            // 程序主逻辑
-            System.out.println("Program is running... ...");
-
-            // 1. 将数据分割成多个文件以方便分批读取到内存进行处理
-//            System.out.println("Start data split...");
-//            int unitSize = 204800;
-//            dataSplit(unitSize);
-
-            // 2. 将数据与country文件链接，组合成 (userID,country,timestamp)的形式
-//            System.out.println("Start join...");
-//            dataJoin();
-
-            // 3. 将数据按照时间，划分成多个文件
-//            System.out.println("Start shuffle...");
-//            shuffleJoinFilesByTimeSlot();
-
-            // 4. 保留每个timestamp的用户状态
-            System.out.println("Start merge...");
-            mergeToExperimentRawData();
-            System.out.println("Program finished !");
-        } catch (Exception e) {
-            e.printStackTrace();
+        File dirFile = new File(countryReadDirPath);
+        File[] files = dirFile.listFiles(new TxtFilter());
+        BasicRead basicRead = new BasicRead(",");
+        List<String> tempData;
+        TreeSet<String> countrySet = new TreeSet<>();
+        CheckInSimplifiedBean bean;
+        for (File file : files) {
+            basicRead.startReading(file.getAbsolutePath());
+            tempData = basicRead.readAllWithoutLineNumberRecordInFile();
+            basicRead.endReading();
+            for (String line : tempData) {
+                bean = CheckInSimplifiedBean.toBean(basicRead.split(line));
+                countrySet.add(bean.getCountryName());
+            }
         }
+        List<String> countryList = new ArrayList<>(countrySet);
+        BasicWrite basicWrite = new BasicWrite(",");
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info", "country.txt"));
+        basicWrite.writeStringListWithoutSize(countryList);
+        basicWrite.endWriting();
+    }
+
+
+
+    public static void recordBasicInformation() {
+        recordCountryInfo();
+        PreprocessRunUtils.recordUserInfo(Constant.checkInFilePath);
+        PreprocessRunUtils.recordTimeStampInfo(Constant.checkInFilePath);
+    }
+
+    public static void main0(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        // 程序主逻辑
+        System.out.println("Program is running... ...");
+
+        // 1. 将数据分割成多个文件以方便分批读取到内存进行处理
+        System.out.println("Start data split...");
+        int unitSize = 204800;
+        dataSplit(unitSize);
+
+        // 2. 将数据与country文件链接，组合成 (userID,country,timestamp)的形式
+        System.out.println("Start join...");
+        dataJoin();
+
+
+        // 3. 将数据按照时间，划分成多个文件
+        System.out.println("Start shuffle...");
+        shuffleJoinFilesByTimeSlot();
+
+        // 4. 保留每个timestamp的用户状态
+        System.out.println("Start merge...");
+        mergeToExperimentRawData();
+
+        // 5. 记录country.txt, user.txt, timestamp.txt三个基本文件到 basic_info/ 目录下
+        System.out.println("Start record...");
+        recordBasicInformation();
+        System.out.println("Program finished !");
+    }
+
+    public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        recordBasicInformation();
     }
 
 }

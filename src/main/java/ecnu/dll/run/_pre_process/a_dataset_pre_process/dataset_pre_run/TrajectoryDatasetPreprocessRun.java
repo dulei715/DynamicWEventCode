@@ -1,18 +1,18 @@
-package ecnu.dll.run.c_dataset_run.pre_process.real_dataset;
+package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
-import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetA.basic_struct.TrajectoryBean;
 import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.sub_thread.trajectory.TestTrajectorySplitByTimeSubThread;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.sub_thread.trajectory.TrajectoryMergeThread;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.sub_thread.trajectory.TrajectorySplitByTimeSubThread;
-import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.*;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead.TestTrajectorySplitByTimeSubThread;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead.TrajectoryMergeThread;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead.TrajectorySplitByTimeSubThread;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.PreprocessRunUtils;
+import ecnu.dll.utils.filters.TxtFilter;
 import ecnu.dll.utils.CatchSignal;
 import ecnu.dll.utils.FormatFileName;
 
@@ -432,6 +432,28 @@ public class TrajectoryDatasetPreprocessRun {
         System.out.println("Start merge thread " + tempTread.getId());
     }
 
+    public static void recordCellInfo() {
+        Integer longitudeSize = ConfigureUtils.getTrajectoryLongitudeSize();
+        Integer latitudeSize = ConfigureUtils.getTrajectoryLatitudeSize();
+        List<Integer> cellList = new ArrayList<>();
+        int k = 0;
+        for (int i = 0; i < longitudeSize; i++) {
+            for (int j = 0; j < latitudeSize; j++) {
+                cellList.add(k++);
+            }
+        }
+        BasicWrite basicWrite = new BasicWrite(",");
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "basic_info", "cell.txt"));
+        basicWrite.writeStringListWithoutSize(cellList);
+        basicWrite.endWriting();
+    }
+
+    public static void recordBasicInformation() {
+        recordCellInfo();
+        PreprocessRunUtils.recordUserInfo(Constant.trajectoriesFilePath);
+        PreprocessRunUtils.recordTimeStampInfo(Constant.trajectoriesFilePath);
+    }
+
 
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
@@ -441,7 +463,8 @@ public class TrajectoryDatasetPreprocessRun {
 //        formatFileName("shuffle_by_time_slot");
 //        testSplitByTimeMultiThreadByIndex();
 //        testSplitByTimeIndex();
-        mergeToExperimentRawData();
+//        mergeToExperimentRawData();
+        recordBasicInformation();
     }
 
 

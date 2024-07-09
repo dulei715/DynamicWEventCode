@@ -1,4 +1,4 @@
-package ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils;
+package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -7,15 +7,15 @@ import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
-import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectoryComplicatedBean;
-import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
+import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
 import ecnu.dll.utils.FormatFileName;
+import ecnu.dll.utils.filters.TxtFilter;
 
 import java.io.File;
 import java.util.*;
 
-public class TrajectoryPreprocessRunUtils {
+public class CheckInPreprocessRunUtils {
 
 
 
@@ -24,13 +24,13 @@ public class TrajectoryPreprocessRunUtils {
         Map<Integer, Map<String, Long>> result = new HashMap<>();
         BasicRead basicRead = new BasicRead(",");
         List<String> tempData;
-        TrajectorySimplifiedBean tempBean;
+        CheckInSimplifiedBean tempBean;
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
             tempData = basicRead.readAllWithoutLineNumberRecordInFile();
             for (String item : tempData) {
-                tempBean = TrajectorySimplifiedBean.toBean(basicRead.split(item));
-                PreprocessRunUtils.updateSubMapValue(result, tempBean.getUserID(), tempBean.getTimestamp());
+                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(item));
+                PreprocessRunUtils.updateSubMapValue(result, tempBean.getUserID(), tempBean.getCheckInTimeStamp());
             }
         }
         return result;
@@ -41,21 +41,21 @@ public class TrajectoryPreprocessRunUtils {
     public static Map<Integer, BasicPair<Long, String>> getInitialUserTimeSlotLocationMap(File[] files) {
         List<String> tempData;
         BasicRead basicRead = new BasicRead(",");
-        TrajectoryComplicatedBean tempBean;
+        CheckInSimplifiedBean tempBean;
         Map<Integer, BasicPair<Long, String>> result = new TreeMap<>();
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
             tempData = basicRead.readAllWithoutLineNumberRecordInFile();
             for (String dataLine : tempData) {
-                tempBean = TrajectoryComplicatedBean.toBean(basicRead.split(dataLine));
-                PreprocessRunUtils.updateMostOriginalTimeSlotData(result, tempBean.getUserID(), tempBean.getTimestamp(), tempBean.getAreaIndex()+"");
+                tempBean = CheckInSimplifiedBean.toBean(basicRead.split(dataLine));
+                PreprocessRunUtils.updateMostOriginalTimeSlotData(result, tempBean.getUserID(), tempBean.getCheckInTimeStamp(), tempBean.getCountryName());
             }
             basicRead.endReading();
         }
         return result;
     }
 
-    public static String toSimpleTrajectoryString(Map.Entry<Integer, BasicPair<Long, String>> entry) {
+    public static String toSimpleCheckInString(Map.Entry<Integer, BasicPair<Long, String>> entry) {
         StringBuilder stringBuilder = new StringBuilder();
         BasicPair<Long, String> pairValue = entry.getValue();
         stringBuilder.append(entry.getKey()).append(",");
@@ -70,17 +70,9 @@ public class TrajectoryPreprocessRunUtils {
         return getInitialUserTimeSlotLocationMap(files);
     }
 
-//    public static List<Integer> getUserIDList(String userIDDir) {
-//        File file = new File(userIDDir);
-//        String[] fileNameArray = file.list();
-//        List<Integer> result = new ArrayList<>(fileNameArray.length);
-//        for (String fileName : fileNameArray) {
-//            result.add(Integer.valueOf(fileName.split("\\.")[0]));
-//        }
-//        return result;
-//    }
+
     public static List<Integer> getUserIDList() {
-        String filePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput", "timestamp_0000.txt");
+        String filePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput", "timestamp_0000.txt");
         List<Integer> result = new ArrayList<>();
         List<String> tempDataList;
         BasicRead basicRead = new BasicRead(",");
@@ -94,7 +86,7 @@ public class TrajectoryPreprocessRunUtils {
     }
 
     public static List<Integer> getTimeStampList() {
-        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput");
+        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
         File file = new File(fileDir);
         File[] fileArray = file.listFiles(new TxtFilter());
         String timeStampStr;
@@ -106,10 +98,45 @@ public class TrajectoryPreprocessRunUtils {
         return resultList;
     }
 
-    public static void main(String[] args) {
-//        List<Integer> result = getUserIDList();
+    public static List<String> getDataType() {
+        return null;
+    }
+
+
+
+    public static void main0(String[] args) {
+        int cacheSize = 10;
+        int timeStamp = 0;
+        String inputDirectoryName = "join";
+        String outputDirectoryName = "runInput";
+        String inputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, inputDirectoryName);
+        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, outputDirectoryName);
+        Long startCheckInTimeSlot = 1333476006000L; // 在/Users/admin/MainFiles/5.GitTrans/2.github_code/DynamicWEventCode/src/test/java/important_test/DatasetCheckInTest.testTime()测试中得到
+        Long endCheckInTimeSlot = 1379373855000L;
+        Long timeInterval = ConfigureUtils.getTimeInterval("checkIn");
+        File fileDirectory = new File(inputDirectoryPath);
+        File[] inputFiles = fileDirectory.listFiles();
+        Map<Integer, BasicPair<Long, String>> result = getInitialUserTimeSlotLocationMap(inputFiles);
+        MyPrint.showMap(result);
+    }
+
+    public static void main2(String[] args) {
+        String fileName = "timestamp_00002.txt";
+        String numStr = PreprocessRunUtils.extractNumberString(fileName);
+        System.out.println(numStr);
+        Long longValue = Long.valueOf(numStr);
+        System.out.println(longValue);
+    }
+
+    public static void main3(String[] args) {
+//        List<Integer> result = getUserIDLIst();
         List<Integer> result = getTimeStampList();
         MyPrint.showList(result);
         System.out.println(result.size());
+    }
+
+    public static void main(String[] args) {
+        List<String> dataType = getDataType();
+        MyPrint.showList(dataType);
     }
 }
