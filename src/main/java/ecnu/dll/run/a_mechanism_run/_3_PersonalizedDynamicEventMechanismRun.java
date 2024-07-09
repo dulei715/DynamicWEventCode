@@ -19,6 +19,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
      * dataList 的外层List代表timestamp，内层list代表user
      * 其他二维List内外层表示类别和dataList相同
      */
+    @Deprecated
     public static ExperimentResult run(Class clazz, List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, List<StreamCountData> rawPublicationList, List<List<Double>> remainBackwardPrivacyBudgetListList, List<List<Integer>> backwardWindowSizeListList, List<List<Double>> forwardPrivacyBudgetListList, List<List<Integer>> forwardWindowSizeListList) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor constructor = clazz.getDeclaredConstructor(List.class, Integer.class);
 //        WEventMechanism scheme = new BudgetDistribution(dataType, privacyBudget, windowSize);
@@ -50,6 +51,40 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         }
         varianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.MRE, String.valueOf(varianceStatistic));
+        return experimentResult;
+    }
+
+    public static ExperimentResult runBatch(DynamicPersonalizedWindowSizeMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList, List<List<Double>> remainBackwardPrivacyBudgetListBatchList, List<List<Integer>> backwardWindowSizeListBatchList, List<List<Double>> forwardPrivacyBudgetListBatchList, List<List<Integer>> forwardWindowSizeListBatchList) {
+//        Constructor constructor = clazz.getDeclaredConstructor(List.class, Integer.class);
+//        int userSize = dataList.get(0).size();
+//        DynamicPersonalizedWindowSizeMechanism scheme = (DynamicPersonalizedWindowSizeMechanism) constructor.newInstance(dataType, userSize);
+
+        ExperimentResult experimentResult = new ExperimentResult();
+        int timeBatchSize = batchDataList.size();
+        StreamCountData rawPublicationData;
+        StreamNoiseCountData publicationData;
+        long startTime, endTime, timeCost;
+        double batchTotalVarianceStatistic = 0;
+        List<StreamNoiseCountData> publicationList = new ArrayList<>(timeBatchSize);
+        startTime = System.currentTimeMillis();
+        for (int t = 0; t < timeBatchSize; t++) {
+            scheme.updateNextPublicationResultWithDifferenceBackwardBudgetList(batchDataList.get(t), remainBackwardPrivacyBudgetListBatchList.get(t), forwardPrivacyBudgetListBatchList.get(t), forwardWindowSizeListBatchList.get(t));
+            publicationList.add(scheme.getReleaseNoiseCountMap());
+        }
+        endTime = System.currentTimeMillis();
+        timeCost = endTime - startTime;
+        experimentResult.addPair(Constant.MechanismName, scheme.getSimpleName());
+        experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
+        experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(Math.min(MatrixArray.getMinimalValue(remainBackwardPrivacyBudgetListBatchList), MatrixArray.getMinimalValue(forwardPrivacyBudgetListBatchList))));
+        experimentResult.addPair(Constant.WindowSize, String.valueOf(Math.max(MatrixArray.getMaximalValue(backwardWindowSizeListBatchList,1), MatrixArray.getMaximalValue(forwardWindowSizeListBatchList, 1))));
+        for (int i = 0; i < timeBatchSize; i++) {
+            rawPublicationData = rawPublicationBatchList.get(i);
+            publicationData = publicationList.get(i);
+            batchTotalVarianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
+        }
+//        batchTotalVarianceStatistic /= timeUpperBound;
+        experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
         return experimentResult;
     }
 }

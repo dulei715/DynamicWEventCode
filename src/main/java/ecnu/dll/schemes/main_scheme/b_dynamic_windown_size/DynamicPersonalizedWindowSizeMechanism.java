@@ -1,5 +1,6 @@
 package ecnu.dll.schemes.main_scheme.b_dynamic_windown_size;
 
+import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public abstract class DynamicPersonalizedWindowSizeMechanism {
+public abstract class DynamicPersonalizedWindowSizeMechanism extends Mechanism {
     protected int userSize;
     protected int currentTime;
 //    protected List<Double> privacyBudgetList;

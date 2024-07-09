@@ -1,5 +1,6 @@
 package ecnu.dll.schemes.compared_scheme.w_event;
 
+import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
@@ -9,7 +10,7 @@ import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 import java.util.List;
 import java.util.TreeMap;
 
-public abstract class WEventMechanism {
+public abstract class WEventMechanism extends Mechanism {
     protected int currentTime;
 
     //    protected List<StreamDataElement<Boolean>> currentDataElementList;

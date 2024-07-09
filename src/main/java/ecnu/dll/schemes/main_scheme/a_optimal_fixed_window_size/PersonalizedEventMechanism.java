@@ -1,5 +1,6 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
 
+import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
@@ -9,7 +10,7 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.util.List;
 import java.util.TreeMap;
 
-public abstract class PersonalizedEventMechanism {
+public abstract class PersonalizedEventMechanism extends Mechanism {
 
     protected int currentTime;
     protected List<Double> privacyBudgetList;

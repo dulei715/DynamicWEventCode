@@ -59,10 +59,12 @@ public class Constant {
 
     // constant for experiment result title
     public static final String MechanismName = "Name";
+    public static final String BatchName = "Batch";
     public static final String TimeCost = "Time Cost";
     public static final String PrivacyBudget = "Privacy Budget";
     public static final String WindowSize = "Window Size";
-    public static final String MRE = "MRE";
+    public static final String MRE = "MRE"; // MeanRelativeError, 是所有相对误差的均值
+    public static final String BRE = "BRE"; // BatchRelativeError, 是一个batch中的所有相对误差的总和
 
     public static final String  nonPrivacyName = "Non-Privacy";
     public static final String  budgetDistributionName = "BD";
