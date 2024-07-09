@@ -13,6 +13,7 @@ import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.CheckInPreprocessRunUtils;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.FileMergeFilter;
 import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.PreprocessRunUtils;
+import ecnu.dll.run.c_dataset_run.pre_process.real_dataset.utils.TxtFilter;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
@@ -255,12 +256,11 @@ public class CheckInDatasetPreprocessRun {
 
     /**
      * 根据每个时间段中的数据依次更新每个用户的位置状态并记录该时间段中最晚的用户状态
-     * @param filerLong
      */
-    public static void mergeToExperimentRawData(Long filerLong) {
+    public static void mergeToExperimentRawData() {
         String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "shuffle_by_time_slot");
         File directoryFile = new File(path);
-        File[] files = directoryFile.listFiles(new FileMergeFilter(filerLong));
+        File[] files = directoryFile.listFiles(new TxtFilter());
 //        File[] files = directoryFile.listFiles();
         BasicRead basicRead = new BasicRead(",");
         BasicWrite basicWrite = new BasicWrite(",");
@@ -322,30 +322,30 @@ public class CheckInDatasetPreprocessRun {
 //            System.exit(0);
         }
     }
-    public static void main5(String[] args) {
-        SignalHandler handler = new NoTerminalHandler(2);
-        try {
-            Signal sigTERM = new Signal("TERM");
-            Signal sigINT = new Signal("INT");
-            Signal.handle(sigTERM, handler);
-            Signal.handle(sigINT, handler);
-
-            // 程序主逻辑
-            System.out.println("Program is running...");
-            String filterString = args[0];
-            Long filerNumber;
-            if (filterString == null || "".equals(filterString)) {
-                filerNumber = 0L;
-            } else {
-                filerNumber = Long.valueOf(filterString);
-            }
-            mergeToExperimentRawData(filerNumber);
-            System.out.println("Program finished !");
-        } catch (Exception e) {
-            e.printStackTrace();
-//            System.exit(0);
-        }
-    }
+//    public static void main5(String[] args) {
+//        SignalHandler handler = new NoTerminalHandler(2);
+//        try {
+//            Signal sigTERM = new Signal("TERM");
+//            Signal sigINT = new Signal("INT");
+//            Signal.handle(sigTERM, handler);
+//            Signal.handle(sigINT, handler);
+//
+//            // 程序主逻辑
+//            System.out.println("Program is running...");
+//            String filterString = args[0];
+//            Long filerNumber;
+//            if (filterString == null || "".equals(filterString)) {
+//                filerNumber = 0L;
+//            } else {
+//                filerNumber = Long.valueOf(filterString);
+//            }
+//            mergeToExperimentRawData(filerNumber);
+//            System.out.println("Program finished !");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+////            System.exit(0);
+//        }
+//    }
 
     public static void main(String[] args) {
         SignalHandler handler = new NoTerminalHandler(2);
@@ -358,33 +358,25 @@ public class CheckInDatasetPreprocessRun {
             // 程序主逻辑
             System.out.println("Program is running... ...");
 
-            // 将数据分割成多个文件以方便分批读取到内存进行处理
-            System.out.println("Start data split...");
-            int unitSize = 204800;
-            dataSplit(unitSize);
+            // 1. 将数据分割成多个文件以方便分批读取到内存进行处理
+//            System.out.println("Start data split...");
+//            int unitSize = 204800;
+//            dataSplit(unitSize);
 
-            // 将数据与country文件链接，组合成 (userID,country,timestamp)的形式
-            System.out.println("Start join...");
-            dataJoin();
+            // 2. 将数据与country文件链接，组合成 (userID,country,timestamp)的形式
+//            System.out.println("Start join...");
+//            dataJoin();
 
-            // 将数据按照时间，划分成多个文件
-            System.out.println("Start shuffle...");
-            shuffleJoinFilesByTimeSlot();
+            // 3. 将数据按照时间，划分成多个文件
+//            System.out.println("Start shuffle...");
+//            shuffleJoinFilesByTimeSlot();
 
-            // 保留每个timestamp的用户状态
+            // 4. 保留每个timestamp的用户状态
             System.out.println("Start merge...");
-            String filterString = args[0];
-            Long filerNumber;
-            if (filterString == null || "".equals(filterString)) {
-                filerNumber = 0L;
-            } else {
-                filerNumber = Long.valueOf(filterString);
-            }
-            mergeToExperimentRawData(filerNumber);
+            mergeToExperimentRawData();
             System.out.println("Program finished !");
         } catch (Exception e) {
             e.printStackTrace();
-//            System.exit(0);
         }
     }
 

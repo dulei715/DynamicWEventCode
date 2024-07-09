@@ -383,8 +383,10 @@ public class TrajectoryDatasetPreprocessRun {
     /**
      * 4. 初始化用户最原始的位置，依次按照时间段文件更新用户状态，并记录每个时间段更新结束的状态
      */
-    public static void mergeToExperimentRawData() {
-        int threadSizeUpperBound = 10;
+    @Deprecated
+    // 这里不能用多线程
+    public static void mergeToExperimentRawDataBefore() {
+        int threadSizeUpperBound = 1; //这里只能用单线程，不然每次都会初始化原有的用户状态，会出错
         String initializedInputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
         String inputDirectoryName = "extract_data";
         String outputDirectoryName = "runInput";
@@ -409,6 +411,25 @@ public class TrajectoryDatasetPreprocessRun {
             tempTread.start();
             System.out.println("Start merge thread " + tempTread.getId());
         }
+    }
+
+
+    public static void mergeToExperimentRawData() {
+        String initializedInputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
+        String inputDirectoryName = "extract_data";
+        String outputDirectoryName = "runInput";
+        File direcoryFile = new File(initializedInputDirectoryPath);
+        int fileSize = direcoryFile.listFiles(new TxtFilter()).length;
+//        int fileSize = 8888;
+        long startFileID, endFileID;
+        Thread tempTread;
+        Runnable tempRunnable;
+        startFileID = 0;
+        endFileID = fileSize - 1;
+        tempRunnable = new TrajectoryMergeThread(startFileID, endFileID, initializedInputDirectoryPath, inputDirectoryName, outputDirectoryName);
+        tempTread = new Thread(tempRunnable);
+        tempTread.start();
+        System.out.println("Start merge thread " + tempTread.getId());
     }
 
 

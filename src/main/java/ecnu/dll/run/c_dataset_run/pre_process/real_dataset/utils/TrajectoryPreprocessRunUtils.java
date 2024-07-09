@@ -10,6 +10,7 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectoryComplicatedBean;
 import ecnu.dll.dataset.real.datasetA.handled_struct.TrajectorySimplifiedBean;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
+import ecnu.dll.utils.FormatFileName;
 
 import java.io.File;
 import java.util.*;
@@ -69,43 +70,45 @@ public class TrajectoryPreprocessRunUtils {
         return getInitialUserTimeSlotLocationMap(files);
     }
 
-    public static List<Integer> getUserIDList(String userIDDir) {
-        File file = new File(userIDDir);
-        String[] fileNameArray = file.list();
-        List<Integer> result = new ArrayList<>(fileNameArray.length);
-        for (String fileName : fileNameArray) {
-            result.add(Integer.valueOf(fileName.split("\\.")[0]));
+//    public static List<Integer> getUserIDList(String userIDDir) {
+//        File file = new File(userIDDir);
+//        String[] fileNameArray = file.list();
+//        List<Integer> result = new ArrayList<>(fileNameArray.length);
+//        for (String fileName : fileNameArray) {
+//            result.add(Integer.valueOf(fileName.split("\\.")[0]));
+//        }
+//        return result;
+//    }
+    public static List<Integer> getUserIDList() {
+        String filePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput", "timestamp_0000.txt");
+        List<Integer> result = new ArrayList<>();
+        List<String> tempDataList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        tempDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        for (String str : tempDataList) {
+            result.add(Integer.valueOf(basicRead.split(str)[0]));
         }
         return result;
     }
 
-
-
-
-
-
-    public static void main0(String[] args) {
-//        String inputDirectoryName = "taxi_log_2008_by_id";
-        String inputDirectoryName = "extract_data";
-        String outputDirectoryName = "runInput";
-        String inputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, inputDirectoryName);
-        File fileDirectory = new File(inputDirectoryPath);
-        File[] inputFiles = fileDirectory.listFiles();
-        Map<Integer, BasicPair<Long, String>> result = getInitialUserTimeSlotLocationMap(inputFiles);
-        MyPrint.showMap(result);
-    }
-
-    public static void main1(String[] args) {
-        String fileName = "timestamp_00002.txt";
-        String numStr = PreprocessRunUtils.extractNumberString(fileName);
-        System.out.println(numStr);
-        Long longValue = Long.valueOf(numStr);
-        System.out.println(longValue);
+    public static List<Integer> getTimeStampList() {
+        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput");
+        File file = new File(fileDir);
+        File[] fileArray = file.listFiles(new TxtFilter());
+        String timeStampStr;
+        List<Integer> resultList = new ArrayList<>();
+        for (File innerfile : fileArray) {
+            timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
+            resultList.add(Integer.valueOf(timeStampStr));
+        }
+        return resultList;
     }
 
     public static void main(String[] args) {
-        String userIDDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
-        List<Integer> result = getUserIDList(userIDDir);
+//        List<Integer> result = getUserIDList();
+        List<Integer> result = getTimeStampList();
         MyPrint.showList(result);
         System.out.println(result.size());
     }

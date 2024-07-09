@@ -14,9 +14,6 @@ public class FormatFileName {
     public static String getFormatNumberString(Integer value, Integer begin, Integer size) {
         Integer mostValue = begin + size - 1;
         int digitNumber = 0;
-        if (value <= 0) {
-            return String.valueOf(0);
-        }
         for(; mostValue > 0; mostValue /= 10, ++digitNumber);
         return String.format("%0"+digitNumber+"d", value);
     }
@@ -42,7 +39,7 @@ public class FormatFileName {
     }
 
 
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         String directoryPath = args[0];
         String leftSplit = args[1];
         String rightSplit = args[2];
@@ -68,7 +65,7 @@ public class FormatFileName {
         System.out.println(result);
     }
 
-    public static void main(String[] args) {
+    public static void main3(String[] args) {
         String originalName = "time_090.txt";
         String result = extractNumString(originalName, "_", ".");
         System.out.println(result);

@@ -1,5 +1,6 @@
 package ecnu.dll.run.c_dataset_run.pre_process._parameter_generation;
 
+import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -62,7 +63,7 @@ public class ParameterGenerator {
     public static void generatePrivacyBudgetForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Double upperBound) {
         BasicRead basicRead = new BasicRead(",");
         basicRead.startReading(StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "userPrivacyBudgetFile.txt"));
-        List<String> userBudgetStringList = basicRead.readAll();
+        List<String> userBudgetStringList = basicRead.readAllWithoutLineNumberRecordInFile();
         List<BasicPair<Integer, Double>> userBudgetList = new ArrayList<>(userBudgetStringList.size());
         String[] tempStringArray;
         for (String str : userBudgetStringList) {
@@ -76,23 +77,46 @@ public class ParameterGenerator {
         String tempString;
         for (Integer timeStampID : timeStampList) {
             formatFileNameID = FormatFileName.getFormatNumberString(timeStampID, 0, timeStampListSize);
-            tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "time_"+formatFileNameID);
+            tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "timestamp_" + formatFileNameID + ".txt");
             basicWrite.startWriting(tempOutputFilePath);
             for (BasicPair<Integer, Double> userBudgetLowerBoundPair : userBudgetList) {
-                tempString = StringUtil.join(ConstantValues.FILE_SPLIT, userBudgetLowerBoundPair.getKey(), RandomUtil.getRandomDouble(userBudgetLowerBoundPair.getValue(), upperBound));
+                Double tempRandomDouble = RandomUtil.getRandomDouble(userBudgetLowerBoundPair.getValue(), upperBound);
+                tempString = StringUtil.join(",", userBudgetLowerBoundPair.getKey(), NumberUtil.roundFormat(tempRandomDouble, 2));
                 basicWrite.writeOneLine(tempString);
             }
             basicWrite.endWriting();
         }
     }
 
-    public static void generatePrivacyBudget(String dirPath, List<Integer> userIDList, String timeStampDirPath, List<Double> privacyBudgetList){
-        File timeStampDir = new File(timeStampDirPath);
-        String[] timeStampFileNameArray = timeStampDir.list();
-        List<Integer> timeStampList = new ArrayList<>(timeStampFileNameArray.length);
-        for (String fileName : timeStampFileNameArray) {
-            timeStampList.add(Integer.valueOf(FormatFileName.extractNumString(fileName, "_", ".")));
+    public static void generateWindowSizeForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Integer lowerBound) {
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "userWindowSizeFile.txt"));
+        List<String> userWindowSizeStringList = basicRead.readAllWithoutLineNumberRecordInFile();
+        List<BasicPair<Integer, Integer>> userWSizeList = new ArrayList<>(userWindowSizeStringList.size());
+        String[] tempStringArray;
+        for (String str : userWindowSizeStringList) {
+            tempStringArray = basicRead.split(str);
+            userWSizeList.add(new BasicPair<>(Integer.valueOf(tempStringArray[0]), Integer.valueOf(tempStringArray[1])));
         }
+        String tempOutputFilePath;
+        Integer timeStampListSize = timeStampList.size();
+        String formatFileNameID;
+        BasicWrite basicWrite = new BasicWrite(",");
+        String tempString;
+        for (Integer timeStampID : timeStampList) {
+            formatFileNameID = FormatFileName.getFormatNumberString(timeStampID, 0, timeStampListSize);
+            tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "timestamp_" + formatFileNameID + ".txt");
+            basicWrite.startWriting(tempOutputFilePath);
+            for (BasicPair<Integer, Integer> userWindowSizeUpperBoundPair : userWSizeList) {
+                Integer tempRandomInteger = RandomUtil.getRandomInteger(lowerBound, userWindowSizeUpperBoundPair.getValue());
+                tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger);
+                basicWrite.writeOneLine(tempString);
+            }
+            basicWrite.endWriting();
+        }
+    }
+
+    public static void generatePrivacyBudget(String dirPath, List<Integer> userIDList, List<Integer> timeStampList, List<Double> privacyBudgetList){
         Double upperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
         File tempDir;
         String tempDirPath;
@@ -107,6 +131,20 @@ public class ParameterGenerator {
         }
     }
 
+    public static void generateWindowSize(String dirPath, List<Integer> userIDList, List<Integer> timeStampList, List<Integer> windowSizeList) {
+        Integer lowerBound = ConfigureUtils.getWindowSizeLowerBound();
+        File tempDir;
+        String tempDirPath;
+        for (Integer windowSize : windowSizeList) {
+            tempDir = new File(dirPath, "w_size_"+String.valueOf(windowSize));
+            if (!tempDir.exists()) {
+                tempDir.mkdirs();
+            }
+            tempDirPath = tempDir.getAbsolutePath();
+            generateFixedWindowSizeForAllUsers(tempDirPath, userIDList, lowerBound, windowSize);
+            generateWindowSizeForAllUsersWithTimeStamps(tempDirPath, timeStampList, lowerBound);
+        }
+    }
 
 
     public void generateParameters(String datasetPath, Double[] privacyBudgetArray, Integer[] windowSizeArray) {
@@ -120,14 +158,14 @@ public class ParameterGenerator {
          */
         String basicParameterDirectoryName = "generated_parameters";
         String privacyBudgetDirName = "1.privacy_budget";
+        String windowSizeDirName = "2.window_size";
         String checkInParameterBasicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, basicParameterDirectoryName);
         String trajectoryParameterBasicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, basicParameterDirectoryName);
 
         List<Double> privacyBudgetList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
-        // todo: 修改userID获取方式，trajectory截取了一部分，可能导致一些user不存在
-        String trajectoryUserIDDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "taxi_log_2008_by_id_filter");
-        List<Integer> userIDList = TrajectoryPreprocessRunUtils.getUserIDList(trajectoryUserIDDir);
-        String trajectoryTimeStampDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "")
-        generatePrivacyBudget(StringUtil.join(ConstantValues.FILE_SPLIT, trajectoryParameterBasicPath, privacyBudgetDirName), userIDList, );
+        List<Integer> trajectoryUserIDList = TrajectoryPreprocessRunUtils.getUserIDList();
+        List<Integer> trajectoryTimeStampList = TrajectoryPreprocessRunUtils.getTimeStampList();
+//        generatePrivacyBudget(StringUtil.join(ConstantValues.FILE_SPLIT, trajectoryParameterBasicPath, privacyBudgetDirName), trajectoryUserIDList, trajectoryTimeStampList, privacyBudgetList);
+        generateWindowSize(StringUtil.join(ConstantValues.FILE_SPLIT, trajectoryParameterBasicPath, windowSizeDirName), trajectoryUserIDList, trajectoryTimeStampList, privacyBudgetList);
     }
 }

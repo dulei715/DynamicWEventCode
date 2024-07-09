@@ -8,12 +8,10 @@ import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.real.datasetB.handled_struct.CheckInSimplifiedBean;
+import ecnu.dll.utils.FormatFileName;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class CheckInPreprocessRunUtils {
 
@@ -71,7 +69,32 @@ public class CheckInPreprocessRunUtils {
     }
 
 
+    public static List<Integer> getUserIDLIst() {
+        String filePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput", "timestamp_0000.txt");
+        List<Integer> result = new ArrayList<>();
+        List<String> tempDataList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        tempDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        for (String str : tempDataList) {
+            result.add(Integer.valueOf(basicRead.split(str)[0]));
+        }
+        return result;
+    }
 
+    public static List<Integer> getTimeStampList() {
+        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+        File file = new File(fileDir);
+        File[] fileArray = file.listFiles(new TxtFilter());
+        String timeStampStr;
+        List<Integer> resultList = new ArrayList<>();
+        for (File innerfile : fileArray) {
+            timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
+            resultList.add(Integer.valueOf(timeStampStr));
+        }
+        return resultList;
+    }
 
 
 
@@ -91,11 +114,18 @@ public class CheckInPreprocessRunUtils {
         MyPrint.showMap(result);
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         String fileName = "timestamp_00002.txt";
         String numStr = PreprocessRunUtils.extractNumberString(fileName);
         System.out.println(numStr);
         Long longValue = Long.valueOf(numStr);
         System.out.println(longValue);
+    }
+
+    public static void main(String[] args) {
+//        List<Integer> result = getUserIDLIst();
+        List<Integer> result = getTimeStampList();
+        MyPrint.showList(result);
+        System.out.println(result.size());
     }
 }

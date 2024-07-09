@@ -1,9 +1,6 @@
 package ecnu.dll._config;
 
-import cn.edu.dll.basic.BasicArrayUtil;
-import cn.edu.dll.basic.MatrixArray;
-import cn.edu.dll.basic.RandomUtil;
-import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.basic.*;
 import cn.edu.dll.collection.SetUtils;
 import cn.edu.dll.struct.pair.IdentityPurePair;
 
@@ -23,8 +20,10 @@ public class ParameterUtils {
     }
     public static List<String> getRandomDoubleList(List<Integer> userIDList, Double lowerBound, Double upperBound) {
         List<String> result = new ArrayList<>(userIDList.size());
+        Double tempDouble;
         for (Integer userID : userIDList) {
-            result.add(StringUtil.join(",", userID, RandomUtil.getRandomDouble(lowerBound, upperBound)));
+            tempDouble = RandomUtil.getRandomDouble(lowerBound, upperBound);
+            result.add(StringUtil.join(",", userID, NumberUtil.roundFormat(tempDouble, 2)));
         }
         return result;
     }
