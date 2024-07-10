@@ -13,15 +13,19 @@ import java.util.List;
 public class PrivacyBudgetWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
     private List<Integer> timeStampList;
-    private Double upperBound;
+    private Double privacyUpperBound;
+    private Double remainBackwardPrivacyLowerBound;
+    private Double remainBackwardPrivacyUpperBound;
     private List<BasicPair<Integer, Double>> userBudgetList;
     private Integer startIndex;
     private Integer endIndex;
 
-    public PrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, Double upperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex) {
+    public PrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, Double privacyUpperBound, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
-        this.upperBound = upperBound;
+        this.privacyUpperBound = privacyUpperBound;
+        this.remainBackwardPrivacyLowerBound = remainBackwardPrivacyLowerBound;
+        this.remainBackwardPrivacyUpperBound = remainBackwardPrivacyUpperBound;
         this.userBudgetList = userBudgetList;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
@@ -35,14 +39,16 @@ public class PrivacyBudgetWithinTimeRangeGenerator implements Runnable {
         String tempString;
         Integer timeStampID;
 //        for (Integer timeStampID : timeStampList) {
+//        System.out.printf("startIndex: %d, value: %d\n", startIndex, timeStampList.get(startIndex));
         for (int i = startIndex; i <= endIndex; ++i) {
             timeStampID = timeStampList.get(i);
             formatFileNameID = FormatFileName.getFormatNumberString(timeStampID, 0, timeStampListSize);
             tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "timestamp_" + formatFileNameID + ".txt");
             basicWrite.startWriting(tempOutputFilePath);
             for (BasicPair<Integer, Double> userBudgetLowerBoundPair : userBudgetList) {
-                Double tempRandomDouble = RandomUtil.getRandomDouble(userBudgetLowerBoundPair.getValue(), upperBound);
-                tempString = StringUtil.join(",", userBudgetLowerBoundPair.getKey(), NumberUtil.roundFormat(tempRandomDouble, 2));
+                Double tempRandomDouble = RandomUtil.getRandomDouble(remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound);
+                Double tempRandomDouble2 = RandomUtil.getRandomDouble(userBudgetLowerBoundPair.getValue(), privacyUpperBound);
+                tempString = StringUtil.join(",", userBudgetLowerBoundPair.getKey(), NumberUtil.roundFormat(tempRandomDouble, 2), NumberUtil.roundFormat(tempRandomDouble2, 2));
                 basicWrite.writeOneLine(tempString);
             }
             basicWrite.endWriting();

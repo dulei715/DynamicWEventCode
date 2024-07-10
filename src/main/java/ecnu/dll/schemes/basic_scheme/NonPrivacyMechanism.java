@@ -4,7 +4,6 @@ import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
-import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 import java.util.TreeMap;

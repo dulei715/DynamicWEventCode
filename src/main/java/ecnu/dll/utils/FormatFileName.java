@@ -1,8 +1,10 @@
 package ecnu.dll.utils;
 
 
+import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import ecnu.dll._config.Constant;
+import ecnu.dll.utils.filters.TxtFilter;
 
 import java.io.File;
 
@@ -40,11 +42,14 @@ public class FormatFileName {
 
 
     public static void main(String[] args) {
-        String directoryPath = args[0];
-        String leftSplit = args[1];
-        String rightSplit = args[2];
+//        String directoryPath = args[0];
+//        String leftSplit = args[1];
+//        String rightSplit = args[2];
+        String directoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+        String leftSplit = "_";
+        String rightSplit = ".";
         File directoryFile = new File(directoryPath);
-        File[] files = directoryFile.listFiles();
+        File[] files = directoryFile.listFiles(new TxtFilter());
         // 假设从文件编号从0开始
         int digitNum = 0, fileQuantity = files.length - 1;
         for (; fileQuantity > 0; ++digitNum){

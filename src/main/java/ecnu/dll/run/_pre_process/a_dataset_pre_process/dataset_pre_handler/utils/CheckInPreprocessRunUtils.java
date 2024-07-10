@@ -87,11 +87,14 @@ public class CheckInPreprocessRunUtils {
 
     public static List<Integer> getTimeStampList() {
         String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+//        System.out.println(fileDir);
         File file = new File(fileDir);
         File[] fileArray = file.listFiles(new TxtFilter());
+//        System.out.println(fileArray[0].getName() + "; " + fileArray[fileArray.length-1].getName());
         String timeStampStr;
         List<Integer> resultList = new ArrayList<>();
         for (File innerfile : fileArray) {
+//            System.out.println(innerfile.getName());
             timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
             resultList.add(Integer.valueOf(timeStampStr));
         }

@@ -1,0 +1,8 @@
+Name,Batch,Time Cost,Privacy Budget,Window Size,BRE
+Non-Privacy,2,1926,0.0,0,0
+BD,2,1776,0.5,10,0.0
+BA,2,1892,0.5,10,0.0
+PBD,2,8129,0.5,10.0,0.0
+PBA,2,9605,0.5,10.0,0.0
+PDBD,2,159858,0.1,10,0.0
+PDBA,2,8429,0.1,10,0.0

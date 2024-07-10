@@ -2,6 +2,7 @@ package ecnu.dll.run._pre_process.b_parameter_pre_process.parameter_generator;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
@@ -13,6 +14,7 @@ import ecnu.dll.run._pre_process.b_parameter_pre_process.parameter_generator.sub
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.CheckInPreprocessRunUtils;
 import ecnu.dll.utils.filters.ThreadUtils;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.TrajectoryPreprocessRunUtils;
+import ecnu.dll.utils.filters.TxtFilter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class ParameterGenerator {
         basicWrite.endWriting();
     }
 
-    public static void generatePrivacyBudgetForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Double upperBound) {
+    public static void generatePrivacyBudgetForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Double privacyUpperBound, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound) {
         BasicRead basicRead = new BasicRead(",");
         basicRead.startReading(StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "userPrivacyBudgetFile.txt"));
         List<String> userBudgetStringList = basicRead.readAllWithoutLineNumberRecordInFile();
@@ -86,7 +88,8 @@ public class ParameterGenerator {
             } else {
                 endIndex = timeStampListSize - 1;
             }
-            tempRunnable = new PrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, upperBound, userBudgetList, startIndex, endIndex);
+//            MyPrint.showList(timeStampList, "; ");
+            tempRunnable = new PrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyUpperBound, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
             System.out.println("Start privacy budget thread " + tempTread.getName() + " with id " + tempTread.getId());
@@ -95,7 +98,7 @@ public class ParameterGenerator {
 
 
 
-    public static void generateWindowSizeForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Integer lowerBound) {
+    public static void generateWindowSizeForAllUsersWithTimeStamps(String outputFileDir, List<Integer> timeStampList, Integer windowSizeLowerBound, Integer backwardWindowSizeLowerBound) {
         BasicRead basicRead = new BasicRead(",");
         basicRead.startReading(StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "userWindowSizeFile.txt"));
         List<String> userWindowSizeStringList = basicRead.readAllWithoutLineNumberRecordInFile();
@@ -120,7 +123,7 @@ public class ParameterGenerator {
             } else {
                 endIndex = timeStampListSize - 1;
             }
-            tempRunnable = new WindowSizeWithinTimeRangeGenerator(outputFileDir, timeStampList, lowerBound, userWSizeList, startIndex, endIndex);
+            tempRunnable = new WindowSizeWithinTimeRangeGenerator(outputFileDir, timeStampList, windowSizeLowerBound, backwardWindowSizeLowerBound, userWSizeList, startIndex, endIndex);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
             System.out.println("Start window size thread " + tempTread.getName() + " with id " + tempTread.getId());
@@ -130,7 +133,9 @@ public class ParameterGenerator {
 
 
     public static void generatePrivacyBudget(String dirPath, final List<Integer> userIDList, final List<Integer> timeStampList, final List<Double> privacyBudgetList){
-        Double upperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
+        Double privacyUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
+        Double remainBackwardPrivacyLowerBound = ConfigureUtils.getBackwardPrivacyBudgetLowerBoundDifference();
+        Double remainBackwardPrivacyUpperBound = ConfigureUtils.getBackwardPrivacyBudgetUpperBoundDifference();
         File tempDir;
         String tempDirPath;
         for (Double budget : privacyBudgetList) {
@@ -139,13 +144,14 @@ public class ParameterGenerator {
                 tempDir.mkdirs();
             }
             tempDirPath = tempDir.getAbsolutePath();
-            generateFixedPrivacyBudgetForAllUsers(tempDirPath, userIDList, budget, upperBound);
-            generatePrivacyBudgetForAllUsersWithTimeStamps(tempDirPath, timeStampList, upperBound);
+            generateFixedPrivacyBudgetForAllUsers(tempDirPath, userIDList, budget, privacyUpperBound);
+            generatePrivacyBudgetForAllUsersWithTimeStamps(tempDirPath, timeStampList, privacyUpperBound, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound);
         }
     }
 
     public static void generateWindowSize(String dirPath, final List<Integer> userIDList, final List<Integer> timeStampList, final List<Integer> windowSizeList) {
-        Integer lowerBound = ConfigureUtils.getWindowSizeLowerBound();
+        Integer windowSizeLowerBound = ConfigureUtils.getWindowSizeLowerBound();
+        Integer backwardWindowSizeLowerBound = ConfigureUtils.getWindowSizeLowerBound();
         File tempDir;
         String tempDirPath;
         for (Integer windowSize : windowSizeList) {
@@ -154,8 +160,8 @@ public class ParameterGenerator {
                 tempDir.mkdirs();
             }
             tempDirPath = tempDir.getAbsolutePath();
-            generateFixedWindowSizeForAllUsers(tempDirPath, userIDList, lowerBound, windowSize);
-            generateWindowSizeForAllUsersWithTimeStamps(tempDirPath, timeStampList, lowerBound);
+            generateFixedWindowSizeForAllUsers(tempDirPath, userIDList, windowSizeLowerBound, windowSize);
+            generateWindowSizeForAllUsersWithTimeStamps(tempDirPath, timeStampList, windowSizeLowerBound, backwardWindowSizeLowerBound);
         }
     }
 
@@ -191,12 +197,22 @@ public class ParameterGenerator {
         List<Integer> windowSizeList = ConfigureUtils.getIndependentWindowSizeList("default");
         List<Integer> checkInUserIDList = CheckInPreprocessRunUtils.getUserIDList();
         List<Integer> checkInTimeStampList = CheckInPreprocessRunUtils.getTimeStampList();
+//        MyPrint.showList(checkInTimeStampList, "; ");
         generatePrivacyBudget(StringUtil.join(ConstantValues.FILE_SPLIT, checkInParameterBasicPath, privacyBudgetDirName), checkInUserIDList, checkInTimeStampList, privacyBudgetList);
         generateWindowSize(StringUtil.join(ConstantValues.FILE_SPLIT, checkInParameterBasicPath, windowSizeDirName), checkInUserIDList, checkInTimeStampList, windowSizeList);
     }
 
     public static void main(String[] args) {
-
+        String dirPath = args[0];
+        System.out.println(dirPath);
+        File file = new File(dirPath);
+//        File[] files = file.listFiles(new TxtFilter());
+        File[] files = file.listFiles();
+        System.out.println(files.length);
+        MyPrint.showSplitLine("*", 50);
+        for (File file1 : files) {
+            System.out.println(file1.getName());
+        }
     }
 
 }

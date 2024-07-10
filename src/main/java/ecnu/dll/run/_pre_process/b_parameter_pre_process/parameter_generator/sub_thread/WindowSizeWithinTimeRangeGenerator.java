@@ -12,15 +12,17 @@ import java.util.List;
 public class WindowSizeWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
     private List<Integer> timeStampList;
-    private Integer lowerBound;
+    private Integer windowSizeLowerBound;
+    private Integer backwardWindowSizeLowerBound;
     private List<BasicPair<Integer, Integer>> userWSizeList;
     private Integer startIndex;
     private Integer endIndex;
 
-    public WindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, Integer lowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
+    public WindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, Integer windowSizeLowerBound, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
-        this.lowerBound = lowerBound;
+        this.windowSizeLowerBound = windowSizeLowerBound;
+        this.backwardWindowSizeLowerBound = backwardWindowSizeLowerBound;
         this.userWSizeList = userWSizeList;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
@@ -40,8 +42,9 @@ public class WindowSizeWithinTimeRangeGenerator implements Runnable {
             tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "timestamp_" + formatFileNameID + ".txt");
             basicWrite.startWriting(tempOutputFilePath);
             for (BasicPair<Integer, Integer> userWindowSizeUpperBoundPair : userWSizeList) {
-                Integer tempRandomInteger = RandomUtil.getRandomInteger(lowerBound, userWindowSizeUpperBoundPair.getValue());
-                tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger);
+                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
+                Integer tempRandomInteger2 = RandomUtil.getRandomInteger(windowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
+                tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger, tempRandomInteger2);
                 basicWrite.writeOneLine(tempString);
             }
             basicWrite.endWriting();

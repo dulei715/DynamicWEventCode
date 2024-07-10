@@ -1,5 +1,6 @@
 package ecnu.dll.run.b_parameter_run.basic.utils;
 
+import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll._config.Constant;
 import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
@@ -10,6 +11,7 @@ import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudg
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetDistribution;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,4 +42,90 @@ public class ParameterInitializeUtils {
 
         return resultMap;
     }
+
+    public static String toPathName(Double privacyBudget) {
+        String valueStr = String.valueOf(privacyBudget).replace(".", "-");
+        return "budget_".concat(valueStr);
+    }
+    public static String toPathName(Integer windowSize) {
+        String valueStr = String.valueOf(windowSize);
+        return "w_size_".concat(valueStr);
+    }
+
+    public static List<Double> getPrivacyBudgetFromFile(String filePath) {
+        List<Double> privacyBudgetList = new ArrayList<>();
+        List<String> dataStrList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        dataStrList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        String[] splitStr;
+        for (String str : dataStrList) {
+            splitStr = basicRead.split(str);
+            privacyBudgetList.add(Double.valueOf(splitStr[1]));
+        }
+        return privacyBudgetList;
+    }
+    public static List<Double>[] getBackForwardPrivacyBudgetFromFile(String filePath) {
+        List<Double> remainBackwardPrivacyBudgetList = new ArrayList<>();
+        List<Double> forwardPrivacyBudgetList = new ArrayList<>();
+        List<String> dataStrList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        dataStrList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        String[] splitStr;
+        for (String str : dataStrList) {
+            splitStr = basicRead.split(str);
+            remainBackwardPrivacyBudgetList.add(Double.valueOf(splitStr[1]));
+            forwardPrivacyBudgetList.add(Double.valueOf(splitStr[2]));
+        }
+        return new List[]{remainBackwardPrivacyBudgetList, forwardPrivacyBudgetList};
+    }
+
+    /**
+     * 下标：
+     * 0 : backward
+     * 1 : forward
+     * @param filePath
+     * @return
+     */
+    public static List<Integer> getWindowSizeFromFile(String filePath) {
+        List<Integer> windowSizeList = new ArrayList<>();
+        List<String> dataStrList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        dataStrList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        String[] splitStr;
+        for (String str : dataStrList) {
+            splitStr = basicRead.split(str);
+            windowSizeList.add(Integer.valueOf(splitStr[1]));
+        }
+        return windowSizeList;
+    }
+    public static List<Integer>[] getBackForwardWindowSizeFromFile(String filePath) {
+        List<Integer> backwardWindowSizeList = new ArrayList<>();
+        List<Integer> forwardWindowSizeList = new ArrayList<>();
+        List<String> dataStrList;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(filePath);
+        dataStrList = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        String[] splitStr;
+        for (String str : dataStrList) {
+            splitStr = basicRead.split(str);
+            backwardWindowSizeList.add(Integer.valueOf(splitStr[1]));
+            forwardWindowSizeList.add(Integer.valueOf(splitStr[2]));
+        }
+        return new List[]{backwardWindowSizeList, forwardWindowSizeList};
+    }
+
+    public static Integer getUserSize(String userFilePath) {
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(userFilePath);
+        List<String> data = basicRead.readAllWithoutLineNumberRecordInFile();
+        return data.size();
+    }
+
 }
