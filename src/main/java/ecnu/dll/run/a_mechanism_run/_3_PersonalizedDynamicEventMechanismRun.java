@@ -77,7 +77,9 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         timeCost = endTime - startTime;
         experimentResult.addPair(Constant.MechanismName, scheme.getSimpleName());
         experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
+//        experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(Math.min(MatrixArray.getMinimalValue(remainBackwardPrivacyBudgetListBatchList), MatrixArray.getMinimalValue(forwardPrivacyBudgetListBatchList))));
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(Math.min(MatrixArray.getMinimalValue(remainBackwardPrivacyBudgetListBatchList), MatrixArray.getMinimalValue(forwardPrivacyBudgetListBatchList))));
         experimentResult.addPair(Constant.WindowSize, String.valueOf(Math.max(MatrixArray.getMaximalValue(backwardWindowSizeListBatchList,1), MatrixArray.getMaximalValue(forwardWindowSizeListBatchList, 1))));
         for (int i = 0; i < timeBatchSize; i++) {

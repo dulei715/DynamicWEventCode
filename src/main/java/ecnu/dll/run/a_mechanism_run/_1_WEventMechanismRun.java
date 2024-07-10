@@ -69,6 +69,7 @@ public class _1_WEventMechanismRun {
         timeCost = endTime - startTime;
         experimentResult.addPair(Constant.MechanismName, scheme.getSimpleName());
         experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(privacyBudget));
         experimentResult.addPair(Constant.WindowSize, String.valueOf(windowSize));

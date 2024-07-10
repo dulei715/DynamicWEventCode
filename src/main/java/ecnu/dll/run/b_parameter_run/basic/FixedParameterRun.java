@@ -137,7 +137,7 @@ public class FixedParameterRun implements Runnable {
         List<List<Double>> remainBackwardPrivacyBudgetListBatchList = new ArrayList<>(), forwardPrivacyBudgetListBatchList = new ArrayList<>();
         List<List<Integer>> backwardWindowSizeListBatchList = new ArrayList<>(), forwardWindowSizeListBatchList = new ArrayList<>();
 
-        String basicOutputPathDir = StringUtil.join(basicPath, "output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize);
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize);
         File basicOutputFile = new File(basicOutputPathDir);
         if (!basicOutputFile.exists()) {
             basicOutputFile.mkdirs();
@@ -193,6 +193,7 @@ public class FixedParameterRun implements Runnable {
                 experimentResultList.add(tempResult);
 
                 // write result
+                System.out.println("Start Writing...");
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
                 experimentResultWrite.startWriting(outputFilePath);
                 experimentResultWrite.write(experimentResultList);
@@ -221,5 +222,21 @@ public class FixedParameterRun implements Runnable {
         Runnable runnable = new FixedParameterRun(basicPath, dataTypeFileName, singleBatchSize, privacyBudget, windowSize);
         Thread thread = new Thread(runnable);
         thread.start();
+    }
+
+    public static void main1(String[] args) {
+        System.out.println("Start Writing...");
+        String basicPath = Constant.checkInFilePath;
+        Double privacyBudget = 0.5;
+        Integer windowSize = 10;
+        Integer batchID = 1;
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize);
+        File basicOutputFile = new File(basicOutputPathDir);
+        if (!basicOutputFile.exists()) {
+            basicOutputFile.mkdirs();
+        }
+        ExperimentResultWrite experimentResultWrite = new ExperimentResultWrite();
+        String outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
+        experimentResultWrite.startWriting(outputFilePath);
     }
 }

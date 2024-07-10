@@ -42,7 +42,9 @@ public class WindowSizeWithinTimeRangeGenerator implements Runnable {
             tempOutputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, outputFileDir, "timestamp_" + formatFileNameID + ".txt");
             basicWrite.startWriting(tempOutputFilePath);
             for (BasicPair<Integer, Integer> userWindowSizeUpperBoundPair : userWSizeList) {
-                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
+                //todo: 这里把backward window size设置为最小
+//                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
+                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, backwardWindowSizeLowerBound);
                 Integer tempRandomInteger2 = RandomUtil.getRandomInteger(windowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
                 tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger, tempRandomInteger2);
                 basicWrite.writeOneLine(tempString);

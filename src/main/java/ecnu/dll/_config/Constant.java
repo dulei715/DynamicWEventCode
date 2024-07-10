@@ -62,13 +62,14 @@ public class Constant {
     // constant for experiment result title
     public static final String MechanismName = "Name";
     public static final String BatchName = "Batch";
+    public static final String BatchRealSize = "BatchSize";
     public static final String TimeCost = "Time Cost";
     public static final String PrivacyBudget = "Privacy Budget";
     public static final String WindowSize = "Window Size";
     public static final String MRE = "MRE"; // MeanRelativeError, 是所有相对误差的均值
     public static final String BRE = "BRE"; // BatchRelativeError, 是一个batch中的所有相对误差的总和
 
-    public static final String  nonPrivacyName = "Non-Privacy";
+    public static final String  nonPrivacyName = "NP";
     public static final String  budgetDistributionName = "BD";
     public static final String  budgetAbsorptionName = "BA";
     public static final String  personalizedBudgetDistributionName = "PBD";
@@ -83,7 +84,8 @@ public class Constant {
 
 
     // constant for Personalized Dynamic Budget Distribution (Absorption)
-    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 201;
+//    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 201;
+    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 51;
 
     public static final Double PRIVACY_LOWER_BOUND = 0.1;
     public static final Double PRIVACY_UPPER_BOUND = 10D;

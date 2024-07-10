@@ -72,6 +72,7 @@ public class _2_PersonalizedEventMechanismRun {
         timeCost = endTime - startTime;
         experimentResult.addPair(Constant.MechanismName, scheme.getSimpleName());
         experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(ListUtils.getMinimalValue(privacyBudgetList)));
         experimentResult.addPair(Constant.WindowSize, String.valueOf(ListUtils.getMaximalValue(windowSizeList, 1)));

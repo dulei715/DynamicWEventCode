@@ -48,6 +48,7 @@ public class _0_NonPrivacyMechanismRun {
         timeCost = endTime - startTime;
         experimentResult.addPair(Constant.MechanismName, Constant.nonPrivacyName);
         experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(0.0));
         experimentResult.addPair(Constant.WindowSize, String.valueOf(0));

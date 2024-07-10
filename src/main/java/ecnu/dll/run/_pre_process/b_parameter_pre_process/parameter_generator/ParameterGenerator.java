@@ -89,6 +89,7 @@ public class ParameterGenerator {
                 endIndex = timeStampListSize - 1;
             }
 //            MyPrint.showList(timeStampList, "; ");
+//            tempRunnable = new PrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyUpperBound, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex);
             tempRunnable = new PrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyUpperBound, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
@@ -134,8 +135,10 @@ public class ParameterGenerator {
 
     public static void generatePrivacyBudget(String dirPath, final List<Integer> userIDList, final List<Integer> timeStampList, final List<Double> privacyBudgetList){
         Double privacyUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
-        Double remainBackwardPrivacyLowerBound = ConfigureUtils.getBackwardPrivacyBudgetLowerBoundDifference();
         Double remainBackwardPrivacyUpperBound = ConfigureUtils.getBackwardPrivacyBudgetUpperBoundDifference();
+        //todo: 这里把backward privacy设置为最大
+//        Double remainBackwardPrivacyLowerBound = ConfigureUtils.getBackwardPrivacyBudgetLowerBoundDifference();
+        Double remainBackwardPrivacyLowerBound = remainBackwardPrivacyUpperBound;
         File tempDir;
         String tempDirPath;
         for (Double budget : privacyBudgetList) {
