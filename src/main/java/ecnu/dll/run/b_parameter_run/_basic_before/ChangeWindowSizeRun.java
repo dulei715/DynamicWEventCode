@@ -1,13 +1,15 @@
-package ecnu.dll.run.b_parameter_run.basic;
+package ecnu.dll.run.b_parameter_run._basic_before;
 
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.struct.pair.PurePair;
 import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._1_WEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._3_PersonalizedDynamicEventMechanismRun;
+import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
@@ -20,8 +22,10 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ChangeWindowSizeRun {
+    @Deprecated
     public static List<ExperimentResult> run(List<String> dataType, List<List<StreamDataElement<Boolean>>> dataList, Double privacyBudget, List<Integer> windowSizeList) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         PurePair<ExperimentResult, List<StreamCountData>> nonPrivacySchemeResultPair = _0_NonPrivacyMechanismRun.run(dataType, dataList);
         List<StreamCountData> rawPublicationList = nonPrivacySchemeResultPair.getValue();
@@ -76,4 +80,51 @@ public class ChangeWindowSizeRun {
 
         return experimentResultList;
     }
+//    public static List<ExperimentResult> runBatch(Map<String, ? extends Mechanism> schemeMap, List<String> dataType, Integer batchID, List<List<StreamDataElement<Boolean>>> dataList,
+//                                                  Double privacyBudget, List<Integer> windowSizeList,
+//                                                  List<Double> batchPersonalizedPrivacyBudget, List<List<Integer>> batchPersonalizedWindowSizeList,
+//                                                  List<List<Double>> batchForwardPrivacyBudget, List<List<List<Integer>>> batchForwardWindowSizeList,
+//                                                  List<List<Double>> batchRemainBackwardPrivacyBudget, List<List<List<Integer>>> batchBackwardWindowSizeList) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+//        PurePair<ExperimentResult, List<StreamCountData>> nonPrivacySchemeResultPair = _0_NonPrivacyMechanismRun.run(dataType, dataList);
+//        List<StreamCountData> rawPublicationList = nonPrivacySchemeResultPair.getValue();
+//        List<ExperimentResult> experimentResultList = new ArrayList<>();
+//        ExperimentResult tempResult;
+//
+//        tempResult = nonPrivacySchemeResultPair.getKey();
+//        experimentResultList.add(tempResult);
+//
+//        Double budgetLowerBound = privacyBudget;
+//        Integer windowSizeUpperBound;
+//
+//        List<Integer> batchPersonalizedWindowSize;
+//        List<List<Integer>> batchForwardWindowSize;
+//        List<List<Integer>> batchBackwardWindowSize;
+//
+//
+//        // 执行各种机制
+//        int size = windowSizeList.size();
+//        for (int i = 0; i < size; i++) {
+//            windowSizeUpperBound = windowSizeList.get(i);
+//            tempResult = _1_WEventMechanismRun.runBatch((BudgetDistribution)schemeMap.get(Constant.BudgetDistributionSchemeName), batchID, dataList, rawPublicationList, budgetLowerBound, windowSizeUpperBound);
+//            experimentResultList.add(tempResult);
+//            tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)schemeMap.get(Constant.BudgetAbsorptionSchemeName), batchID, dataList, rawPublicationList, budgetLowerBound, windowSizeUpperBound);
+//            experimentResultList.add(tempResult);
+//
+//            batchPersonalizedWindowSize = batchPersonalizedWindowSizeList.get(i);
+//            tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetDistribution)schemeMap.get(Constant.PersonalizedBudgetDistributionSchemeName), batchID, dataList, rawPublicationList, batchPersonalizedPrivacyBudget, batchPersonalizedWindowSize);
+//            experimentResultList.add(tempResult);
+//            tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetAbsorption)schemeMap.get(Constant.PersonalizedBudgetAbsorptionSchemeName), batchID, dataList, rawPublicationList, batchPersonalizedPrivacyBudget, batchPersonalizedWindowSize);
+//            experimentResultList.add(tempResult);
+//
+//            batchForwardWindowSize = batchForwardWindowSizeList.get(i);
+//            batchBackwardWindowSize = batchBackwardWindowSizeList.get(i);
+//            tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)schemeMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, dataList, rawPublicationList, batchRemainBackwardPrivacyBudget, batchBackwardWindowSize, batchForwardPrivacyBudget, batchForwardWindowSize);
+//            experimentResultList.add(tempResult);
+//
+//            tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)schemeMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, dataList, rawPublicationList, batchRemainBackwardPrivacyBudget, batchBackwardWindowSize, batchForwardPrivacyBudget, batchForwardWindowSize);
+//            experimentResultList.add(tempResult);
+//        }
+//
+//        return experimentResultList;
+//    }
 }

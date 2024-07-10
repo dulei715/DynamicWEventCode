@@ -50,10 +50,9 @@ public class _1_WEventMechanismRun {
         experimentResult.addPair(Constant.MRE, String.valueOf(varianceStatistic));
         return experimentResult;
     }
-    public static ExperimentResult runBatch(WEventMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList, Double privacyBudget, Integer windowSize) {
-//        Constructor constructor = clazz.getDeclaredConstructor(List.class, Double.class, Integer.class);
-//        WEventMechanism scheme = (WEventMechanism) constructor.newInstance(dataType, privacyBudget, windowSize);
-
+    public static ExperimentResult runBatch(WEventMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList) {
+        Double privacyBudget = scheme.getPrivacyBudget();
+        Integer windowSize = scheme.getWindowSize();
         ExperimentResult experimentResult = new ExperimentResult();
         int timeBatchSize = batchDataList.size();
         StreamCountData rawPublicationData;

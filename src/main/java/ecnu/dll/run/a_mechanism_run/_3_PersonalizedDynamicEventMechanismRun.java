@@ -54,7 +54,9 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         return experimentResult;
     }
 
-    public static ExperimentResult runBatch(DynamicPersonalizedWindowSizeMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList, List<List<Double>> remainBackwardPrivacyBudgetListBatchList, List<List<Integer>> backwardWindowSizeListBatchList, List<List<Double>> forwardPrivacyBudgetListBatchList, List<List<Integer>> forwardWindowSizeListBatchList) {
+    public static ExperimentResult runBatch(DynamicPersonalizedWindowSizeMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList,
+                                            List<List<Double>> remainBackwardPrivacyBudgetListBatchList, List<List<Integer>> backwardWindowSizeListBatchList,
+                                            List<List<Double>> forwardPrivacyBudgetListBatchList, List<List<Integer>> forwardWindowSizeListBatchList) {
 //        Constructor constructor = clazz.getDeclaredConstructor(List.class, Integer.class);
 //        int userSize = dataList.get(0).size();
 //        DynamicPersonalizedWindowSizeMechanism scheme = (DynamicPersonalizedWindowSizeMechanism) constructor.newInstance(dataType, userSize);

@@ -1,4 +1,4 @@
-package ecnu.dll.run.b_parameter_run.basic;
+package ecnu.dll.run.b_parameter_run._basic_before;
 
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.struct.pair.PurePair;
@@ -8,8 +8,6 @@ import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.run.a_mechanism_run._3_PersonalizedDynamicEventMechanismRun;
-import ecnu.dll.schemes._basic_struct.Mechanism;
-import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
@@ -22,7 +20,6 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChangeBudgetRun {
     @Deprecated
@@ -80,63 +77,53 @@ public class ChangeBudgetRun {
         return experimentResultList;
     }
 
-    public static List<ExperimentResult> runBatch(Map<String, ? extends Mechanism> mechanismMap, List<String> dataType, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<Double> privacyBudgetList, Integer windowSize, List<Integer> windowSizeList, List<Double>[] batchBudgetListArray,
-                                                  List<List<Integer>> forwardWindowSizeListBatchList, List<List<Integer>> backwardWindowSizeListBatchList, List<List<Double>>[] forwardPrivacyBudgetListBatchListArray,
-                                                  List<List<Double>> remainBackwardPrivacyBudgetListBatchList) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        NonPrivacyMechanism nonPrivacyScheme = new NonPrivacyMechanism(dataType);
-        PurePair<ExperimentResult, List<StreamCountData>> nonPrivacySchemeResultPair = _0_NonPrivacyMechanismRun.runBatch(nonPrivacyScheme, batchID, batchDataList);
-        List<StreamCountData> rawPublicationBatchList = nonPrivacySchemeResultPair.getValue();
-        List<ExperimentResult> experimentResultList = new ArrayList<>();
-        ExperimentResult tempResult;
-
-        tempResult = nonPrivacySchemeResultPair.getKey();
-        experimentResultList.add(tempResult);
-
-        Double budgetLowerBound;
-        Double budgetUpperBound = ConfigureUtils.getPrivacyBudgetUpperBound();
-        Double backwardDifferenceBudgetLowerBound = ConfigureUtils.getBackwardPrivacyBudgetLowerBoundDifference();
-        Double backwardDifferenceBudgetUpperBound = ConfigureUtils.getBackwardPrivacyBudgetUpperBoundDifference();
-        Integer windowSizeLowerBound = ConfigureUtils.getWindowSizeLowerBound();
-        Integer windowSizeUpperBound = windowSize;
-
-        int timeBatchSize = batchDataList.size();
-        int userSize = batchDataList.get(0).size();
-        int typeSize = ConfigureUtils.getDefaultTypeSize();
-//        int groupElementSize = (int)Math.ceil(userSize*1.0/typeSize);
-//        List<Integer> windowSizeList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, windowSizeUpperBound, typeSize, groupElementSize, userSize);
-        List<Double> batchBudgetList;
-//        List<List<Integer>> forwardWindowSizeListBatchList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, windowSizeList, groupElementSize, timeBatchSize);
-//        List<List<Integer>> backwardWindowSizeListBatchList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, windowSizeList, groupElementSize, timeBatchSize);
-        List<List<Double>> forwardPrivacyBudgetListBatchList;
-//        List<List<Double>> remainBackwardPrivacyBudgetListBatchList = ParameterUtils.generateRandomDifferenceDoubleList(backwardDifferenceBudgetLowerBound, backwardDifferenceBudgetUpperBound, typeSize, groupElementSize, userSize, timeBatchSize);
-
-
-        // 执行各种机制
-        int size = privacyBudgetList.size();
-        for (int i = 0; i < size; i++) {
-            budgetLowerBound = privacyBudgetList.get(i);
-            tempResult = _1_WEventMechanismRun.runBatch((BudgetDistribution)mechanismMap.get("budgetDistribution"), batchID, batchDataList, rawPublicationBatchList, budgetLowerBound, windowSizeUpperBound);
-            experimentResultList.add(tempResult);
-            // todo
-            tempResult = _1_WEventMechanismRun.run(BudgetAbsorption.class, dataType, batchDataList, rawPublicationBatchList, budgetLowerBound, windowSizeUpperBound);
-            experimentResultList.add(tempResult);
-
-//            batchBudgetList = ParameterUtils.generateRandomDoubleList(budgetLowerBound, budgetUpperBound, typeSize, groupElementSize, userSize);
-            batchBudgetList = batchBudgetListArray[i];
-            tempResult = _2_PersonalizedEventMechanismRun.run(PersonalizedBudgetDistribution.class, dataType, batchDataList, rawPublicationBatchList, batchBudgetList, windowSizeList);
-            experimentResultList.add(tempResult);
-            tempResult = _2_PersonalizedEventMechanismRun.run(PersonalizedBudgetAbsorption.class, dataType, batchDataList, rawPublicationBatchList, batchBudgetList, windowSizeList);
-            experimentResultList.add(tempResult);
-
-//            forwardPrivacyBudgetListBatchList = ParameterUtils.generateRandomDoubleList(randomBudgetList, budgetUpperBound, groupElementSize, timeBatchSize);
-            forwardPrivacyBudgetListBatchList = forwardPrivacyBudgetListBatchListArray[i];
-            tempResult = _3_PersonalizedDynamicEventMechanismRun.run(DynamicPersonalizedBudgetDistribution.class, dataType, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-            experimentResultList.add(tempResult);
-
-            tempResult = _3_PersonalizedDynamicEventMechanismRun.run(DynamicPersonalizedBudgetAbsorption.class, dataType, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-            experimentResultList.add(tempResult);
-        }
-
-        return experimentResultList;
-    }
+//    public static List<ExperimentResult> runBatch(Map<String, Map<String, ? extends Mechanism>> schemeMap, List<String> dataType, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList,
+//                                                  List<Double> privacyBudgetList, Integer windowSize,
+//                                                  List<List<Double>> batchPersonalizedBudgetList, List<Integer> batchWindowSizeList,
+//                                                  List<List<List<Double>>> batchForwardPrivacyBudgetList, List<List<Integer>> batchForwardWindowSize,
+//                                                  List<List<Double>> batchRemainBackwardPrivacyBudget, List<List<Integer>> batchBackwardWindowSize) {
+//        NonPrivacyMechanism nonPrivacyScheme = new NonPrivacyMechanism(dataType);
+//        PurePair<ExperimentResult, List<StreamCountData>> nonPrivacySchemeResultPair = _0_NonPrivacyMechanismRun.runBatch(nonPrivacyScheme, batchID, batchDataList);
+//        List<StreamCountData> rawPublicationBatchList = nonPrivacySchemeResultPair.getValue();
+//        List<ExperimentResult> experimentResultList = new ArrayList<>();
+//        ExperimentResult tempResult;
+//
+//        tempResult = nonPrivacySchemeResultPair.getKey();
+//        experimentResultList.add(tempResult);
+//
+//        Double budgetLowerBound;
+//        String budgetLowerBoundString;
+//        Integer windowSizeUpperBound = windowSize;
+//
+//        List<Double> batchBudgetList;
+//        List<List<Double>> forwardPrivacyBudgetListBatchList;
+//
+//
+//        // 执行各种机制
+//        int size = privacyBudgetList.size();
+//        for (int i = 0; i < size; i++) {
+//            budgetLowerBound = privacyBudgetList.get(i);
+//            budgetLowerBoundString = String.valueOf(budgetLowerBound);
+//            tempResult = _1_WEventMechanismRun.runBatch((BudgetDistribution)schemeMap.get(Constant.BudgetDistributionSchemeName).get(budgetLowerBoundString), batchID, batchDataList, rawPublicationBatchList);
+//            experimentResultList.add(tempResult);
+//            // todo
+//            tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)schemeMap.get(Constant.BudgetAbsorptionSchemeName).get(budgetLowerBoundString), batchID, batchDataList, rawPublicationBatchList);
+//            experimentResultList.add(tempResult);
+//
+//            batchBudgetList = batchPersonalizedBudgetList.get(i);
+//            tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetDistribution)schemeMap.get(Constant.PersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, batchBudgetList, batchWindowSizeList);
+//            experimentResultList.add(tempResult);
+//            tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetAbsorption)schemeMap.get(Constant.PersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, batchBudgetList, batchWindowSizeList);
+//            experimentResultList.add(tempResult);
+//
+//            forwardPrivacyBudgetListBatchList = batchForwardPrivacyBudgetList.get(i);
+//            tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)schemeMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, batchRemainBackwardPrivacyBudget, batchBackwardWindowSize, forwardPrivacyBudgetListBatchList, batchForwardWindowSize);
+//            experimentResultList.add(tempResult);
+//
+//            tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)schemeMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, batchRemainBackwardPrivacyBudget, batchBackwardWindowSize, forwardPrivacyBudgetListBatchList, batchForwardWindowSize);
+//            experimentResultList.add(tempResult);
+//        }
+//
+//        return experimentResultList;
+//    }
 }

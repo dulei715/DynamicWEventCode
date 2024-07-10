@@ -29,6 +29,14 @@ public abstract class WEventMechanism extends Mechanism {
         this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, dataTypeList);
     }
 
+    public Double getPrivacyBudget() {
+        return privacyBudget;
+    }
+
+    public Integer getWindowSize() {
+        return windowSize;
+    }
+
     protected abstract void setPublicationPrivacyBudget();
 
     public StreamNoiseCountData getReleaseNoiseCountMap() {

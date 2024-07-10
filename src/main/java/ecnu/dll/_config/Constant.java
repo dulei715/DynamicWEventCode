@@ -16,6 +16,7 @@ public class Constant {
     public static String checkInFilePath;
     public static String trajectoriesFilePath;
 
+
     static {
         configPath = StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "config", "parameter_config.xml");
         File configFile = new File(configPath);
@@ -38,6 +39,7 @@ public class Constant {
         checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, checkInFileName);
         trajectoriesFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, trajectoriesFileName);
     }
+
 
     // constant for RescueDP
     public static Double TAO_1 = 50D;
@@ -95,6 +97,17 @@ public class Constant {
 
 
     public static Double Sample_Ratio_For_Picture = 0.01;
+
+
+    // for scheme name string
+    public static final String NonPrivacySchemeName = "NonPrivacyScheme";
+    public static final String BudgetDistributionSchemeName = "BudgetDistributionScheme";
+    public static final String BudgetAbsorptionSchemeName = "BudgetAbsorptionScheme";
+    public static final String PersonalizedBudgetDistributionSchemeName = "PersonalizedBudgetDistributionScheme";
+    public static final String PersonalizedBudgetAbsorptionSchemeName = "PersonalizedBudgetAbsorptionScheme";
+    public static final String DynamicPersonalizedBudgetDistributionSchemeName = "DynamicPersonalizedBudgetDistributionScheme";
+    public static final String DynamicPersonalizedBudgetAbsorptionSchemeName = "DynamicPersonalizedBudgetAbsorptionScheme";
+
 
     public static void main(String[] args) {
 //        System.out.println(configPath);

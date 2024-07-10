@@ -53,10 +53,9 @@ public class _2_PersonalizedEventMechanismRun {
         return experimentResult;
     }
 
-    public static ExperimentResult runBatch(PersonalizedEventMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList, List<Double> privacyBudgetList, List<Integer> windowSizeList) {
-//        Constructor constructor = clazz.getDeclaredConstructor(List.class, List.class, List.class);
-//        PersonalizedEventMechanism scheme = (PersonalizedEventMechanism) constructor.newInstance(dataType, privacyBudgetList, windowSizeList);
-
+    public static ExperimentResult runBatch(PersonalizedEventMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList, List<StreamCountData> rawPublicationBatchList) {
+        List<Double> privacyBudgetList = scheme.getPrivacyBudgetList();
+        List<Integer> windowSizeList = scheme.getWindowSizeList();
         ExperimentResult experimentResult = new ExperimentResult();
         int timeBatchSize = batchDataList.size();
         StreamCountData rawPublicationData;

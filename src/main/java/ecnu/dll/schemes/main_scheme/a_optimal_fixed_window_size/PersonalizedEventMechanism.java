@@ -37,6 +37,14 @@ public abstract class PersonalizedEventMechanism extends Mechanism {
         this.windowSizeList = windowSizeList;
     }
 
+    public List<Double> getPrivacyBudgetList() {
+        return privacyBudgetList;
+    }
+
+    public List<Integer> getWindowSizeList() {
+        return windowSizeList;
+    }
+
     public StreamNoiseCountData getReleaseNoiseCountMap() {
         return this.lastReleaseNoiseCountMap;
     }
