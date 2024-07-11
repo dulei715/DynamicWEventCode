@@ -21,11 +21,17 @@
         </fileHandle>
     </datasets>
     <candidateSet>
+        <attribute name="PrivacyBudgetLowerBound">
+            <value name="default">0.1</value>
+        </attribute>
         <attribute name="PrivacyBudgetUpperBound">
             <value name="default">10</value>
         </attribute>
         <attribute name="WindowSizeLowerBound">
             <value name="default">1</value>
+        </attribute>
+        <attribute name="WindowSizeUpperBound">
+            <value name="default">50</value>
         </attribute>
         <attribute name="BackwardPrivacyBudgetUpperBoundDifference">
             <value name="default">10</value>
@@ -33,6 +39,16 @@
         <attribute name="BackwardPrivacyBudgetLowerBoundDifference">
             <value name="default">0.1</value>
         </attribute>
+        <version_2>
+            <attribute name="GenPrivacyBudget">
+                <value name="default">0.5,1,1.5,2,2.5</value>
+                <ratio name="default">0.2,0.2,0.2,0.2,0.2</ratio>
+            </attribute>
+            <attribute name="GenWindowSize">
+                <value name="default">10,20,30,40,50</value>
+                <ratio name="default">0.2,0.2,0.2,0.2,0.2</ratio>
+            </attribute>
+        </version_2>
     </candidateSet>
     <independentVariables>
         <attribute name="PrivacyBudget">

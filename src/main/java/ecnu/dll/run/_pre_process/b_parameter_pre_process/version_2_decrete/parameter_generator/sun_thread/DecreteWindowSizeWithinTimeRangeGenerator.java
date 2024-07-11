@@ -1,4 +1,4 @@
-package ecnu.dll.run._pre_process.b_parameter_pre_process.parameter_generator.sub_thread;
+package ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.sun_thread;
 
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
@@ -9,19 +9,21 @@ import ecnu.dll.utils.FormatFileName;
 
 import java.util.List;
 
-public class WindowSizeWithinTimeRangeGenerator implements Runnable {
+public class DecreteWindowSizeWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
     private List<Integer> timeStampList;
-    private Integer windowSizeLowerBound;
+    private List<Integer> windowSizeCandidateList;
+    private List<Double> windowSizeRatioList;
     private Integer backwardWindowSizeLowerBound;
     private List<BasicPair<Integer, Integer>> userWSizeList;
     private Integer startIndex;
     private Integer endIndex;
 
-    public WindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, Integer windowSizeLowerBound, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
+    public DecreteWindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Integer> windowSizeCandidateList, List<Double> windowSizeRatioList, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
-        this.windowSizeLowerBound = windowSizeLowerBound;
+        this.windowSizeCandidateList = windowSizeCandidateList;
+        this.windowSizeRatioList = windowSizeRatioList;
         this.backwardWindowSizeLowerBound = backwardWindowSizeLowerBound;
         this.userWSizeList = userWSizeList;
         this.startIndex = startIndex;
@@ -45,7 +47,9 @@ public class WindowSizeWithinTimeRangeGenerator implements Runnable {
                 //todo: 这里把backward window size设置为最小
 //                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
                 Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, backwardWindowSizeLowerBound);
-                Integer tempRandomInteger2 = RandomUtil.getRandomInteger(windowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
+//                Integer tempRandomInteger2 = RandomUtil.getRandomInteger(windowSizeCandidateList, userWindowSizeUpperBoundPair.getValue());
+                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(windowSizeRatioList.toArray(new Double[0]));
+                Integer tempRandomInteger2 = windowSizeCandidateList.get(index);
                 tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger, tempRandomInteger2);
                 basicWrite.writeOneLine(tempString);
             }

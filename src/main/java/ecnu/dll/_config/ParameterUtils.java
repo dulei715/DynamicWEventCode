@@ -27,10 +27,31 @@ public class ParameterUtils {
         }
         return result;
     }
+    public static List<String> getRandomDoubleListInCandidateListWithStatistic(List<Integer> userIDList, List<Double> candidateList, List<Double> resultStatistic) {
+        List<String> result = new ArrayList<>(userIDList.size());
+        Double tempDouble;
+        Integer tempIndex;
+        for (Integer userID : userIDList) {
+//            tempDouble = RandomUtil.getRandomDouble(lowerBound, upperBound);
+            tempIndex = RandomUtil.getRandomIndexGivenStatisticPoint(resultStatistic.toArray(new Double[0]));
+            tempDouble = candidateList.get(tempIndex);
+            result.add(StringUtil.join(",", userID, tempDouble));
+        }
+        return result;
+    }
     public static List<String> getRandomIntegerList(List<Integer> userIDList, Integer lowerBound, Integer upperBound) {
         List<String> result = new ArrayList<>(userIDList.size());
         for (Integer userID : userIDList) {
             result.add(StringUtil.join(",", userID, RandomUtil.getRandomInteger(lowerBound, upperBound)));
+        }
+        return result;
+    }
+    public static List<String> getRandomIntegerListInCandidateListWithStatistic(List<Integer> userIDList, List<Integer> candidateList, List<Double> resultStatistic) {
+        List<String> result = new ArrayList<>(userIDList.size());
+        Integer tempIndex, tempValue;
+        for (Integer userID : userIDList) {
+            tempIndex = RandomUtil.getRandomIndexGivenStatisticPoint(resultStatistic.toArray(new Double[0]));
+            result.add(StringUtil.join(",", userID, candidateList.get(tempIndex)));
         }
         return result;
     }

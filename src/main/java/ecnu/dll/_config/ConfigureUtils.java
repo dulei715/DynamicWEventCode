@@ -29,6 +29,41 @@ public class ConfigureUtils {
     }
 
 
+    public static List[] getGenerationPrivacyBudgetList() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element candidateSet = document.getRootElement().element("candidateSet");
+        Element elementPrivacyBudget = (Element)candidateSet.selectNodes("./version_2/attribute[@name='GenPrivacyBudget']").get(0);
+        String[] privacyBudgetValueStrArr = elementPrivacyBudget.element("value").getTextTrim().split(",");
+        String[] privacyBudgetRatioStrArr = elementPrivacyBudget.element("ratio").getTextTrim().split(",");
+        List<Double> valueList = new ArrayList<>(), ratioList = new ArrayList<>();
+        for (int i = 0; i < privacyBudgetValueStrArr.length; i++) {
+            valueList.add(Double.valueOf(privacyBudgetValueStrArr[i]));
+            ratioList.add(Double.valueOf(privacyBudgetRatioStrArr[i]));
+        }
+        return new List[]{valueList, ratioList};
+    }
+    public static List[] getGenerationWindowSizeList() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element candidateSet = document.getRootElement().element("candidateSet");
+        Element elementWindowSize = (Element)candidateSet.selectNodes("./version_2/attribute[@name='GenWindowSize']").get(0);
+        String[] windowSizeValueStrArr = elementWindowSize.element("value").getTextTrim().split(",");
+        String[] windowSizeRatioStrArr = elementWindowSize.element("ratio").getTextTrim().split(",");
+        List<Integer> valueList = new ArrayList<>();
+        List<Double> ratioList = new ArrayList<>();
+        for (int i = 0; i < windowSizeValueStrArr.length; i++) {
+            valueList.add(Integer.valueOf(windowSizeValueStrArr[i]));
+            ratioList.add(Double.valueOf(windowSizeRatioStrArr[i]));
+        }
+        return new List[]{valueList, ratioList};
+    }
+    public static Double getPrivacyBudgetLowerBound() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element candidateSet = document.getRootElement().element("candidateSet");
+        Element elementPrivacyBudget = (Element)candidateSet.selectNodes("./attribute[@name='PrivacyBudgetLowerBound']").get(0);
+        String budgetLowerBoundString = elementPrivacyBudget.element("value").getTextTrim();
+        Double budgetLowerBound = Double.valueOf(budgetLowerBoundString);
+        return budgetLowerBound;
+    }
     public static Double getPrivacyBudgetUpperBound() {
         Document document = Constant.xmlConfigure.getDocument();
         Element candidateSet = document.getRootElement().element("candidateSet");
@@ -44,6 +79,14 @@ public class ConfigureUtils {
         String windowSizeLowerBoundString = elementWindowSize.element("value").getTextTrim();
         Integer windowSizeLowerBound = Integer.valueOf(windowSizeLowerBoundString);
         return windowSizeLowerBound;
+    }
+    public static Integer getWindowSizeUpperBound() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element candidateSet = document.getRootElement().element("candidateSet");
+        Element elementWindowSize = (Element) candidateSet.selectNodes("./attribute[@name='WindowSizeUpperBound']").get(0);
+        String windowSizeUpperBoundString = elementWindowSize.element("value").getTextTrim();
+        Integer windowSizeUpperBound = Integer.valueOf(windowSizeUpperBoundString);
+        return windowSizeUpperBound;
     }
 
     public static Double getBackwardPrivacyBudgetUpperBoundDifference() {
@@ -184,8 +227,22 @@ public class ConfigureUtils {
         System.out.println(latitudeSize);
     }
 
-    public static void main(String[] args) {
+    public static void main4(String[] args) {
         List<Double> result = getIndependentPrivacyBudgetList("default");
         MyPrint.showList(result);
+    }
+
+    public static void main5(String[] args) {
+        Double privacyBudgetLowerBound = getPrivacyBudgetLowerBound();
+        Integer windowSizeUpperBound = getWindowSizeUpperBound();
+        System.out.println(privacyBudgetLowerBound);
+        System.out.println(windowSizeUpperBound);
+    }
+
+    public static void main(String[] args) {
+//        List[] result = getGenerationPrivacyBudgetList();
+        List[] result = getGenerationWindowSizeList();
+        MyPrint.showList(result[0]);
+        MyPrint.showList(result[1]);
     }
 }
