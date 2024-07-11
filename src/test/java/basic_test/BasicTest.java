@@ -10,8 +10,10 @@ import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
+import ecnu.dll.utils.filters.TxtFilter;
 import org.junit.Test;
 
+import java.io.File;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -181,7 +183,13 @@ public class BasicTest {
         System.out.println((dataA-dataB)/1000/60);
     }
 
-
+    @Test
+    public void fun16() {
+        String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "test");
+        File file = new File(path);
+        File[] files = file.listFiles(new TxtFilter());
+        System.out.println(files.length);
+    }
 
 
 

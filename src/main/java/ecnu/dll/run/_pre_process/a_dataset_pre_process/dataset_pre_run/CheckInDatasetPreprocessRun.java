@@ -1,5 +1,6 @@
 package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
+import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.read.BasicRead;
@@ -268,7 +269,7 @@ public class CheckInDatasetPreprocessRun {
         List<String> tempDataList;
         CheckInSimplifiedBean tempBean;
         Map<Integer, BasicPair<Long, String>> userTimeSlotLocationMap = CheckInPreprocessRunUtils.getInitialUserTimeSlotLocationMap(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join"));
-        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
 
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
@@ -323,30 +324,6 @@ public class CheckInDatasetPreprocessRun {
 //            System.exit(0);
         }
     }
-//    public static void main5(String[] args) {
-//        SignalHandler handler = new NoTerminalHandler(2);
-//        try {
-//            Signal sigTERM = new Signal("TERM");
-//            Signal sigINT = new Signal("INT");
-//            Signal.handle(sigTERM, handler);
-//            Signal.handle(sigINT, handler);
-//
-//            // 程序主逻辑
-//            System.out.println("Program is running...");
-//            String filterString = args[0];
-//            Long filerNumber;
-//            if (filterString == null || "".equals(filterString)) {
-//                filerNumber = 0L;
-//            } else {
-//                filerNumber = Long.valueOf(filterString);
-//            }
-//            mergeToExperimentRawData(filerNumber);
-//            System.out.println("Program finished !");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-////            System.exit(0);
-//        }
-//    }
 
     public static void recordCountryInfo() {
         String countryReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join");
@@ -381,6 +358,99 @@ public class CheckInDatasetPreprocessRun {
         PreprocessRunUtils.recordTimeStampInfo(Constant.checkInFilePath);
     }
 
+    public static void extractUser() {
+        Double ratio = 0.05;
+        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info");
+        String rawDataPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "user.txt");
+        String newRawDataPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "user_raw.txt");
+        List<String> rawData, newData = new ArrayList<>();
+        File newRawFile = new File(newRawDataPath);
+        if (newRawFile.exists()) {
+            System.out.println("为了不覆盖数据，请先删除原有的user_raw.txt");
+            return;
+        }
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(rawDataPath);
+        rawData = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        for (String rawDatum : rawData) {
+            if (RandomUtil.isChosen(ratio)) {
+                newData.add(rawDatum);
+            }
+        }
+        File rawFile = new File(rawDataPath);
+
+        BasicWrite basicWrite = new BasicWrite(",");
+        try {
+            rawFile.renameTo(newRawFile);
+            basicWrite.startWriting(rawDataPath);
+            basicWrite.writeStringListWithoutSize(newData);
+            basicWrite.endWriting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            basicWrite.startWriting(rawDataPath);
+            basicWrite.writeStringListWithoutSize(rawData);
+            basicWrite.endWriting();
+            newRawFile.delete();
+        }
+    }
+
+    private static void extractUserData() {
+        // 保证basic_info/user.txt是抽取过的user
+        String rawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+        String newRawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
+        String userIDPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info", "user.txt");
+        File newRawFile = new File(newRawDir);
+        File[] rawFileArray;
+        if (newRawFile.exists()) {
+            System.out.println("为了保证文件不覆盖，请先删除runInput_raw文件夹！");
+            return;
+        }
+        // 获取所有user id 并将其放进集合
+        File rawFile = new File(rawDir);
+        List<String> tempData, newData;
+        BasicWrite basicWrite;
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(userIDPath);
+        tempData = basicRead.readAllWithoutLineNumberRecordInFile();
+        basicRead.endReading();
+        Set<Integer> userIDSet = new HashSet<>();
+        for (String idStr : tempData) {
+            userIDSet.add(Integer.valueOf(idStr));
+        }
+        try {
+            rawFile.renameTo(newRawFile);
+            rawFile.mkdirs();
+            rawFileArray = newRawFile.listFiles(new TxtFilter());
+            basicWrite = new BasicWrite(",");
+            Integer tempUserID;
+            for (File file : rawFileArray) {
+                basicRead.startReading(file.getAbsolutePath());
+                tempData = basicRead.readAllWithoutLineNumberRecordInFile();
+                basicRead.endReading();
+                newData = new ArrayList<>();
+                for (String strLine : tempData) {
+                    tempUserID = Integer.valueOf(basicRead.split(strLine)[0]);
+                    if (userIDSet.contains(tempUserID)) {
+                        newData.add(strLine);
+                    }
+                }
+                basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, rawDir, file.getName()));
+                basicWrite.writeStringListWithoutSize(newData);
+                basicWrite.endWriting();
+            }
+        } catch (Exception e) {
+            if (!newRawFile.exists() || newRawFile.listFiles(new TxtFilter()).length < 1) {
+                return;
+            }
+            File tempCopyRunInputFile = new File(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "tempRunInput"+System.currentTimeMillis()+".txt"));
+            rawFile.renameTo(tempCopyRunInputFile);
+            newRawFile.renameTo(rawFile);
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main0(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
@@ -409,12 +479,27 @@ public class CheckInDatasetPreprocessRun {
         System.out.println("Start record...");
         recordBasicInformation();
         System.out.println("Program finished !");
+
+        // 6. 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为user_raw.txt
+        System.out.println("Start extract user...");
+        extractUser();
+        System.out.println("Finish extract user!");
+
+        // 7. 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
+        System.out.println("Start extract user data...");
+        extractUserData();
+        System.out.println("Finish extract user data!");
     }
 
-    public static void main(String[] args) {
+    public static void main5(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
         recordBasicInformation();
+    }
+
+    public static void main(String[] args) {
+//        extractUser();
+        extractUserData();
     }
 
 }
