@@ -16,6 +16,7 @@ import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils
 import ecnu.dll.utils.CatchSignal;
 import ecnu.dll.utils.FormatFileName;
 import ecnu.dll.utils.filters.TxtFilter;
+import org.checkerframework.checker.units.qual.C;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
@@ -498,6 +499,8 @@ public class CheckInDatasetPreprocessRun {
     }
 
     public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
 //        extractUser();
         extractUserData();
     }

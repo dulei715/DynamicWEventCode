@@ -1,8 +1,5 @@
 package ecnu.dll.dataset;
 
-import cn.edu.dll.statistic.StatisticTool;
-import org.apache.commons.math3.analysis.function.Gaussian;
-
 import java.util.Random;
 
 public class DataSetHandler {
