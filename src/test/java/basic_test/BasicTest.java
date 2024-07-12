@@ -3,6 +3,7 @@ package basic_test;
 import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
@@ -189,6 +190,16 @@ public class BasicTest {
         File file = new File(path);
         File[] files = file.listFiles(new TxtFilter());
         System.out.println(files.length);
+    }
+
+    @Test
+    public void fun17() {
+        List<Integer> windowSizeList = new ArrayList<>();
+        windowSizeList.add(10);
+        windowSizeList.add(3);
+        windowSizeList.add(15);
+        String result = String.valueOf(ListUtils.getMaximalValue(windowSizeList, 1));
+        System.out.println(result);
     }
 
 

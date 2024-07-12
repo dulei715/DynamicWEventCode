@@ -75,7 +75,8 @@ public class _2_PersonalizedEventMechanismRun {
         experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
         experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(ListUtils.getMinimalValue(privacyBudgetList)));
-        experimentResult.addPair(Constant.WindowSize, String.valueOf(ListUtils.getMaximalValue(windowSizeList, 1)));
+        int maximalWindowSizeValue = ListUtils.getMaximalValue(windowSizeList, 1);
+        experimentResult.addPair(Constant.WindowSize, String.valueOf(maximalWindowSizeValue));
         for (int i = 0; i < timeBatchSize; i++) {
             rawPublicationData = rawPublicationBatchList.get(i);
             publicationData = publicationList.get(i);

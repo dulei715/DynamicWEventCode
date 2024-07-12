@@ -79,7 +79,9 @@ public class TrajectoryPreprocessRunUtils {
 //        return result;
 //    }
     public static List<Integer> getUserIDList() {
-        String filePath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput", "timestamp_0000.txt");
+        String filePathDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput");
+        File dirFile = new File(filePathDir);
+        String filePath = dirFile.listFiles(new TxtFilter())[0].getAbsolutePath();
         List<Integer> result = new ArrayList<>();
         List<String> tempDataList;
         BasicRead basicRead = new BasicRead(",");

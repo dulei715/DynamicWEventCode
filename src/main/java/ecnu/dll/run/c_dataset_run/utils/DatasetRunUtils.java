@@ -21,7 +21,11 @@ public class DatasetRunUtils {
             tempThread = new Thread(tempRunnable);
             tempThread.start();
             System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId());
+
+            //todo: for test
+//            break;
         }
+
 
         for (int i = 0; i < windowSizeChangeList.size(); i++) {
             if (i == 2) {
@@ -33,6 +37,8 @@ public class DatasetRunUtils {
             tempThread.start();
             System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId());
         }
+
+        
 
     }
 }

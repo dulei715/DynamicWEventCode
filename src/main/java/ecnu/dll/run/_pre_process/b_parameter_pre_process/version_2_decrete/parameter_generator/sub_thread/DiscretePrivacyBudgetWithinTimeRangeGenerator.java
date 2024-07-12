@@ -1,4 +1,4 @@
-package ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.sun_thread;
+package ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.sub_thread;
 
 import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.basic.RandomUtil;
@@ -8,24 +8,24 @@ import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.utils.FormatFileName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DecretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
+public class DiscretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
     private List<Integer> timeStampList;
     private List<Double> privacyBudgetCandidateList;
-    private List<Double> privacyBudgetRatioList;
     private Double remainBackwardPrivacyLowerBound;
     private Double remainBackwardPrivacyUpperBound;
     private List<BasicPair<Integer, Double>> userBudgetList;
     private Integer startIndex;
     private Integer endIndex;
 
-    public DecretePrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Double> privacyBudgetCandidateList, List<Double> privacyBudgetRatioList, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex) {
+    public DiscretePrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Double> privacyBudgetCandidateList, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
         this.privacyBudgetCandidateList = privacyBudgetCandidateList;
-        this.privacyBudgetRatioList = privacyBudgetRatioList;
+//        this.privacyBudgetRatioList = privacyBudgetRatioList;
         this.remainBackwardPrivacyLowerBound = remainBackwardPrivacyLowerBound;
         this.remainBackwardPrivacyUpperBound = remainBackwardPrivacyUpperBound;
         this.userBudgetList = userBudgetList;
@@ -39,7 +39,9 @@ public class DecretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
         String formatFileNameID;
         BasicWrite basicWrite = new BasicWrite(",");
         String tempString;
-        Integer timeStampID;
+        Integer timeStampID, tempIndex;
+        List<Double> subCandidateBudgetValueList, subCandidateBudgetRatioList;
+        Double tempBudgetLowerBound;
         for (int i = startIndex; i <= endIndex; ++i) {
             timeStampID = timeStampList.get(i);
             formatFileNameID = FormatFileName.getFormatNumberString(timeStampID, 0, timeStampListSize);
@@ -48,8 +50,20 @@ public class DecretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
             for (BasicPair<Integer, Double> userBudgetLowerBoundPair : userBudgetList) {
                 Double tempRandomDouble = RandomUtil.getRandomDouble(remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound);
 //                Double tempRandomDouble2 = RandomUtil.getRandomDouble(userBudgetLowerBoundPair.getValue(), privacyUpperBound);
-                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(this.privacyBudgetRatioList.toArray(new Double[0]));
-                Double tempRandomDouble2 = privacyBudgetCandidateList.get(index);
+                tempBudgetLowerBound = userBudgetLowerBoundPair.getValue();
+                tempIndex = privacyBudgetCandidateList.indexOf(tempBudgetLowerBound);
+                if (tempIndex < 0) {
+                    throw new RuntimeException("Illegal privacy budget!");
+                }
+                int size = privacyBudgetCandidateList.size() - tempIndex;
+                subCandidateBudgetValueList = new ArrayList<>();
+                subCandidateBudgetRatioList = new ArrayList<>();
+                for (int j = tempIndex; j < privacyBudgetCandidateList.size(); j++) {
+                    subCandidateBudgetValueList.add(privacyBudgetCandidateList.get(j));
+                    subCandidateBudgetRatioList.add(1.0/size);
+                }
+                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(subCandidateBudgetRatioList.toArray(new Double[0]));
+                Double tempRandomDouble2 = subCandidateBudgetValueList.get(index);
                 tempString = StringUtil.join(",", userBudgetLowerBoundPair.getKey(), NumberUtil.roundFormat(tempRandomDouble, 2), NumberUtil.roundFormat(tempRandomDouble2, 2));
                 basicWrite.writeOneLine(tempString);
             }

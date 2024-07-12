@@ -1,4 +1,4 @@
-package ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.sun_thread;
+package ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.sub_thread;
 
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
@@ -7,23 +7,24 @@ import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.utils.FormatFileName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DecreteWindowSizeWithinTimeRangeGenerator implements Runnable {
+public class DiscreteWindowSizeWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
     private List<Integer> timeStampList;
     private List<Integer> windowSizeCandidateList;
-    private List<Double> windowSizeRatioList;
+//    private List<Double> windowSizeRatioList;
     private Integer backwardWindowSizeLowerBound;
     private List<BasicPair<Integer, Integer>> userWSizeList;
     private Integer startIndex;
     private Integer endIndex;
 
-    public DecreteWindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Integer> windowSizeCandidateList, List<Double> windowSizeRatioList, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
+    public DiscreteWindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Integer> windowSizeCandidateList, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
         this.windowSizeCandidateList = windowSizeCandidateList;
-        this.windowSizeRatioList = windowSizeRatioList;
+//        this.windowSizeRatioList = windowSizeRatioList;
         this.backwardWindowSizeLowerBound = backwardWindowSizeLowerBound;
         this.userWSizeList = userWSizeList;
         this.startIndex = startIndex;
@@ -37,6 +38,9 @@ public class DecreteWindowSizeWithinTimeRangeGenerator implements Runnable {
         BasicWrite basicWrite = new BasicWrite(",");
         String tempString;
         Integer timeStampID;
+        List<Integer> subCandidateWindowSizeList;
+        List<Double> subCandidateWindowSizeRatio;
+        Integer subWindowSizeUpperBound, tempIndex;
 //        for (Integer timeStampID : timeStampList) {
         for (int i = startIndex; i <= endIndex; ++i) {
             timeStampID = timeStampList.get(i);
@@ -48,8 +52,21 @@ public class DecreteWindowSizeWithinTimeRangeGenerator implements Runnable {
 //                Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, userWindowSizeUpperBoundPair.getValue());
                 Integer tempRandomInteger = RandomUtil.getRandomInteger(backwardWindowSizeLowerBound, backwardWindowSizeLowerBound);
 //                Integer tempRandomInteger2 = RandomUtil.getRandomInteger(windowSizeCandidateList, userWindowSizeUpperBoundPair.getValue());
-                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(windowSizeRatioList.toArray(new Double[0]));
-                Integer tempRandomInteger2 = windowSizeCandidateList.get(index);
+//                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(windowSizeRatioList.toArray(new Double[0]));
+                subWindowSizeUpperBound = userWindowSizeUpperBoundPair.getValue();
+                tempIndex = windowSizeCandidateList.indexOf(subWindowSizeUpperBound);
+                if (tempIndex < 0) {
+                    throw new RuntimeException("Illegal budget!");
+                }
+                subCandidateWindowSizeList = new ArrayList<>();
+                subCandidateWindowSizeRatio = new ArrayList<>();
+                int subSize = tempIndex + 1;
+                for (int j = 0; j <= tempIndex; j++) {
+                     subCandidateWindowSizeList.add(windowSizeCandidateList.get(j));
+                     subCandidateWindowSizeRatio.add(1.0/subSize);
+                }
+                Integer index = RandomUtil.getRandomIndexGivenStatisticPoint(subCandidateWindowSizeRatio.toArray(new Double[0]));
+                Integer tempRandomInteger2 = subCandidateWindowSizeList.get(index);
                 tempString = StringUtil.join(",", userWindowSizeUpperBoundPair.getKey(), tempRandomInteger, tempRandomInteger2);
                 basicWrite.writeOneLine(tempString);
             }

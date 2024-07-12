@@ -2,6 +2,7 @@ package ecnu.dll.run.c_dataset_run.utils;
 
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 
+@Deprecated
 public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
     private String name;
     private Integer batchID;
@@ -95,10 +96,11 @@ public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
         String[] data = line.split(",");
         String name = data[0];
         Integer batchID = Integer.valueOf(data[1]);
-        Long timeCost = Long.valueOf(data[2]);
-        Double privacyBudget = Double.valueOf(data[3]);
-        Integer windowSize = (int) Math.round(Double.valueOf(data[4]));
-        Double bRE = Double.valueOf(data[5]);
+        Integer batchSize = Integer.valueOf(data[2]);
+        Long timeCost = Long.valueOf(data[3]);
+        Double privacyBudget = Double.valueOf(data[4]);
+        Integer windowSize = (int) Math.round(Double.valueOf(data[5]));
+        Double bRE = Double.valueOf(data[6]);
         return new ResultBeanBefore(name, batchID, timeCost, privacyBudget, windowSize, bRE);
     }
 

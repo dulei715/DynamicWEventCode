@@ -1,3 +1,4 @@
 #!/bin/bash
 # for CheckIn dataset
-java -cp DynamicWEventCode-1.0-DMDP-jar-with-dependencies.jar ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_pre_run.GenerateParametersForCheckIn
+#java -cp DynamicWEventCode-1.0-DMDP-jar-with-dependencies.jar ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_pre_run.GenerateParametersForCheckIn
+java -cp DynamicWEventCode-1.0-DMDP-jar-with-dependencies.jar ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_pre_run.GenerateDiscreteParametersForCheckIn

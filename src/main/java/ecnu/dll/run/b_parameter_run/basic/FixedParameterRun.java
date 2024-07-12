@@ -99,7 +99,6 @@ public class FixedParameterRun implements Runnable {
         // 执行各种机制
         tempResult = _1_WEventMechanismRun.runBatch((BudgetDistribution)mechanismMap.get(Constant.BudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList);
         experimentResultList.add(tempResult);
-        // todo
         tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
         experimentResultList.add(tempResult);
 
@@ -123,13 +122,9 @@ public class FixedParameterRun implements Runnable {
         File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
         List<StreamDataElement<Boolean>> dataList;
         File file;
-        WEventMechanism tempEventMechanism;
         List<List<StreamDataElement<Boolean>>> batchDataList = new ArrayList<>();
         List<ExperimentResult> experimentResultList = new ArrayList<>();
         ExperimentResult tempResult;
-//        tempEventMechanism = (WEventMechanism) mechanismMap.get(Constant.BudgetDistributionSchemeName);
-//        Double privacyBudget = tempEventMechanism.getPrivacyBudget();
-//        Integer windowSize = tempEventMechanism.getWindowSize();
 
         String tempDataPath;
         List[] dynamicPrivacyListArray, dynamicWindowSizeListArray;
@@ -165,39 +160,38 @@ public class FixedParameterRun implements Runnable {
                 List<StreamCountData> rawPublicationBatchList = nonPrivacySchemeResultPair.getValue();
                 tempResult = nonPrivacySchemeResultPair.getKey();
                 experimentResultList.add(tempResult);
-                System.out.println("finish nonPrivacy batch");
                 // 执行各种机制
-                System.out.println("Start BudgetDistribution...");
+//                System.out.println("Start BudgetDistribution...");
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetDistribution)mechanismMap.get(Constant.BudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
-                System.out.println("Start BudgetAbsorption...");
+//                System.out.println("Start BudgetAbsorption...");
                 // todo
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
-                System.out.println("Start PersonalizedBudgetDistribution...");
+//                System.out.println("Start PersonalizedBudgetDistribution...");
                 tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetDistribution)mechanismMap.get(Constant.PersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
-                System.out.println("Start PersonalizedBudgetAbsorption...");
+//                System.out.println("Start PersonalizedBudgetAbsorption...");
                 tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetAbsorption)mechanismMap.get(Constant.PersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
 
-                System.out.println("Start DynamicPersonalizedBudgetDistribution...");
+//                System.out.println("Start DynamicPersonalizedBudgetDistribution...");
                 tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
                 experimentResultList.add(tempResult);
 
-                System.out.println("Start DynamicPersonalizedBudgetAbsorption...");
+//                System.out.println("Start DynamicPersonalizedBudgetAbsorption...");
                 tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
                 experimentResultList.add(tempResult);
 
                 // write result
-                System.out.println("Start Writing...");
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
                 experimentResultWrite.startWriting(outputFilePath);
                 experimentResultWrite.write(experimentResultList);
                 experimentResultWrite.endWriting();
+                System.out.printf("Finish Writing result in batch %d in thread %d\n", batchID, Thread.currentThread().getId());
 
                 ++batchID;
                 batchDataList.clear();
