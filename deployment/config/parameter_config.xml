@@ -73,7 +73,17 @@
             <single name="1">600</single>
             <variance name="1">1,5,10,15,20</variance>
         </attribute>
-        <attribute name=""></attribute>
+        <attribute name="SegmentUnitSize">
+            <dataType>java.lang.Integer</dataType>
+<!--            <single name="default">100</single>-->
+            <single name="default">5135</single>
+            <variance name="default">25,50,100,150,200</variance>
+        </attribute>
+        <attribute name="BatchUnitSize">
+            <dataType>java.lang.Integer</dataType>
+            <single name="default">2</single>
+            <variance name="default">1,2,3,4,5</variance>
+        </attribute>
     </independentVariables>
 
     <dependentVariables>

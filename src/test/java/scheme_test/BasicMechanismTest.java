@@ -3,8 +3,8 @@ package scheme_test;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.result.ExperimentResult;
-import ecnu.dll.run.b_parameter_run._basic_before.ChangeBudgetRun;
-import ecnu.dll.run.b_parameter_run._basic_before.ChangeWindowSizeRun;
+import ecnu.dll.run.b_parameter_run.basic.version_1.ChangeBudgetRun;
+import ecnu.dll.run.b_parameter_run.basic.version_1.ChangeWindowSizeRun;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
@@ -131,7 +131,7 @@ public class BasicMechanismTest {
     @Test
     public void resultChangeBudgetTest() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         int userSize = 100;
-        int typeSize = 5;
+        int characterTypeSize = 5;
 
         int windowSize = 5;
 //        double privacyBudget = 0.5;
@@ -141,7 +141,7 @@ public class BasicMechanismTest {
 
         List<StreamDataElement<Boolean>> dataElementList;
 
-        dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+        dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, characterTypeSize);
         List<String> dataType = dataElementList.get(0).getKeyList();
 
         NonPrivacyMechanism scheme = new NonPrivacyMechanism(dataType);
@@ -149,7 +149,7 @@ public class BasicMechanismTest {
         List<List<StreamDataElement<Boolean>>> dataList = new ArrayList<>();
         for (int i = 0; i < timeUpperBound; i++) {
 //            System.out.println(i);
-            dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+            dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, characterTypeSize);
             dataList.add(dataElementList);
         }
 

@@ -1,4 +1,4 @@
-package ecnu.dll.run.b_parameter_run.basic.utils;
+package ecnu.dll.run.b_parameter_run.basic.version_2.utils;
 
 public class InputDataStruct {
     private Integer userID;

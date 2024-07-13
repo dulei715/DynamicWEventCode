@@ -119,7 +119,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
         Integer batchSize = Integer.valueOf(data[2]);
         Long timeCost = Long.valueOf(data[3]);
         Double privacyBudget = Double.valueOf(data[4]);
-        Integer windowSize = Integer.valueOf(data[5]);
+        Double tempDouble = Double.valueOf(data[5]);
+        Integer windowSize = (int)Math.round(tempDouble);
         Double bRE = Double.valueOf(data[6]);
         return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
     }

@@ -1,15 +1,13 @@
-package ecnu.dll.run.b_parameter_run._basic_before;
+package ecnu.dll.run.b_parameter_run.basic.version_1;
 
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.struct.pair.PurePair;
 import ecnu.dll._config.ConfigureUtils;
-import ecnu.dll._config.Constant;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._1_WEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._3_PersonalizedDynamicEventMechanismRun;
-import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
 import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
@@ -22,7 +20,6 @@ import ecnu.dll.struts.stream_data.StreamDataElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChangeWindowSizeRun {
     @Deprecated
@@ -44,7 +41,7 @@ public class ChangeWindowSizeRun {
 
         int timeStampLength = dataList.size();
         int userSize = dataList.get(0).size();
-        int typeSize = ConfigureUtils.getDefaultTypeSize();
+        int typeSize = ConfigureUtils.getDefaultUserTypeSize();
         int groupElementSize = (int)Math.ceil(userSize*1.0/typeSize);
         List<Integer> randomWindowSizeList;
         List<Double> randomBudgetList = ParameterUtils.generateRandomDoubleList(budgetLowerBound, budgetUpperBound, typeSize, groupElementSize, userSize);

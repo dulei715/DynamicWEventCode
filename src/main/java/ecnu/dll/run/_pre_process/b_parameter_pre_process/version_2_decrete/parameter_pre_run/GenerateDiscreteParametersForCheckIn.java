@@ -7,6 +7,12 @@ public class GenerateDiscreteParametersForCheckIn {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-        DiscreteParameterGenerator.generateParametersForCheckIn();
+        String privacyBudgetConfigVarianceName = "default";
+        String windowSizeConfigVarianceName = "default";
+        String userTypeIDFileName = "user.txt";  // 这里不对user进行分类
+        String basicParameterGenerationDirectoryName = "generated_parameters";
+        String userPrivacyFileNameForPersonalized = "userPrivacyBudgetFile.txt";
+        String windowSizeFileNameForPersonalized = "userWindowSizeFile.txt";
+        DiscreteParameterGenerator.generateParametersForCheckIn(privacyBudgetConfigVarianceName, windowSizeConfigVarianceName, userTypeIDFileName, basicParameterGenerationDirectoryName, userPrivacyFileNameForPersonalized, windowSizeFileNameForPersonalized);
     }
 }

@@ -128,4 +128,17 @@ public class PreprocessRunUtils {
         basicWrite.writeStringListWithoutSize(new ArrayList<>(timeStampSet));
         basicWrite.endWriting();
     }
+
+    public static List<Integer> getUserTypeIDList(String dataSetDir, String fileName) {
+        String userTypeIDPath = StringUtil.join(ConstantValues.FILE_SPLIT, dataSetDir, "basic_info", fileName);
+        BasicRead basicRead = new BasicRead(",");
+        basicRead.startReading(userTypeIDPath);
+        List<String> strList = basicRead.readAllWithoutLineNumberRecordInFile();
+        List<Integer> userTypeIDList = new ArrayList<>();
+        for (String str : strList) {
+            userTypeIDList.add(Integer.valueOf(str));
+        }
+        basicRead.endReading();
+        return userTypeIDList;
+    }
 }

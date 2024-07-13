@@ -3,10 +3,12 @@ package ecnu.dll._config;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
+import cn.edu.dll.struct.pair.PureTriple;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,9 @@ public class ConfigureUtils {
         unitSlotMap.put("day", 86400000L);
     }
 
+    public static <T>PureTriple<String, T, List<T>> getIndependentData(String independentVariableName, String singleName, String varianceName) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return Constant.xmlConfigure.getIndependentData(independentVariableName, singleName, varianceName);
+    }
 
     public static List[] getGenerationPrivacyBudgetList() {
         Document document = Constant.xmlConfigure.getDocument();
@@ -107,7 +112,7 @@ public class ConfigureUtils {
         return budgetLowerBound;
     }
 
-    public static Integer getDefaultTypeSize() {
+    public static Integer getDefaultUserTypeSize() {
         Integer result;
         try {
             result = (Integer) Constant.xmlConfigure.getIndependentData("UserType", "default", "default").getValue();

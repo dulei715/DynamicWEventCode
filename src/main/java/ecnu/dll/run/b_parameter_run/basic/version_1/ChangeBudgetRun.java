@@ -1,4 +1,4 @@
-package ecnu.dll.run.b_parameter_run._basic_before;
+package ecnu.dll.run.b_parameter_run.basic.version_1;
 
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.struct.pair.PurePair;
@@ -41,14 +41,14 @@ public class ChangeBudgetRun {
 
         int timeStampLength = dataList.size();
         int userSize = dataList.get(0).size();
-        int typeSize = ConfigureUtils.getDefaultTypeSize();
-        int groupElementSize = (int)Math.ceil(userSize*1.0/typeSize);
-        List<Integer> randomWindowSizeList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, windowSizeUpperBound, typeSize, groupElementSize, userSize);
+        int userTypeSize = ConfigureUtils.getDefaultUserTypeSize();
+        int groupElementSize = (int)Math.ceil(userSize*1.0/userTypeSize);
+        List<Integer> randomWindowSizeList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, windowSizeUpperBound, userTypeSize, groupElementSize, userSize);
         List<Double> randomBudgetList;
         List<List<Integer>> forwardWindowSizeListList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, randomWindowSizeList, groupElementSize, timeStampLength);
         List<List<Integer>> backwardWindowSizeListList = ParameterUtils.generateRandomIntegerList(windowSizeLowerBound, randomWindowSizeList, groupElementSize, timeStampLength);
         List<List<Double>> forwardPrivacyBudgetListList;
-        List<List<Double>> remainBackwardPrivacyBudgetListList = ParameterUtils.generateRandomDifferenceDoubleList(backwardDifferenceBudgetLowerBound, backwardDifferenceBudgetUpperBound, typeSize, groupElementSize, userSize, timeStampLength);
+        List<List<Double>> remainBackwardPrivacyBudgetListList = ParameterUtils.generateRandomDifferenceDoubleList(backwardDifferenceBudgetLowerBound, backwardDifferenceBudgetUpperBound, userTypeSize, groupElementSize, userSize, timeStampLength);
 
 
         // 执行各种机制
@@ -60,7 +60,7 @@ public class ChangeBudgetRun {
             tempResult = _1_WEventMechanismRun.run(BudgetAbsorption.class, dataType, dataList, rawPublicationList, budgetLowerBound, windowSizeUpperBound);
             experimentResultList.add(tempResult);
 
-            randomBudgetList = ParameterUtils.generateRandomDoubleList(budgetLowerBound, budgetUpperBound, typeSize, groupElementSize, userSize);
+            randomBudgetList = ParameterUtils.generateRandomDoubleList(budgetLowerBound, budgetUpperBound, userTypeSize, groupElementSize, userSize);
             tempResult = _2_PersonalizedEventMechanismRun.run(PersonalizedBudgetDistribution.class, dataType, dataList, rawPublicationList, randomBudgetList, randomWindowSizeList);
             experimentResultList.add(tempResult);
             tempResult = _2_PersonalizedEventMechanismRun.run(PersonalizedBudgetAbsorption.class, dataType, dataList, rawPublicationList, randomBudgetList, randomWindowSizeList);

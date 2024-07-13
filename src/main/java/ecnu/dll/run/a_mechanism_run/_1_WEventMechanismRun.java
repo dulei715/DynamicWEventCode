@@ -82,4 +82,5 @@ public class _1_WEventMechanismRun {
         experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
         return experimentResult;
     }
+
 }

@@ -5,12 +5,11 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.read.BasicRead;
 import ecnu.dll._config.Constant;
-import ecnu.dll.run.b_parameter_run.basic.utils.InputDataStruct;
+import ecnu.dll.run.b_parameter_run.basic.version_2.utils.InputDataStruct;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class DatasetParameterUtils {
