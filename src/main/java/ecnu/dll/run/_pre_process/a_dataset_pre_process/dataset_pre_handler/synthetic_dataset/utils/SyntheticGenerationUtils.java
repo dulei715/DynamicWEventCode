@@ -2,11 +2,30 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synt
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.io.write.BasicWrite;
+import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function.DataGenerationFunction;
 
-public class SyntheticGenerationUtils {
-    public static void generateProbability(String outputDir, String outputFileName, DataGenerationFunction function, Integer probabilitySize) {
-        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, outputDir, outputFileName);
+import java.util.List;
 
+public class SyntheticGenerationUtils {
+    public static void generateProbability(DataGenerationFunction<Double> function, Integer probabilitySize, Boolean containInitialValue) {
+        String basicFileName  = ConfigureUtils.getDatasetFileName(function.getName());
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicFileName, "basic_info", function.getName()+".txt");
+        List<Double> probabilityList = function.nextProbability(probabilitySize);
+        BasicWrite basicWrite = new BasicWrite();
+        basicWrite.startWriting(outputPath);
+        basicWrite.writeOneLine("0,".concat(String.valueOf(function.getInitializedValue())));
+        int i = 0;
+        for (; i < probabilitySize - 1; i++) {
+//            System.out.println(probabilityList.get(i));
+            basicWrite.writeOneLine(String.valueOf(i+1).concat(",").concat(String.valueOf(probabilityList.get(i))));
+        }
+        if (!containInitialValue) {
+            basicWrite.writeOneLine(String.valueOf(i+1).concat(",").concat(String.valueOf(probabilityList.get(i))));
+        }
+        basicWrite.endWriting();
     }
+
 }

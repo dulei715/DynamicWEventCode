@@ -10,14 +10,31 @@
         <basicPath type="absolute" name="Huawei-book">E:;dataset;3.dynamicWEvent;0_dataset</basicPath>
         <fileName name="checkIn">CheckIn_dataset_TIST2015</fileName>
         <fileName name="trajectories">T-drive_Taxi_Trajectories</fileName>
+        <fileName name="lns">LNS</fileName>
+        <fileName name="sin">Sin</fileName>
+        <fileName name="log">Log</fileName>
         <fileHandle name="checkIn">
             <timeSlot unit="minute">100</timeSlot>
-<!--            <timeSlot unit="minute">100</timeSlot>-->
         </fileHandle>
         <fileHandle name="trajectories">
             <timeSlot unit="minute">1</timeSlot>
             <longitudeSplitSize>10</longitudeSplitSize>
             <latitudeSplitSize>10</latitudeSplitSize>
+        </fileHandle>
+        <fileHandle name="lns">
+            <userSize>20000</userSize>
+            <locationTypeSize>1</locationTypeSize>
+            <timeStampSize>10000</timeStampSize>
+        </fileHandle>
+        <fileHandle name="sin">
+            <userSize>20000</userSize>
+            <locationTypeSize>1</locationTypeSize>
+            <timeStampSize>10000</timeStampSize>
+        </fileHandle>
+        <fileHandle name="log">
+            <userSize>20000</userSize>
+            <locationTypeSize>1</locationTypeSize>
+            <timeStampSize>10000</timeStampSize>
         </fileHandle>
     </datasets>
     <candidateSet>

@@ -1,11 +1,11 @@
-function y = drawUsersPositionOfTrajectory(basicPath) 
+function y = drawUsersPositionOfTrajectory(basicPath, latitudeBound, longitudeBound, chosenRatio) 
 fig = figure;
 hold on;
 files = dir(basicPath);
 files = files(~[files.isdir]);
 for i = 1:length(files)
     tempFile = [basicPath,files(i).name];
-    drawOneUserPositionOfTrajectory(tempFile);
+    drawOneUserPositionOfTrajectory(tempFile, latitudeBound, longitudeBound, chosenRatio);
 end
 figure_FontSize = 25;
 set(get(gca,'XLabel'),'FontSize',figure_FontSize,'FontName','Times New Roman');

@@ -8,4 +8,5 @@ public interface DataGenerationFunction<T> {
     T getInitializedValue();
     T getCurrentValue();
     void reset();
+    String getName();
 }

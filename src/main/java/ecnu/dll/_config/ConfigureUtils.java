@@ -198,6 +198,13 @@ public class ConfigureUtils {
         return result;
     }
 
+    public static String getFileHandleInfo(String datasetName, String subTagName) {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//datasets/fileHandle[@name='" + datasetName + "']/" + subTagName).get(0);
+        String textTrim = element.getTextTrim();
+        return textTrim;
+    }
+
 
 
     public static void main0(String[] args) {
