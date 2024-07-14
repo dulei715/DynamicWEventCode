@@ -501,8 +501,8 @@ public class CheckInDatasetPreprocessRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-//        extractUser();
-//        extractUserData();
+        extractUser();
+        extractUserData();
     }
 
 }
