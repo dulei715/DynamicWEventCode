@@ -94,22 +94,24 @@ public class TrajectoryPreprocessRunUtils {
         return result;
     }
 
-    public static List<Integer> getTimeStampList() {
-        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput");
-        File file = new File(fileDir);
-        File[] fileArray = file.listFiles(new TxtFilter());
-        String timeStampStr;
-        List<Integer> resultList = new ArrayList<>();
-        for (File innerfile : fileArray) {
-            timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
-            resultList.add(Integer.valueOf(timeStampStr));
-        }
-        return resultList;
-    }
+//    public static List<Integer> getTimeStampList() {
+//        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "runInput");
+//        File file = new File(fileDir);
+//        File[] fileArray = file.listFiles(new TxtFilter());
+//        String timeStampStr;
+//        List<Integer> resultList = new ArrayList<>();
+//        for (File innerfile : fileArray) {
+//            timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
+//            resultList.add(Integer.valueOf(timeStampStr));
+//        }
+//        return resultList;
+//    }
+
+
 
     public static void main(String[] args) {
 //        List<Integer> result = getUserIDList();
-        List<Integer> result = getTimeStampList();
+        List<Integer> result = PreprocessRunUtils.getTimeStampList(Constant.trajectoriesFilePath);
         MyPrint.showList(result);
         System.out.println(result.size());
     }

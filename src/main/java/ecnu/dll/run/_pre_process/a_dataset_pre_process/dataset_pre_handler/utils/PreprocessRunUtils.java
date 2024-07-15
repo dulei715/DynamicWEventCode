@@ -141,4 +141,20 @@ public class PreprocessRunUtils {
         basicRead.endReading();
         return userTypeIDList;
     }
+
+    public static List<Integer> getTimeStampList(String datasetPath) {
+        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput");
+//        System.out.println(fileDir);
+        File file = new File(fileDir);
+        File[] fileArray = file.listFiles(new TxtFilter());
+//        System.out.println(fileArray[0].getName() + "; " + fileArray[fileArray.length-1].getName());
+        String timeStampStr;
+        List<Integer> resultList = new ArrayList<>();
+        for (File innerfile : fileArray) {
+//            System.out.println(innerfile.getName());
+            timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
+            resultList.add(Integer.valueOf(timeStampStr));
+        }
+        return resultList;
+    }
 }

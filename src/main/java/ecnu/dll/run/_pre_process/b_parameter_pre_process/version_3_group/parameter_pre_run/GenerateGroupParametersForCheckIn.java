@@ -9,7 +9,7 @@ public class GenerateGroupParametersForCheckIn {
     public static void generateParameters() {
         String privacyBudgetConfigVarianceName = "default";
         String windowSizeConfigVarianceName = "default";
-        String userTypeIDFileName = "userTypeID.txt";  // 这里不对user进行分类
+        String userTypeIDFileName = "userTypeID.txt";
         String basicParameterGenerationDirectoryName = "group_generated_parameters";
         String userPrivacyFileNameForPersonalized = "typePrivacyBudgetFile.txt";
         String windowSizeFileNameForPersonalized = "typeWindowSizeFile.txt";

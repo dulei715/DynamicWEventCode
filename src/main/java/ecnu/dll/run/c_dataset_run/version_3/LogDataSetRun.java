@@ -9,12 +9,12 @@ import ecnu.dll.utils.CatchSignal;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class LNSDataSetRun {
+public class LogDataSetRun {
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-        String basicPath = Constant.lnsFilePath;
-        String dataTypeFileName = "LNS.txt";
+        String basicPath = Constant.logFilePath;
+        String dataTypeFileName = "LOG.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
