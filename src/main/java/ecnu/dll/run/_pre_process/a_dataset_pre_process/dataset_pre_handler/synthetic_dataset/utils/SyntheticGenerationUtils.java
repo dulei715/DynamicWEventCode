@@ -1,11 +1,14 @@
 package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.utils;
 
+import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function.DataGenerationFunction;
+import ecnu.dll.utils.io.ListWriteUtils;
 
 import java.util.List;
 
@@ -27,5 +30,17 @@ public class SyntheticGenerationUtils {
         }
         basicWrite.endWriting();
     }
+
+    public static void generateUserID(String datasetPath, int size) {
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user.txt");
+        List<Integer> userList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, size-1);
+        ListWriteUtils.writeList(outputPath, userList, ",");
+    }
+    public static void generateUserType(String datasetPath, int size) {
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "userTypeID.txt");
+        List<Integer> userList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, size-1);
+        ListWriteUtils.writeList(outputPath, userList, ",");
+    }
+
 
 }

@@ -14,13 +14,13 @@ public class Constant {
 
     public static String checkInFileName;
     public static String trajectoriesFileName;
-    public static String lnsFileName;
+    public static String tlnsFileName;
     public static String sinFileName;
     public static String logFileName;
 
     public static String checkInFilePath;
     public static String trajectoriesFilePath;
-    public static String lnsFilePath;
+    public static String tlnsFilePath;
     public static String sinFilePath;
     public static String logFilePath;
 
@@ -45,13 +45,13 @@ public class Constant {
 
         checkInFileName = ConfigureUtils.getDatasetFileName("checkIn");
         trajectoriesFileName = ConfigureUtils.getDatasetFileName("trajectories");
-        lnsFileName = ConfigureUtils.getDatasetFileName("lns");
+        tlnsFileName = ConfigureUtils.getDatasetFileName("tlns");
         sinFileName = ConfigureUtils.getDatasetFileName("sin");
         logFileName = ConfigureUtils.getDatasetFileName("log");
 
         checkInFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, checkInFileName);
         trajectoriesFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, trajectoriesFileName);
-        lnsFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, lnsFileName);
+        tlnsFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, tlnsFileName);
         sinFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, sinFileName);
         logFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, logFileName);
 

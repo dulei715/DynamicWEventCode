@@ -10,7 +10,7 @@
         <basicPath type="absolute" name="Huawei-book">E:;dataset;3.dynamicWEvent;0_dataset</basicPath>
         <fileName name="checkIn">CheckIn_dataset_TIST2015</fileName>
         <fileName name="trajectories">T-drive_Taxi_Trajectories</fileName>
-        <fileName name="lns">LNS</fileName>
+        <fileName name="tlns">TLNS</fileName>
         <fileName name="sin">Sin</fileName>
         <fileName name="log">Log</fileName>
         <fileHandle name="checkIn">
@@ -21,7 +21,7 @@
             <longitudeSplitSize>10</longitudeSplitSize>
             <latitudeSplitSize>10</latitudeSplitSize>
         </fileHandle>
-        <fileHandle name="lns">
+        <fileHandle name="tlns">
             <userSize>20000</userSize>
             <locationTypeSize>1</locationTypeSize>
             <timeStampSize>10000</timeStampSize>

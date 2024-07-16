@@ -13,7 +13,7 @@ public class LNSDataSetRun {
     public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-        String basicPath = Constant.lnsFilePath;
+        String basicPath = Constant.tlnsFilePath;
         String dataTypeFileName = "LNS.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();

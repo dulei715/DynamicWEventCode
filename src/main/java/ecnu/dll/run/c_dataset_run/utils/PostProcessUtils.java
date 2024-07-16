@@ -98,7 +98,7 @@ public class PostProcessUtils {
 //        combineResultBefore(inputPath);
     }
 
-    public static void main(String[] args) {
+    public static void main0(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 //        String inputDirPath = StringUtil.join(combineDir);
@@ -112,6 +112,26 @@ public class PostProcessUtils {
                 continue;
             }
             combineResult(file.getAbsolutePath());
+        }
+    }
+
+    public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        String inputDirPath = args[0];
+        File dirFile = new File(inputDirPath);
+        File[] files = dirFile.listFiles();
+        for (File file : files) {
+            if (!file.isDirectory()) {
+                continue;
+            }
+            File[] innerFiles = file.listFiles();
+            for (File innerFile : innerFiles) {
+                if (!innerFile.isDirectory()) {
+                    continue;
+                }
+                combineResult(innerFile.getAbsolutePath());
+            }
         }
     }
 }

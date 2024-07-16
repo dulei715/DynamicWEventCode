@@ -184,7 +184,7 @@ public class ParameterGenerator {
         List<Integer> windowSizeList = ConfigureUtils.getIndependentWindowSizeList("default");
 //        List<Integer> trajectoryUserIDList = TrajectoryPreprocessRunUtils.getUserIDList();
         List<Integer> trajectoryUserIDList = PreprocessRunUtils.getUserTypeIDList(Constant.trajectoriesFilePath, userTypeIDFileName);
-        List<Integer> trajectoryTimeStampList = TrajectoryPreprocessRunUtils.getTimeStampList();
+        List<Integer> trajectoryTimeStampList = PreprocessRunUtils.getTimeStampList(Constant.trajectoriesFilePath);
         generatePrivacyBudget(StringUtil.join(ConstantValues.FILE_SPLIT, trajectoryParameterBasicPath, privacyBudgetDirName), privacyBudgetConfigVarianceName, trajectoryUserIDList, trajectoryTimeStampList, privacyBudgetList);
         generateWindowSize(StringUtil.join(ConstantValues.FILE_SPLIT, trajectoryParameterBasicPath, windowSizeDirName), windowSizeConfigVarianceName, trajectoryUserIDList, trajectoryTimeStampList, windowSizeList);
     }
@@ -197,7 +197,7 @@ public class ParameterGenerator {
         List<Integer> windowSizeList = ConfigureUtils.getIndependentWindowSizeList("default");
 //        List<Integer> checkInUserIDList = CheckInPreprocessRunUtils.getUserIDList();
         List<Integer> checkInUserIDList = PreprocessRunUtils.getUserTypeIDList(Constant.checkInFilePath, userTypeIDFileName);
-        List<Integer> checkInTimeStampList = CheckInPreprocessRunUtils.getTimeStampList();
+        List<Integer> checkInTimeStampList = PreprocessRunUtils.getTimeStampList(Constant.checkInFilePath);
 //        MyPrint.showList(checkInTimeStampList, "; ");
         generatePrivacyBudget(StringUtil.join(ConstantValues.FILE_SPLIT, checkInParameterBasicPath, privacyBudgetDirName), privacyBudgetConfigVarianceName, checkInUserIDList, checkInTimeStampList, privacyBudgetList);
         generateWindowSize(StringUtil.join(ConstantValues.FILE_SPLIT, checkInParameterBasicPath, windowSizeDirName), windowSizeConfigVarianceName, checkInUserIDList, checkInTimeStampList, windowSizeList);

@@ -2,13 +2,11 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synt
 
 import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.differential_privacy.noise.GaussUtils;
-import org.apache.commons.math3.analysis.function.Gaussian;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class LNSFunction implements DataGenerationFunction<Double>{
+public class TLNSFunction implements DataGenerationFunction<Double>{
     private Double initializedValue;
     private Double gaussianAverage;
     private Double gaussianStandardVariance;
@@ -16,7 +14,7 @@ public class LNSFunction implements DataGenerationFunction<Double>{
     private Double currentValue;
     private int precision = 2;
 
-    public LNSFunction(Double initializedValue, Double gaussianAverage, Double gaussianStandardVariance) {
+    public TLNSFunction(Double initializedValue, Double gaussianAverage, Double gaussianStandardVariance) {
         this.initializedValue = initializedValue;
         this.gaussianAverage = gaussianAverage;
         this.gaussianStandardVariance = gaussianStandardVariance;
@@ -32,6 +30,8 @@ public class LNSFunction implements DataGenerationFunction<Double>{
         List<Double> result = new ArrayList<>(timeSize);
         for (int i = 0; i < gaussNoise.length; i++) {
             this.currentValue = NumberUtil.roundFormat(this.currentValue + gaussNoise[i], this.precision);
+            this.currentValue = Math.max(this.currentValue, 0D);
+            this.currentValue = Math.min(this.currentValue, 1D);
             result.add(this.currentValue);
         }
         return result;
@@ -59,6 +59,6 @@ public class LNSFunction implements DataGenerationFunction<Double>{
 
     @Override
     public String getName() {
-        return "lns";
+        return "tlns";
     }
 }
