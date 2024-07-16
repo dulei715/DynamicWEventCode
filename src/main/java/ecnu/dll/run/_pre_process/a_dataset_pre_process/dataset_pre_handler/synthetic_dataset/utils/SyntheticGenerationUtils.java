@@ -2,20 +2,22 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synt
 
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.StringUtil;
-import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function.DataGenerationFunction;
+import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.sub_thread.runInputGeneratorThread;
+import ecnu.dll.utils.io.ListReadUtils;
 import ecnu.dll.utils.io.ListWriteUtils;
+import ecnu.dll.utils.thread.ThreadUtils;
 
 import java.util.List;
 
 public class SyntheticGenerationUtils {
     public static void generateProbability(DataGenerationFunction<Double> function, Integer probabilitySize, Boolean containInitialValue) {
         String basicFileName  = ConfigureUtils.getDatasetFileName(function.getName());
-        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicFileName, "basic_info", function.getName()+".txt");
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicFileName, "basic_info", "probability.txt");
         List<Double> probabilityList = function.nextProbability(probabilitySize);
         BasicWrite basicWrite = new BasicWrite();
         basicWrite.startWriting(outputPath);
@@ -36,11 +38,49 @@ public class SyntheticGenerationUtils {
         List<Integer> userList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, size-1);
         ListWriteUtils.writeList(outputPath, userList, ",");
     }
-    public static void generateUserType(String datasetPath, int size) {
-        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "userTypeID.txt");
-        List<Integer> userList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, size-1);
+    public static void generatePositionType(String datasetPath, String outputFileName, int positionSize) {
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", outputFileName);
+        List<Integer> userList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, positionSize-1);
         ListWriteUtils.writeList(outputPath, userList, ",");
     }
+
+    public static void generateTimeStamp(String datasetPath, int timeStampSize) {
+        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "time_stamp.txt");
+        List<Integer> timestampList = BasicArrayUtil.getIncreaseIntegerNumberList(0, 1, timeStampSize-1);
+        ListWriteUtils.writeList(outputPath, timestampList, ",");
+    }
+
+    public static void generateRunInputData(String datasetPath, String positionFileName) {
+        String timeStampPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "time_stamp.txt");
+        String probabilityListPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "probability.txt");
+        String positionPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", positionFileName);
+        String userIDPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user.txt");
+        String basicOutputDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput");
+//        List<String> timeStampStringList = ListReadUtils.readAllDataList(timeStampPath, ",");
+        List<String> probabilityStrList = ListReadUtils.readAllDataList(probabilityListPath, ",");
+        List<String> positionStringList = ListReadUtils.readAllDataList(positionPath, ",");
+        List<String> userIDList = ListReadUtils.readAllDataList(userIDPath, ",");
+        Integer threadSize = 10;
+        Integer totalTimeStampSize = probabilityStrList.size();
+        List<Integer> threadStartIndexList = ThreadUtils.getThreadStartIndexList(threadSize, 0, totalTimeStampSize);
+        Integer startIndex, endIndex;
+        Thread tempTread;
+        Runnable tempRunnable;
+        for (int i = 0; i < threadStartIndexList.size(); i++) {
+            startIndex = threadStartIndexList.get(i);
+            if (i < threadStartIndexList.size() - 1) {
+                endIndex = threadStartIndexList.get(i+1) - 1;
+            } else {
+                endIndex = totalTimeStampSize - 1;
+            }
+            tempRunnable = new runInputGeneratorThread(startIndex, endIndex, basicOutputDir, probabilityStrList, userIDList, positionStringList);
+            tempTread = new Thread(tempRunnable);
+            tempTread.start();
+            System.out.println("Start thread " + tempTread.getName() + " with id " + tempTread.getId());
+        }
+
+    }
+
 
 
 }

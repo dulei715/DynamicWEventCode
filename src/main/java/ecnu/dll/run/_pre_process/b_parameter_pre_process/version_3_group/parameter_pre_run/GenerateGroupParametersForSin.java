@@ -2,6 +2,7 @@ package ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parame
 
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.DiscreteParameterGenerator;
+import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
 
 public class GenerateGroupParametersForSin {
     public static void generateParameters() {
@@ -15,7 +16,10 @@ public class GenerateGroupParametersForSin {
 
     }
     public static void main(String[] args) {
-        // 1. 生成实验参数到 group_generated_parameters
+        // 1. 生成 userIDType.txt 以及 user_to_type.txt 到 basic_info中
+        UserGroupGenerator.generateUserIDType(Constant.sinFilePath);
+        UserGroupGenerator.generateUserToType(Constant.sinFilePath);
+        // 2. 生成实验参数到 group_generated_parameters
         generateParameters();
     }
 }

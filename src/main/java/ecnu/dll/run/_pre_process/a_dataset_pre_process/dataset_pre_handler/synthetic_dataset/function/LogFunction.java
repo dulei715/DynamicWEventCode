@@ -1,5 +1,7 @@
 package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function;
 
+import cn.edu.dll.basic.NumberUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class LogFunction implements DataGenerationFunction<Double>{
     private Integer currentTime = 0;
     private Double parameterA;
     private Double parameterB;
+    private int precision = 2;
 
     public LogFunction(Double parameterA, Double parameterB) {
         this.parameterA = parameterA;
@@ -35,7 +38,8 @@ public class LogFunction implements DataGenerationFunction<Double>{
 
     @Override
     public Double getCurrentValue() {
-        return this.parameterA*1.0/(1+Math.exp(-parameterB*currentTime));
+        Double tempValue = this.parameterA*1.0/(1+Math.exp(-parameterB*currentTime));
+        return NumberUtil.roundFormat(tempValue, this.precision);
     }
 
     @Override

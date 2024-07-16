@@ -1,6 +1,9 @@
 package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function;
 
 
+import cn.edu.dll.basic.NumberUtil;
+import cn.edu.dll.basic.RandomUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +12,7 @@ public class SinFunction implements DataGenerationFunction<Double> {
     private Double parameterA;
     private Double parameterOmega;
     private Double parameterH;
+    private int precision = 2;
 
     public SinFunction(Double parameterA, Double parameterOmega, Double parameterH) {
         this.parameterA = parameterA;
@@ -39,7 +43,8 @@ public class SinFunction implements DataGenerationFunction<Double> {
 
     @Override
     public Double getCurrentValue() {
-        return parameterA * Math.sin(parameterOmega * currentTime) + parameterH;
+        Double tempValue = parameterA * Math.sin(parameterOmega * currentTime) + parameterH;
+        return NumberUtil.roundFormat(tempValue, this.precision);
     }
 
     @Override

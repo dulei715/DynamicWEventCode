@@ -23,17 +23,17 @@
         </fileHandle>
         <fileHandle name="tlns">
             <userSize>20000</userSize>
-            <locationTypeSize>1</locationTypeSize>
+            <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
         <fileHandle name="sin">
             <userSize>20000</userSize>
-            <locationTypeSize>1</locationTypeSize>
+            <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
         <fileHandle name="log">
             <userSize>20000</userSize>
-            <locationTypeSize>1</locationTypeSize>
+            <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
     </datasets>

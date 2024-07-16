@@ -14,7 +14,7 @@ public class SinDataSetRun {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
         String basicPath = Constant.sinFilePath;
-        String dataTypeFileName = "SIN.txt";
+        String dataTypeFileName = "status.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);

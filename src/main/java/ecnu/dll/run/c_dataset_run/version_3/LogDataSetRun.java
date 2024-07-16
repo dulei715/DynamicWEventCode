@@ -14,7 +14,7 @@ public class LogDataSetRun {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
         String basicPath = Constant.logFilePath;
-        String dataTypeFileName = "LOG.txt";
+        String dataTypeFileName = "status.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
