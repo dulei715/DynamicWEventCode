@@ -76,6 +76,17 @@ public class TrajectoryBean implements BeanInterface<TrajectoryBean> {
     public TrajectoryBean toBean(String[] parameters) {
         return toTrajectoryBeanWithFormatTime(parameters);
     }
+
+    @Override
+    public String toFormatString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.userID).append(",");
+        stringBuilder.append(this.timestamp).append(",");
+        stringBuilder.append(this.longitude).append(",");
+        stringBuilder.append(this.latitude);
+        return stringBuilder.toString();
+    }
+
     public static TrajectoryBean toTrajectoryBeanWithFormatTime(String[] parameters) {
         Integer userID = Integer.valueOf(parameters[0]);
         Long timestamp;

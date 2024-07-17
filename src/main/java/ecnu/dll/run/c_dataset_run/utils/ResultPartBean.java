@@ -2,21 +2,26 @@ package ecnu.dll.run.c_dataset_run.utils;
 
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 
-@Deprecated
-public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
-    private String name;
-    private Integer batchID;
-    private Long timeCost;
-    private Double privacyBudget;
-    private Integer windowSize;
-    private Double bRE;
+public class ResultPartBean implements BeanInterface<ResultPartBean> {
+    protected String name;
+    protected Integer batchID;
+    protected Integer batchSize;
+    protected Long timeCost;
+    protected Double privacyBudget;
+    protected Integer windowSize;
+    protected Double bRE;
+
+    protected Double mRE = 0D;
 
 
 
 
-    public ResultBeanBefore(String name, Integer batchID, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE) {
+
+
+    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE) {
         this.name = name;
         this.batchID = batchID;
+        this.batchSize = batchSize;
         this.timeCost = timeCost;
         this.privacyBudget = privacyBudget;
         this.windowSize = windowSize;
@@ -27,18 +32,20 @@ public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.name).append(",");
         stringBuilder.append(this.batchID).append(",");
+        stringBuilder.append(this.batchSize).append(",");
         stringBuilder.append(this.timeCost).append(",");
         stringBuilder.append(this.privacyBudget).append(",");
         stringBuilder.append(this.windowSize).append(",");
-        stringBuilder.append(this.bRE);
+        stringBuilder.append(this.bRE).append(",");
+        stringBuilder.append(this.mRE);
         return stringBuilder.toString();
     }
 
-    public ResultBeanBefore() {
+    public ResultPartBean() {
     }
 
-    public static ResultBeanBefore getInitializedBean(ResultBeanBefore modelBean) {
-        return new ResultBeanBefore(modelBean.getName(), -1, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D);
+    public static ResultPartBean getInitializedBean(ResultPartBean modelBean) {
+        return new ResultPartBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D);
     }
 
     public String getName() {
@@ -57,6 +64,13 @@ public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
         this.batchID = batchID;
     }
 
+    public Integer getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(Integer batchSize) {
+        this.batchSize = batchSize;
+    }
 
     public Long getTimeCost() {
         return timeCost;
@@ -90,40 +104,41 @@ public class ResultBeanBefore implements BeanInterface<ResultBeanBefore> {
         this.bRE = bRE;
     }
 
+    public Double getmRE() {
+        return mRE;
+    }
 
+    public void setmRE(Double mRE) {
+        this.mRE = mRE;
+    }
 
-    public static ResultBeanBefore toBean(String line) {
+    public static ResultPartBean toBean(String line) {
         String[] data = line.split(",");
         String name = data[0];
         Integer batchID = Integer.valueOf(data[1]);
         Integer batchSize = Integer.valueOf(data[2]);
         Long timeCost = Long.valueOf(data[3]);
         Double privacyBudget = Double.valueOf(data[4]);
-        Integer windowSize = (int) Math.round(Double.valueOf(data[5]));
+        Double tempDouble = Double.valueOf(data[5]);
+        Integer windowSize = (int)Math.round(tempDouble);
         Double bRE = Double.valueOf(data[6]);
-        return new ResultBeanBefore(name, batchID, timeCost, privacyBudget, windowSize, bRE);
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
     }
 
     @Override
-    public ResultBeanBefore toBean(String[] data) {
+    public ResultPartBean toBean(String[] data) {
         String name = data[0];
         Integer batchID = Integer.valueOf(data[1]);
-        Long timeCost = Long.valueOf(data[2]);
-        Double privacyBudget = Double.valueOf(data[3]);
-        Integer windowSize = Integer.valueOf(data[4]);
-        Double bRE = Double.valueOf(data[5]);
-        return new ResultBeanBefore(name, batchID, timeCost, privacyBudget, windowSize, bRE);
+        Integer batchSize = Integer.valueOf(data[2]);
+        Long timeCost = Long.valueOf(data[3]);
+        Double privacyBudget = Double.valueOf(data[4]);
+        Integer windowSize = Integer.valueOf(data[5]);
+        Double bRE = Double.valueOf(data[6]);
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
     }
 
     @Override
     public String toFormatString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(this.name).append(",");
-        stringBuilder.append(this.batchID).append(",");
-        stringBuilder.append(this.timeCost).append(",");
-        stringBuilder.append(this.privacyBudget).append(",");
-        stringBuilder.append(this.windowSize).append(",");
-        stringBuilder.append(this.bRE);
-        return stringBuilder.toString();
+        return toCSVString();
     }
 }

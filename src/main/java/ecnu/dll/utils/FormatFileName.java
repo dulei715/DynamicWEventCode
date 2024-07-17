@@ -3,8 +3,8 @@ package ecnu.dll.utils;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.filter.file_filter.TxtFilter;
 import ecnu.dll._config.Constant;
-import ecnu.dll.utils.filters.TxtFilter;
 
 import java.io.File;
 

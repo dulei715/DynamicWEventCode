@@ -2,11 +2,11 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.util
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.filter.file_filter.TxtFilter;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.utils.FormatFileName;
-import ecnu.dll.utils.filters.TxtFilter;
 
 import java.io.File;
 import java.util.*;

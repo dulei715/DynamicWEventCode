@@ -3,49 +3,47 @@ package ecnu.dll.run.c_dataset_run.utils;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 
 public class ResultBean implements BeanInterface<ResultBean> {
-    private String name;
-    private Integer batchID;
-    private Integer batchSize;
-    private Long timeCost;
-    private Double privacyBudget;
-    private Integer windowSize;
-    private Double bRE;
+    protected String name;
+    protected Integer batchID;
+    protected Integer batchSize;
+    protected Long timeCost;
+    protected Double privacyBudget;
+    protected Integer windowSize;
+    protected Double bre;
+    protected Double mre;
 
-    private Double mRE = 0D;
+    @Override
+    public ResultBean toBean(String[] data) {
+        String name = data[0];
+        Integer batchID = Integer.valueOf(data[1]);
+        Integer batchSize = Integer.valueOf(data[2]);
+        Long timeCost = Long.valueOf(data[3]);
+        Double privacyBudget = Double.valueOf(data[4]);
+        Integer windowSize = Integer.valueOf(data[5]);
+        Double bre = Double.valueOf(data[6]);
+        Double mre = Double.valueOf(data[7]);
+        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre);
+
+    }
 
 
 
+    public ResultBean() {
+    }
 
-
-
-    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE) {
+    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double mre) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
         this.timeCost = timeCost;
         this.privacyBudget = privacyBudget;
         this.windowSize = windowSize;
-        this.bRE = bRE;
-    }
-
-    public String toCSVString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(this.name).append(",");
-        stringBuilder.append(this.batchID).append(",");
-        stringBuilder.append(this.batchSize).append(",");
-        stringBuilder.append(this.timeCost).append(",");
-        stringBuilder.append(this.privacyBudget).append(",");
-        stringBuilder.append(this.windowSize).append(",");
-        stringBuilder.append(this.bRE).append(",");
-        stringBuilder.append(this.mRE);
-        return stringBuilder.toString();
-    }
-
-    public ResultBean() {
+        this.bre = bre;
+        this.mre = mre;
     }
 
     public static ResultBean getInitializedBean(ResultBean modelBean) {
-        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D);
+        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D);
     }
 
     public String getName() {
@@ -96,44 +94,47 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.windowSize = windowSize;
     }
 
-    public Double getbRE() {
-        return bRE;
+    public Double getBre() {
+        return bre;
     }
 
-    public void setbRE(Double bRE) {
-        this.bRE = bRE;
+    public void setBre(Double bre) {
+        this.bre = bre;
     }
 
-    public Double getmRE() {
-        return mRE;
+    public Double getMre() {
+        return mre;
     }
 
-    public void setmRE(Double mRE) {
-        this.mRE = mRE;
-    }
-
-    public static ResultBean toBean(String line) {
-        String[] data = line.split(",");
-        String name = data[0];
-        Integer batchID = Integer.valueOf(data[1]);
-        Integer batchSize = Integer.valueOf(data[2]);
-        Long timeCost = Long.valueOf(data[3]);
-        Double privacyBudget = Double.valueOf(data[4]);
-        Double tempDouble = Double.valueOf(data[5]);
-        Integer windowSize = (int)Math.round(tempDouble);
-        Double bRE = Double.valueOf(data[6]);
-        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
+    public void setMre(Double mre) {
+        this.mre = mre;
     }
 
     @Override
-    public ResultBean toBean(String[] data) {
-        String name = data[0];
-        Integer batchID = Integer.valueOf(data[1]);
-        Integer batchSize = Integer.valueOf(data[2]);
-        Long timeCost = Long.valueOf(data[3]);
-        Double privacyBudget = Double.valueOf(data[4]);
-        Integer windowSize = Integer.valueOf(data[5]);
-        Double bRE = Double.valueOf(data[6]);
-        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
+    public String toString() {
+        return "ResultBean{" +
+                "name='" + name + '\'' +
+                ", batchID=" + batchID +
+                ", batchSize=" + batchSize +
+                ", timeCost=" + timeCost +
+                ", privacyBudget=" + privacyBudget +
+                ", windowSize=" + windowSize +
+                ", bre=" + bre +
+                ", mre=" + mre +
+                '}';
+    }
+
+    @Override
+    public String toFormatString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.name).append(",");
+        stringBuilder.append(this.batchID).append(",");
+        stringBuilder.append(this.batchSize).append(",");
+        stringBuilder.append(this.timeCost).append(",");
+        stringBuilder.append(this.privacyBudget).append(",");
+        stringBuilder.append(this.windowSize).append(",");
+        stringBuilder.append(this.bre).append(",");
+        stringBuilder.append(this.mre);
+        return stringBuilder.toString();
     }
 }

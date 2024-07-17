@@ -2,10 +2,10 @@ package other_test;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.filter.file_filter.TxtFilter;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.Constant;
-import ecnu.dll.utils.filters.TxtFilter;
 import org.junit.Test;
 
 import java.io.File;

@@ -2,6 +2,7 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.filter.file_filter.TxtFilter;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.ConfigureUtils;
@@ -12,7 +13,6 @@ import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead.TrajectoryMergeThread;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.real_dataset.sub_thread.trajectory_sub_thead.TrajectorySplitByTimeSubThread;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.PreprocessRunUtils;
-import ecnu.dll.utils.filters.TxtFilter;
 import ecnu.dll.utils.CatchSignal;
 import ecnu.dll.utils.FormatFileName;
 

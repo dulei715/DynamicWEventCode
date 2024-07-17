@@ -5,13 +5,10 @@ import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.filter.file_filter.TxtFilter;
 import cn.edu.dll.io.print.MyPrint;
-import cn.edu.dll.io.read.BasicRead;
-import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
-import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInStringTool;
-import ecnu.dll.utils.filters.TxtFilter;
 import org.junit.Test;
 
 import java.io.File;
