@@ -141,9 +141,9 @@ public class PostProcessUtils {
                 tempBean = innerList.get(i);
                 resultBean.setBatchSize(resultBean.getBatchSize()+ tempBean.getBatchSize());
                 resultBean.setBre(resultBean.getBre() + tempBean.getBre());
-                resultBean.setMre(resultBean.getMre() + tempBean.getMre());
+                resultBean.setMre(resultBean.getMre() + tempBean.getMre()*tempBean.getBatchSize());
             }
-            resultBean.setMre(resultBean.getMre() / dataList.size());
+            resultBean.setMre(resultBean.getMre() / resultBean.getBatchSize());
             resultList.add(resultBean);
         }
         String outputPath = tempOutputFile.getAbsolutePath();
@@ -167,7 +167,6 @@ public class PostProcessUtils {
 
 
         File tempParametersChangeOutputFile, tempOutputFile, tempInputFile;
-        String tempSegmentOutputName;
         File[] datasetDirFile = dirInputFile.listFiles(directoryFileFilter);
         File[] dirFiles;
         File[] segmentInputFiles;
