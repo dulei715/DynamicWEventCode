@@ -1,6 +1,6 @@
 package ecnu.dll.run;
 
-public class Run {
+public class TotalRun {
     /**
      *
      * 自变量指标
@@ -41,6 +41,6 @@ public class Run {
      *
      */
     public static void main(String[] args) {
-        System.out.println("Hello Run!");
+
     }
 }

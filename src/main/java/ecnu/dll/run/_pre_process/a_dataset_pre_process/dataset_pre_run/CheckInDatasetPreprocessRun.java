@@ -394,7 +394,7 @@ public class CheckInDatasetPreprocessRun {
         }
     }
 
-    private static void extractUserData() {
+    public static void extractUserData() {
         // 保证basic_info/user.txt是抽取过的user
         String rawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
         String newRawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
@@ -479,15 +479,6 @@ public class CheckInDatasetPreprocessRun {
         recordBasicInformation();
         System.out.println("Program finished !");
 
-        // 6. 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为user_raw.txt
-        System.out.println("Start extract user...");
-        extractUser();
-        System.out.println("Finish extract user!");
-
-        // 7. 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
-        System.out.println("Start extract user data...");
-        extractUserData();
-        System.out.println("Finish extract user data!");
     }
 
     public static void main5(String[] args) {
@@ -499,7 +490,9 @@ public class CheckInDatasetPreprocessRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
+        // 6. 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为user_raw.txt
         extractUser();
+        // 7. 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
         extractUserData();
     }
 

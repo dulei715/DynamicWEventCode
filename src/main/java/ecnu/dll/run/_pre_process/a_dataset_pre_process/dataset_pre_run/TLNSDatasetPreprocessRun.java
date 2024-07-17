@@ -7,7 +7,7 @@ import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synth
 import ecnu.dll.utils.CatchSignal;
 
 public class TLNSDatasetPreprocessRun {
-    public static void generateProbabilityParameters() {
+    private static void generateProbabilityParameters() {
         // 生成20000个user，1个位置，10000个timestamp
         // 保证所有user的统计满足某个函数的分布
         Double p0 = 0.5;
@@ -20,10 +20,7 @@ public class TLNSDatasetPreprocessRun {
 
     }
 
-    public static void main(String[] args) {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-
+    public static void generateDataset() {
         String datasetName = "tlns";
         String datasetPath = Constant.tlnsFilePath;
         String positionFileName = "status.txt";
@@ -47,5 +44,11 @@ public class TLNSDatasetPreprocessRun {
         SyntheticGenerationUtils.generateRunInputData(datasetPath, positionFileName);
 
 
+    }
+
+    public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        generateDataset();
     }
 }

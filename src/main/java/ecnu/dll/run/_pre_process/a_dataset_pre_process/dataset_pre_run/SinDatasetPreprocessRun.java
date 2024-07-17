@@ -19,9 +19,7 @@ public class SinDatasetPreprocessRun {
 
     }
 
-    public static void main(String[] args) {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
+    public static void generateDataset() {
 
         String datasetName = "sin";
         String datasetPath = Constant.sinFilePath;
@@ -46,5 +44,11 @@ public class SinDatasetPreprocessRun {
         SyntheticGenerationUtils.generateRunInputData(datasetPath, positionFileName);
 
 
+    }
+
+    public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        generateDataset();
     }
 }

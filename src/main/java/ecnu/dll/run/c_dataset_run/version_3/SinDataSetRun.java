@@ -10,13 +10,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class SinDataSetRun {
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
+    public static void runSin() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         String basicPath = Constant.sinFilePath;
         String dataTypeFileName = "status.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        runSin();
     }
 }

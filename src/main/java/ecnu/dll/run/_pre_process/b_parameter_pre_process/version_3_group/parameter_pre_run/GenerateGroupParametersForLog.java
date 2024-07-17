@@ -3,6 +3,7 @@ package ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parame
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.DiscreteParameterGenerator;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
+import ecnu.dll.utils.CatchSignal;
 
 public class GenerateGroupParametersForLog {
     public static void generateParameters() {
@@ -16,6 +17,8 @@ public class GenerateGroupParametersForLog {
 
     }
     public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
         // 1. 生成 userIDType.txt 以及 user_to_type.txt 到 basic_info中
         UserGroupGenerator.generateUserIDType(Constant.logFilePath);
         UserGroupGenerator.generateUserToType(Constant.logFilePath);

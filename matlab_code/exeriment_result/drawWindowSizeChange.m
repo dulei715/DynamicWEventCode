@@ -1,4 +1,4 @@
-function y = drawBudgetChange(basic_path, default_window_size)
+function y = drawBudgetChange(basic_path, default_budget)
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);
@@ -13,12 +13,12 @@ i = 0;
 for temp_name = dir_names
     temp_name = cell2mat(temp_name);
     [temp_budget, temp_window_size] = extractParameterFromDirName(temp_name);
-    if temp_window_size ~= default_window_size
+    if temp_budget ~= default_budget
         continue;
     end
     % disp(temp_budget);
     i = i + 1;
-    x(i) = temp_budget;
+    x(i) = temp_window_size;
     data_path = fullfile(basic_path, temp_name, 'result.txt');
     temp_table = readtable(data_path);
     % y_bd(i) = temp_table(2,8).MRE;
@@ -37,7 +37,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = 'budget';
+xLabelName = '$w$ size';
 % yLabelName = 'MRE';
 yLabelName = 'log(MRE)';
 

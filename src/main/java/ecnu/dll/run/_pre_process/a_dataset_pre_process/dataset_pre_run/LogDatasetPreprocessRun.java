@@ -18,10 +18,7 @@ public class LogDatasetPreprocessRun {
 
     }
 
-    public static void main(String[] args) {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-
+    public static void generateDataset() {
         String datasetName = "log";
         String datasetPath = Constant.logFilePath;
         String positionFileName = "status.txt";
@@ -45,5 +42,11 @@ public class LogDatasetPreprocessRun {
         SyntheticGenerationUtils.generateRunInputData(datasetPath, positionFileName);
 
 
+    }
+
+    public static void main(String[] args) {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        generateDataset();
     }
 }

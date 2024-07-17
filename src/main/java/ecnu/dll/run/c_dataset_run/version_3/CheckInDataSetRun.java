@@ -12,14 +12,18 @@ import java.util.List;
 public class CheckInDataSetRun {
 
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
+    public static void runCheckIn() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         String basicPath = Constant.checkInFilePath;
         String dataTypeFileName = "country.txt";
 //        Integer singleBatchSize = 2;
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        CatchSignal catchSignal = new CatchSignal();
+        catchSignal.startCatch();
+        runCheckIn();
     }
 }
