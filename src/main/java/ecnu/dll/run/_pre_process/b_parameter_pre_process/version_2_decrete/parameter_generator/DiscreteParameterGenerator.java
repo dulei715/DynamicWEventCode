@@ -17,6 +17,7 @@ import ecnu.dll.utils.thread.ThreadUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class DiscreteParameterGenerator {
     /**
@@ -77,6 +78,7 @@ public class DiscreteParameterGenerator {
         Runnable tempRunnable;
         Integer startIndex, endIndex;
         threadSize = threadStartIndexList.size(); // 只是为了加强一下
+        CountDownLatch latch = new CountDownLatch(threadSize);
         for (int i = 0; i < threadSize; i++) {
             startIndex = threadStartIndexList.get(i);
             if (i < threadSize - 1) {
@@ -84,12 +86,15 @@ public class DiscreteParameterGenerator {
             } else {
                 endIndex = timeStampListSize - 1;
             }
-//            MyPrint.showList(timeStampList, "; ");
-//            tempRunnable = new PrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyUpperBound, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex);
-            tempRunnable = new DiscretePrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyBudgetCandidateList, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex);
+            tempRunnable = new DiscretePrivacyBudgetWithinTimeRangeGenerator(outputFileDir, timeStampList, privacyBudgetCandidateList, remainBackwardPrivacyLowerBound, remainBackwardPrivacyUpperBound, userBudgetList, startIndex, endIndex, latch);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
             System.out.println("Start privacy budget thread " + tempTread.getName() + " with id " + tempTread.getId());
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -113,6 +118,7 @@ public class DiscreteParameterGenerator {
         Runnable tempRunnable;
         Integer startIndex, endIndex;
         threadSize = threadStartIndexList.size(); // 只是为了加强一下
+        CountDownLatch latch = new CountDownLatch(threadSize);
         for (int i = 0; i < threadSize; i++) {
             startIndex = threadStartIndexList.get(i);
             if (i < threadSize - 1) {
@@ -120,10 +126,15 @@ public class DiscreteParameterGenerator {
             } else {
                 endIndex = timeStampListSize - 1;
             }
-            tempRunnable = new DiscreteWindowSizeWithinTimeRangeGenerator(outputFileDir, timeStampList, windowSizeCandidateList, backwardWindowSizeLowerBound, userWSizeList, startIndex, endIndex);
+            tempRunnable = new DiscreteWindowSizeWithinTimeRangeGenerator(outputFileDir, timeStampList, windowSizeCandidateList, backwardWindowSizeLowerBound, userWSizeList, startIndex, endIndex, latch);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
             System.out.println("Start window size thread " + tempTread.getName() + " with id " + tempTread.getId());
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -150,7 +161,7 @@ public class DiscreteParameterGenerator {
             tempRatioList = new ArrayList<>();
             int lowerIndex = candidateSortedBudgetList.indexOf(budget);
             if (lowerIndex < 0) {
-                System.out.println("Warning: budget generation for DecreteParameterGenerator:generatePrivacyBudget does not find given budget in the candidate list!");
+                System.out.println("Warning: budget generation for DiscreteParameterGenerator:generatePrivacyBudget does not find given budget in the candidate list!");
             }
             chosenTypeSize = candidateSortedBudgetList.size() - lowerIndex;
             for (int i = lowerIndex; i < candidateSortedBudgetList.size(); ++i) {

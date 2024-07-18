@@ -28,7 +28,7 @@ public class CheckInInitialize {
         System.out.println("Start merge...");
         CheckInDatasetPreprocessRun.mergeToExperimentRawData();
 
-        // 5. 记录country.txt, user.txt, timestamp.txt三个基本文件到 basic_info/ 目录下
+        // 5. 记录country.txt, user_raw.txt, timestamp.txt三个基本文件到 basic_info/ 目录下
         System.out.println("Start record...");
         CheckInDatasetPreprocessRun.recordBasicInformation();
         System.out.println("Program finished !");

@@ -38,31 +38,35 @@
         </fileHandle>
     </datasets>
     <candidateSet>
-        <attribute name="PrivacyBudgetLowerBound">
+        <!-- attribute name="PrivacyBudgetLowerBound">
             <value name="default">0.1</value>
-        </attribute>
-        <attribute name="PrivacyBudgetUpperBound">
+        </attribute -->
+        <attribute name="PrivacyBudgetUpperBound"> <!-- 仅在version 1 和 version 2 中使用 -->
             <value name="default">10</value>
         </attribute>
-        <attribute name="WindowSizeLowerBound">
+        <attribute name="WindowSizeLowerBound">  <!-- 仅在version 1 中使用 -->
             <value name="default">1</value>
         </attribute>
-        <attribute name="WindowSizeUpperBound">
-            <value name="default">50</value>
-        </attribute>
+        <!-- attribute name="WindowSizeUpperBound">
+            <value name="default">200</value>
+            <value name="case1">50</value>
+        </attribute -->
         <attribute name="BackwardPrivacyBudgetUpperBoundDifference">
             <value name="default">10</value>
         </attribute>
-        <attribute name="BackwardPrivacyBudgetLowerBoundDifference">
+        <attribute name="BackwardPrivacyBudgetLowerBoundDifference">  <!-- 用于假设backward的privacy尽可能大，因此这个目前没用 -->
             <value name="default">0.1</value>
         </attribute>
+        <!-- backward的window size lower bound 和 window size lower bound 共用 -->
         <version_2>
             <attribute name="GenPrivacyBudget">
-                <value name="default">0.5,1,1.5,2,2.5</value>
+                <value name="default">0.2,0.4,0.6,0.8,1.0</value>
+                <value name="case1">0.5,1,1.5,2,2.5</value>
                 <ratio name="default">0.2,0.2,0.2,0.2,0.2</ratio>
             </attribute>
             <attribute name="GenWindowSize">
-                <value name="default">10,20,30,40,50</value>
+                <value name="default">40,80,120,160,200</value>
+                <value name="case1">10,20,30,40,50</value>
                 <ratio name="default">0.2,0.2,0.2,0.2,0.2</ratio>
             </attribute>
         </version_2>
@@ -70,16 +74,20 @@
     <independentVariables>
         <attribute name="PrivacyBudget">
             <dataType>java.lang.Double</dataType>
-            <single name="default">1.5</single>
+            <single name="default">0.6</single>
+            <single name="case1">1.5</single>
             <single name="1">2.5</single>
-            <variance name="default">0.5,1,1.5,2,2.5</variance>
+            <variance name="default">0.2,0.4,0.6,0.8,1.0</variance>
+            <variance name="case1">0.5,1,1.5,2,2.5</variance>
             <variance name="1">0.1,0.325,0.55,0.775,1.0</variance>
         </attribute>
         <attribute name="WindowSize">
             <dataType>java.lang.Integer</dataType>
-            <single name="default">30</single>
+            <single name="default">120</single>
+            <single name="case1">30</single>
             <single name="1">120</single>
-            <variance name="default">10,20,30,40,50</variance>
+            <variance name="default">40,80,120,160,200</variance>
+            <variance name="case1">10,20,30,40,50</variance>
             <variance name="1">40,80,120,160,200</variance>
         </attribute>
         <attribute name="UserType">
@@ -94,12 +102,15 @@
             <dataType>java.lang.Integer</dataType>
 <!--            <single name="default">100</single>-->
 <!--            <single name="default">5135</single>-->
-            <single name="default">6591</single>
-            <variance name="default">25,50,100,150,200</variance>
+            <single name="default">5000</single>
+            <single name="case1">6591</single>
+            <variance name="default">1000,2000,3000,4000,5000</variance>
+            <variance name="case1">25,50,100,150,200</variance>
         </attribute>
         <attribute name="BatchUnitSize">
             <dataType>java.lang.Integer</dataType>
-            <single name="default">2</single>
+            <single name="default">3</single>
+            <single name="case1">2</single>
             <variance name="default">1,2,3,4,5</variance>
         </attribute>
     </independentVariables>

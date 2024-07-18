@@ -10,6 +10,7 @@ import ecnu.dll.utils.FormatFileName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class DiscretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
@@ -20,8 +21,9 @@ public class DiscretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
     private List<BasicPair<Integer, Double>> userBudgetList;
     private Integer startIndex;
     private Integer endIndex;
+    private CountDownLatch latch;
 
-    public DiscretePrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Double> privacyBudgetCandidateList, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex) {
+    public DiscretePrivacyBudgetWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Double> privacyBudgetCandidateList, Double remainBackwardPrivacyLowerBound, Double remainBackwardPrivacyUpperBound, List<BasicPair<Integer, Double>> userBudgetList, Integer startIndex, Integer endIndex, CountDownLatch latch) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
         this.privacyBudgetCandidateList = privacyBudgetCandidateList;
@@ -31,6 +33,7 @@ public class DiscretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
         this.userBudgetList = userBudgetList;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
+        this.latch = latch;
     }
 
     private void generatePrivacyBudgetWithinGivenTimeRange() {
@@ -73,5 +76,6 @@ public class DiscretePrivacyBudgetWithinTimeRangeGenerator implements Runnable {
     @Override
     public void run() {
         generatePrivacyBudgetWithinGivenTimeRange();
+        this.latch.countDown();
     }
 }

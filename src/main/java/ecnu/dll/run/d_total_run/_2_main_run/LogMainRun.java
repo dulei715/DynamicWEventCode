@@ -22,5 +22,7 @@ public class LogMainRun {
 
         // 3. 执行
         LogDataSetRun.runLog();
+
+
     }
 }

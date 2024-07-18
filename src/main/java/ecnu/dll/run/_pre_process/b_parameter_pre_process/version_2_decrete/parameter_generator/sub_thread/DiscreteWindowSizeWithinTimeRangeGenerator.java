@@ -9,6 +9,7 @@ import ecnu.dll.utils.FormatFileName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class DiscreteWindowSizeWithinTimeRangeGenerator implements Runnable {
     private String outputFileDir;
@@ -19,8 +20,9 @@ public class DiscreteWindowSizeWithinTimeRangeGenerator implements Runnable {
     private List<BasicPair<Integer, Integer>> userWSizeList;
     private Integer startIndex;
     private Integer endIndex;
+    private CountDownLatch latch;
 
-    public DiscreteWindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Integer> windowSizeCandidateList, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex) {
+    public DiscreteWindowSizeWithinTimeRangeGenerator(String outputFileDir, List<Integer> timeStampList, List<Integer> windowSizeCandidateList, Integer backwardWindowSizeLowerBound, List<BasicPair<Integer, Integer>> userWSizeList, Integer startIndex, Integer endIndex, CountDownLatch latch) {
         this.outputFileDir = outputFileDir;
         this.timeStampList = timeStampList;
         this.windowSizeCandidateList = windowSizeCandidateList;
@@ -29,6 +31,7 @@ public class DiscreteWindowSizeWithinTimeRangeGenerator implements Runnable {
         this.userWSizeList = userWSizeList;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
+        this.latch = latch;
     }
 
     private void generateWindowSizeWithinTimeRange() {
@@ -77,5 +80,6 @@ public class DiscreteWindowSizeWithinTimeRangeGenerator implements Runnable {
     @Override
     public void run() {
         generateWindowSizeWithinTimeRange();
+        this.latch.countDown();
     }
 }

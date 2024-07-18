@@ -7,6 +7,7 @@ import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll.utils.FormatFileName;
+import ecnu.dll.utils.io.ListReadUtils;
 
 import java.io.File;
 import java.util.*;
@@ -96,7 +97,10 @@ public class PreprocessRunUtils {
     }
 
     public static void recordUserInfo(String datasetPath) {
-        String userReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput", "timestamp_0000.txt");
+        String basicDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput_raw");
+        File basicDirFile = new File(basicDirPath);
+        File fistFile = basicDirFile.listFiles(new TxtFilter())[0];
+        String userReadDirPath = fistFile.getAbsolutePath();
 
         BasicRead basicRead = new BasicRead(",");
         List<String> tempData, userIDList = new ArrayList<>();
@@ -109,13 +113,13 @@ public class PreprocessRunUtils {
             userIDList.add(userIDString);
         }
         BasicWrite basicWrite = new BasicWrite(",");
-        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user.txt"));
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user_raw.txt"));
         basicWrite.writeStringListWithoutSize(userIDList);
         basicWrite.endWriting();
     }
 
     public static void recordTimeStampInfo(String datasetPath) {
-        String timeStampReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput");
+        String timeStampReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput_raw");
 
         TreeSet<Integer> timeStampSet = new TreeSet<>();
         File dirFile = new File(timeStampReadDirPath);
@@ -142,8 +146,8 @@ public class PreprocessRunUtils {
         return userTypeIDList;
     }
 
-    public static List<Integer> getTimeStampList(String datasetPath) {
-        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput");
+    public static List<Integer> getTimeStampListByRunInput(String datasetPath) {
+        String fileDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput_raw");
 //        System.out.println(fileDir);
         File file = new File(fileDir);
         File[] fileArray = file.listFiles(new TxtFilter());
@@ -154,6 +158,15 @@ public class PreprocessRunUtils {
 //            System.out.println(innerfile.getName());
             timeStampStr = FormatFileName.extractNumString(innerfile.getName(), "_", ".");
             resultList.add(Integer.valueOf(timeStampStr));
+        }
+        return resultList;
+    }
+    public static List<Integer> getTimeStampList(String datasetPath) {
+        String timeStampFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "time_stamp.txt");
+        List<String> strList = ListReadUtils.readAllDataList(timeStampFilePath, ",");
+        List<Integer> resultList = new ArrayList<>(strList.size());
+        for (String str : strList) {
+            resultList.add(Integer.valueOf(str));
         }
         return resultList;
     }

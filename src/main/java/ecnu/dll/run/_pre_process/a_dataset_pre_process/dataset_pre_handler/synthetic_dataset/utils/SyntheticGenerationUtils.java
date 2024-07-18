@@ -13,6 +13,7 @@ import ecnu.dll.utils.io.ListWriteUtils;
 import ecnu.dll.utils.thread.ThreadUtils;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class SyntheticGenerationUtils {
     public static void generateProbability(DataGenerationFunction<Double> function, Integer probabilitySize, Boolean containInitialValue) {
@@ -51,7 +52,6 @@ public class SyntheticGenerationUtils {
     }
 
     public static void generateRunInputData(String datasetPath, String positionFileName) {
-        String timeStampPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "time_stamp.txt");
         String probabilityListPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "probability.txt");
         String positionPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", positionFileName);
         String userIDPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user.txt");
@@ -66,6 +66,7 @@ public class SyntheticGenerationUtils {
         Integer startIndex, endIndex;
         Thread tempTread;
         Runnable tempRunnable;
+        CountDownLatch latch = new CountDownLatch(threadSize);
         for (int i = 0; i < threadStartIndexList.size(); i++) {
             startIndex = threadStartIndexList.get(i);
             if (i < threadStartIndexList.size() - 1) {
@@ -73,10 +74,15 @@ public class SyntheticGenerationUtils {
             } else {
                 endIndex = totalTimeStampSize - 1;
             }
-            tempRunnable = new runInputGeneratorThread(startIndex, endIndex, basicOutputDir, probabilityStrList, userIDList, positionStringList);
+            tempRunnable = new runInputGeneratorThread(startIndex, endIndex, basicOutputDir, probabilityStrList, userIDList, positionStringList, latch);
             tempTread = new Thread(tempRunnable);
             tempTread.start();
             System.out.println("Start thread " + tempTread.getName() + " with id " + tempTread.getId());
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }

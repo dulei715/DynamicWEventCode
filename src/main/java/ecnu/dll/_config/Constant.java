@@ -24,6 +24,8 @@ public class Constant {
     public static String sinFilePath;
     public static String logFilePath;
 
+    public static Integer MAX_BACKWARD_WINDOW_SIZE;
+
 
     static {
         configPath = StringUtil.join(ConstantValues.FILE_SPLIT, projectPath, "config", "parameter_config.xml");
@@ -55,6 +57,7 @@ public class Constant {
         sinFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, sinFileName);
         logFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicDatasetPath, logFileName);
 
+        MAX_BACKWARD_WINDOW_SIZE = ConfigureUtils.getMaxWindowSize() + 1;
     }
 
 
@@ -102,7 +105,7 @@ public class Constant {
 
     // constant for Personalized Dynamic Budget Distribution (Absorption)
 //    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 201;
-    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 51;
+//    public static final Integer MAX_BACKWARD_WINDOW_SIZE = 51;
 
     public static final Double PRIVACY_LOWER_BOUND = 0.1;
     public static final Double PRIVACY_UPPER_BOUND = 10D;

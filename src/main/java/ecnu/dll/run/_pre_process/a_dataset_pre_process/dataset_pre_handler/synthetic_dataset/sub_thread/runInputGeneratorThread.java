@@ -8,6 +8,7 @@ import ecnu.dll.utils.io.ListWriteUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class runInputGeneratorThread implements Runnable {
     private Integer startIndex;
@@ -16,14 +17,16 @@ public class runInputGeneratorThread implements Runnable {
     private List<String> probabilityStrList;
     private List<String> userIDList;
     private List<String> positionStringList;
+    private CountDownLatch latch;
 
-    public runInputGeneratorThread(Integer startIndex, Integer endIndex, String basicOutputDir, List<String> probabilityStrList, List<String> userIDList, List<String> positionStringList) {
+    public runInputGeneratorThread(Integer startIndex, Integer endIndex, String basicOutputDir, List<String> probabilityStrList, List<String> userIDList, List<String> positionStringList, CountDownLatch latch) {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.basicOutputDir = basicOutputDir;
         this.probabilityStrList = probabilityStrList;
         this.userIDList = userIDList;
         this.positionStringList = positionStringList;
+        this.latch = latch;
     }
 
     private void generateRunInputByBatch() {
@@ -48,11 +51,12 @@ public class runInputGeneratorThread implements Runnable {
             }
             ListWriteUtils.writeList(outputFilePath, tempWritingDataList, ",");
         }
-        System.out.println("Thread " + Thread.currentThread().getName() + " end...");
     }
 
     @Override
     public void run() {
         generateRunInputByBatch();
+        System.out.println("Thread " + Thread.currentThread().getName() + " end...");
+        this.latch.countDown();
     }
 }

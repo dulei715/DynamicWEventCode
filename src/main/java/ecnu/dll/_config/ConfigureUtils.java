@@ -1,6 +1,7 @@
 package ecnu.dll._config;
 
 import cn.edu.dll.basic.StringUtil;
+import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.struct.pair.PureTriple;
@@ -61,14 +62,15 @@ public class ConfigureUtils {
         }
         return new List[]{valueList, ratioList};
     }
-    public static Double getPrivacyBudgetLowerBound() {
-        Document document = Constant.xmlConfigure.getDocument();
-        Element candidateSet = document.getRootElement().element("candidateSet");
-        Element elementPrivacyBudget = (Element)candidateSet.selectNodes("./attribute[@name='PrivacyBudgetLowerBound']").get(0);
-        String budgetLowerBoundString = elementPrivacyBudget.element("value").getTextTrim();
-        Double budgetLowerBound = Double.valueOf(budgetLowerBoundString);
-        return budgetLowerBound;
-    }
+//    @Deprecated
+//    public static Double getPrivacyBudgetLowerBound() {
+//        Document document = Constant.xmlConfigure.getDocument();
+//        Element candidateSet = document.getRootElement().element("candidateSet");
+//        Element elementPrivacyBudget = (Element)candidateSet.selectNodes("./attribute[@name='PrivacyBudgetLowerBound']").get(0);
+//        String budgetLowerBoundString = elementPrivacyBudget.element("value").getTextTrim();
+//        Double budgetLowerBound = Double.valueOf(budgetLowerBoundString);
+//        return budgetLowerBound;
+//    }
     public static Double getPrivacyBudgetUpperBound() {
         Document document = Constant.xmlConfigure.getDocument();
         Element candidateSet = document.getRootElement().element("candidateSet");
@@ -85,14 +87,15 @@ public class ConfigureUtils {
         Integer windowSizeLowerBound = Integer.valueOf(windowSizeLowerBoundString);
         return windowSizeLowerBound;
     }
-    public static Integer getWindowSizeUpperBound() {
-        Document document = Constant.xmlConfigure.getDocument();
-        Element candidateSet = document.getRootElement().element("candidateSet");
-        Element elementWindowSize = (Element) candidateSet.selectNodes("./attribute[@name='WindowSizeUpperBound']").get(0);
-        String windowSizeUpperBoundString = elementWindowSize.element("value").getTextTrim();
-        Integer windowSizeUpperBound = Integer.valueOf(windowSizeUpperBoundString);
-        return windowSizeUpperBound;
-    }
+//    @Deprecated
+//    public static Integer getWindowSizeUpperBound() {
+//        Document document = Constant.xmlConfigure.getDocument();
+//        Element candidateSet = document.getRootElement().element("candidateSet");
+//        Element elementWindowSize = (Element) candidateSet.selectNodes("./attribute[@name='WindowSizeUpperBound']").get(0);
+//        String windowSizeUpperBoundString = elementWindowSize.element("value").getTextTrim();
+//        Integer windowSizeUpperBound = Integer.valueOf(windowSizeUpperBoundString);
+//        return windowSizeUpperBound;
+//    }
 
     public static Double getBackwardPrivacyBudgetUpperBoundDifference() {
         Document document = Constant.xmlConfigure.getDocument();
@@ -111,6 +114,15 @@ public class ConfigureUtils {
         Double budgetLowerBound = Double.valueOf(budgetLowerBoundString);
         return budgetLowerBound;
     }
+
+    public static Integer getMaxWindowSize() {
+        List[] dataListArray = getGenerationWindowSizeList();
+        List<Integer> list = dataListArray[0];
+        Integer maxWindowSize = ListUtils.getMaximalValue(list, 0);
+        return maxWindowSize;
+    }
+
+
 
     public static Integer getDefaultUserTypeSize() {
         Integer result;
@@ -242,13 +254,6 @@ public class ConfigureUtils {
     public static void main4(String[] args) {
         List<Double> result = getIndependentPrivacyBudgetList("default");
         MyPrint.showList(result);
-    }
-
-    public static void main5(String[] args) {
-        Double privacyBudgetLowerBound = getPrivacyBudgetLowerBound();
-        Integer windowSizeUpperBound = getWindowSizeUpperBound();
-        System.out.println(privacyBudgetLowerBound);
-        System.out.println(windowSizeUpperBound);
     }
 
     public static void main(String[] args) {

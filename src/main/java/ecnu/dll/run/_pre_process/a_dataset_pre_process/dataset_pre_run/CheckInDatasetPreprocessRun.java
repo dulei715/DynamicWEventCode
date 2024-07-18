@@ -15,6 +15,8 @@ import ecnu.dll.dataset.real.datasetB.spetial_tools.CheckInBeanUtils;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.CheckInPreprocessRunUtils;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils.PreprocessRunUtils;
 import ecnu.dll.utils.CatchSignal;
+import ecnu.dll.utils.io.ListReadUtils;
+import ecnu.dll.utils.io.ListWriteUtils;
 import others.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
@@ -357,7 +359,8 @@ public class CheckInDatasetPreprocessRun {
         PreprocessRunUtils.recordTimeStampInfo(Constant.checkInFilePath);
     }
 
-    public static void extractUser() {
+    @Deprecated
+    public static void extractUserBefore() {
         Double ratio = 0.05;
         String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info");
         String rawDataPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "user.txt");
@@ -393,8 +396,27 @@ public class CheckInDatasetPreprocessRun {
             newRawFile.delete();
         }
     }
+    public static void extractUser() {
+        Double ratio = 0.05;
+        String basicPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info");
+        String rawDataPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "user_raw.txt");
+        String extractDataPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "user.txt");
+        List<String> rawData, extractData = new ArrayList<>();
+        File extractDataFile = new File(extractDataPath);
+        if (extractDataFile.exists()) {
+            System.out.println("为了不覆盖数据，请先删除原有的user.txt");
+            return;
+        }
+        rawData = ListReadUtils.readAllDataList(rawDataPath, ",");
+        for (String rawDatum : rawData) {
+            if (RandomUtil.isChosen(ratio)) {
+                extractData.add(rawDatum);
+            }
+        }
+        ListWriteUtils.writeList(extractDataPath, extractData, ",");
+    }
 
-    public static void extractUserData() {
+    public static void extractUserDataBefore() {
         // 保证basic_info/user.txt是抽取过的user
         String rawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
         String newRawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
@@ -449,6 +471,48 @@ public class CheckInDatasetPreprocessRun {
         }
 
     }
+    public static void extractUserData() {
+        // 保证basic_info/user.txt是抽取过的user
+        String rawDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
+        String extractInputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput");
+        String userIDPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "basic_info", "user.txt");
+        File extractInputDirFile = new File(extractInputDir);
+        File[] rawFileArray;
+        if (extractInputDirFile.exists()) {
+            System.out.println("为了保证文件不覆盖，请先删除runInput文件夹！");
+            return;
+        }
+        extractInputDirFile.mkdirs();
+        // 获取所有user id 并将其放进集合
+        File rawDirFile = new File(rawDir);
+        List<String> tempDataList, extractData;
+        BasicWrite basicWrite;
+        tempDataList = ListReadUtils.readAllDataList(userIDPath, ",");
+        Set<Integer> userIDSet = new HashSet<>();
+        for (String idStr : tempDataList) {
+            userIDSet.add(Integer.valueOf(idStr));
+        }
+        BasicRead basicRead = new BasicRead(",");
+        rawFileArray = rawDirFile.listFiles(new TxtFilter());
+        basicWrite = new BasicWrite(",");
+        Integer tempUserID;
+        for (File file : rawFileArray) {
+            basicRead.startReading(file.getAbsolutePath());
+            tempDataList = basicRead.readAllWithoutLineNumberRecordInFile();
+            basicRead.endReading();
+            extractData = new ArrayList<>();
+            for (String strLine : tempDataList) {
+                tempUserID = Integer.valueOf(basicRead.split(strLine)[0]);
+                if (userIDSet.contains(tempUserID)) {
+                    extractData.add(strLine);
+                }
+            }
+            basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, extractInputDir, file.getName()));
+            basicWrite.writeStringListWithoutSize(extractData);
+            basicWrite.endWriting();
+        }
+
+    }
 
     public static void main0(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
@@ -491,7 +555,7 @@ public class CheckInDatasetPreprocessRun {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
         // 6. 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为user_raw.txt
-        extractUser();
+//        extractUser();
         // 7. 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
         extractUserData();
     }

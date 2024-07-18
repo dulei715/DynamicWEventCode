@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
 
 public class FixedSegmentParameterRun implements Runnable {
     private String basicPath;
@@ -46,9 +47,10 @@ public class FixedSegmentParameterRun implements Runnable {
     private String dynamicPrivacyBudgetBasicPath;
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
+    private CountDownLatch latch;
 
 
-    public FixedSegmentParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID) {
+    public FixedSegmentParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -58,6 +60,7 @@ public class FixedSegmentParameterRun implements Runnable {
         this.startFileIndex = startFileIndex;
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
+        this.latch = latch;
         initialize();
     }
 
@@ -179,6 +182,7 @@ public class FixedSegmentParameterRun implements Runnable {
     @Override
     public void run() {
         runSegmentBatch();
+        this.latch.countDown();
     }
 
     public static void main(String[] args) {
