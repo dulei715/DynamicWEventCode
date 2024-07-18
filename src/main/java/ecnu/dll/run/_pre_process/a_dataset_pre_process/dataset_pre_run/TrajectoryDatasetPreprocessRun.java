@@ -418,8 +418,8 @@ public class TrajectoryDatasetPreprocessRun {
         String initializedInputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.trajectoriesFilePath, "shuffle_by_time_slot");
         String inputDirectoryName = "extract_data";
         String outputDirectoryName = "runInput";
-        File direcoryFile = new File(initializedInputDirectoryPath);
-        int fileSize = direcoryFile.listFiles(new TxtFilter()).length;
+        File directoryFile = new File(initializedInputDirectoryPath);
+        int fileSize = directoryFile.listFiles(new TxtFilter()).length;
 //        int fileSize = 8888;
         long startFileID, endFileID;
         Thread tempTread;
@@ -450,8 +450,8 @@ public class TrajectoryDatasetPreprocessRun {
 
     public static void recordBasicInformation() {
         recordCellInfo();
-        PreprocessRunUtils.recordUserInfo(Constant.trajectoriesFilePath);
-        PreprocessRunUtils.recordTimeStampInfo(Constant.trajectoriesFilePath);
+        PreprocessRunUtils.recordUserInfo(Constant.trajectoriesFilePath, "runInput", "user.txt");
+        PreprocessRunUtils.recordTimeStampInfo(Constant.trajectoriesFilePath, "runInput");
     }
 
 

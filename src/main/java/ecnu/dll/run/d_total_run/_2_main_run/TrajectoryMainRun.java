@@ -10,15 +10,13 @@ import java.lang.reflect.InvocationTargetException;
 
 public class TrajectoryMainRun {
     public static void main(String[] args) throws Exception {
-        // 1. 数据记录
-        TrajectoryDatasetPreprocessRun.recordBasicInformation();
 
-        // 2. parameter 生成
+        // 1. parameter 生成
         UserGroupGenerator.generateUserIDType(Constant.trajectoriesFilePath);
         UserGroupGenerator.generateUserToType(Constant.trajectoriesFilePath);
         GenerateGroupParametersForTrajectory.generateParameters();
 
-        // 3. 执行
+        // 2. 执行
         TrajectoryDataSetRun.runTrajectory();
     }
 }

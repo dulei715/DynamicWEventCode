@@ -260,7 +260,7 @@ public class CheckInDatasetPreprocessRun {
     /**
      * 根据每个时间段中的数据依次更新每个用户的位置状态并记录该时间段中最晚的用户状态
      */
-    public static void mergeToExperimentRawData() {
+    public static void mergeToExperimentRawData(String outputFileName) {
         String path = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "shuffle_by_time_slot");
         File directoryFile = new File(path);
         File[] files = directoryFile.listFiles(new TxtFilter());
@@ -270,7 +270,7 @@ public class CheckInDatasetPreprocessRun {
         List<String> tempDataList;
         CheckInSimplifiedBean tempBean;
         Map<Integer, BasicPair<Long, String>> userTimeSlotLocationMap = CheckInPreprocessRunUtils.getInitialUserTimeSlotLocationMap(StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "join"));
-        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, "runInput_raw");
+        String outputDirectoryPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.checkInFilePath, outputFileName);
 
         for (File file : files) {
             basicRead.startReading(file.getAbsolutePath());
@@ -355,8 +355,8 @@ public class CheckInDatasetPreprocessRun {
 
     public static void recordBasicInformation() {
         recordCountryInfo();
-        PreprocessRunUtils.recordUserInfo(Constant.checkInFilePath);
-        PreprocessRunUtils.recordTimeStampInfo(Constant.checkInFilePath);
+        PreprocessRunUtils.recordUserInfo(Constant.checkInFilePath, "runInput_raw", "user_raw.txt");
+        PreprocessRunUtils.recordTimeStampInfo(Constant.checkInFilePath, "runInput_raw");
     }
 
     @Deprecated
@@ -536,7 +536,7 @@ public class CheckInDatasetPreprocessRun {
 
         // 4. 保留每个timestamp的用户状态
         System.out.println("Start merge...");
-        mergeToExperimentRawData();
+        mergeToExperimentRawData("runInput_raw");
 
         // 5. 记录country.txt, user.txt, timestamp.txt三个基本文件到 basic_info/ 目录下
         System.out.println("Start record...");
@@ -554,9 +554,9 @@ public class CheckInDatasetPreprocessRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-        // 6. 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为user_raw.txt
+        // 6. 抽取 5% 的 user 记录在 user.txt 中
 //        extractUser();
-        // 7. 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
+        // 7. 根据新的 user.txt 抽取 runInput 中的数据
         extractUserData();
     }
 

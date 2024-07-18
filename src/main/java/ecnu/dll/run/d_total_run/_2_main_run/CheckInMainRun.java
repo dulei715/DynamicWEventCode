@@ -15,8 +15,8 @@ public class CheckInMainRun {
         catchSignal.startCatch();
 
         // 1. dataset 抽取
-        CheckInDatasetPreprocessRun.extractUser();  // 抽取 5% 的 user 记录在 user.txt 中，并将原有的 user.txt 命名为 user_raw.txt
-        CheckInDatasetPreprocessRun.extractUserData(); // 根据新的 user.txt 抽取 runInput 中的数据，并将原有的 runInput 改名为 runInputRaw
+        CheckInDatasetPreprocessRun.extractUser();  // 抽取 5% 的 user 记录在 user.txt
+        CheckInDatasetPreprocessRun.extractUserData(); // 根据新的 user.txt 抽取 runInput 中的数据
 
         // 2. parameter 生成
         UserGroupGenerator.generateUserIDType(Constant.checkInFilePath);

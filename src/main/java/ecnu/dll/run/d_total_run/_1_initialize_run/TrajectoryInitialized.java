@@ -19,5 +19,8 @@ public class TrajectoryInitialized {
 
         // 4. 只保留每个time stamp中的最新的用户数据，并记录道runInput中
         TrajectoryDatasetPreprocessRun.mergeToExperimentRawData();
+
+        // 5. 记录每个基本数据
+        TrajectoryDatasetPreprocessRun.recordBasicInformation();
     }
 }

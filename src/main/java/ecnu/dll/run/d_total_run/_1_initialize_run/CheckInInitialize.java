@@ -26,7 +26,7 @@ public class CheckInInitialize {
 
         // 4. 保留每个timestamp的用户状态
         System.out.println("Start merge...");
-        CheckInDatasetPreprocessRun.mergeToExperimentRawData();
+        CheckInDatasetPreprocessRun.mergeToExperimentRawData("runInput_raw");
 
         // 5. 记录country.txt, user_raw.txt, timestamp.txt三个基本文件到 basic_info/ 目录下
         System.out.println("Start record...");

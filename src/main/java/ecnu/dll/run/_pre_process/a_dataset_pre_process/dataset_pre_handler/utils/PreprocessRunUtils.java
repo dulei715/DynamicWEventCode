@@ -96,8 +96,8 @@ public class PreprocessRunUtils {
         return result;
     }
 
-    public static void recordUserInfo(String datasetPath) {
-        String basicDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput_raw");
+    public static void recordUserInfo(String datasetPath, String readFromDirFileName, String outputUserFileName) {
+        String basicDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, readFromDirFileName);
         File basicDirFile = new File(basicDirPath);
         File fistFile = basicDirFile.listFiles(new TxtFilter())[0];
         String userReadDirPath = fistFile.getAbsolutePath();
@@ -113,13 +113,13 @@ public class PreprocessRunUtils {
             userIDList.add(userIDString);
         }
         BasicWrite basicWrite = new BasicWrite(",");
-        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", "user_raw.txt"));
+        basicWrite.startWriting(StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "basic_info", outputUserFileName));
         basicWrite.writeStringListWithoutSize(userIDList);
         basicWrite.endWriting();
     }
 
-    public static void recordTimeStampInfo(String datasetPath) {
-        String timeStampReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "runInput_raw");
+    public static void recordTimeStampInfo(String datasetPath, String readFromDirFileName) {
+        String timeStampReadDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, readFromDirFileName);
 
         TreeSet<Integer> timeStampSet = new TreeSet<>();
         File dirFile = new File(timeStampReadDirPath);
