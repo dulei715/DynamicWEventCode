@@ -1,4 +1,4 @@
-function y = drawBudgetChangeForSingleDatsetExceptDynamic(basic_path, default_window_size, outputFileName)
+function y = drawWindowSizeChangeForSingleDatasetExceptDynamic(basic_path, default_budget,outputFileName)
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);
@@ -13,14 +13,15 @@ i = 0;
 for temp_name = dir_names
     temp_name = cell2mat(temp_name);
     [temp_budget, temp_window_size] = extractParameterFromDirName(temp_name);
-    if temp_window_size ~= default_window_size
+    if temp_budget ~= default_budget
         continue;
     end
     % disp(temp_budget);
     i = i + 1;
-    x(i) = temp_budget;
+    x(i) = temp_window_size;
     data_path = fullfile(char(basic_path), temp_name, 'result.txt');
     temp_table = readtable(data_path);
+
     y_bd(i) = log(temp_table(2,8).MRE);
     y_ba(i) = log(temp_table(3,8).MRE);
     y_pbd(i) = log(temp_table(4,8).MRE);
@@ -31,12 +32,11 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "\epsilon";
+xLabelName = "w";
 % yLabelName = 'MRE';
 yLabelName = "log(MRE)";
 
-%legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
-legend_names = ["BD";"BA";"PBD";"PBA"];
+legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;
 figure_FontSize = 28;
 figure_FontSize_X = 28;
@@ -70,15 +70,8 @@ set(gca,'FontName','Times New Roman' ,'FontSize',figure_FontSize);
 set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Times New Roman');
 set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
-%h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
+%h = legend('SubGeoI_2', 'MDSW','HUEM','DAM','DAMShrink', 'SubGeoI_1', 'RAM','Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
 legend('off');
-%saveas(fig,outputFileName,'eps');
-%print(fig, outputFileName, '-depsc2');
-%saveas(fig,outputFileName,'fig');
-
 export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
-
-%export_fig(outputFileName, '.eps');
-%print(fig, outputFileName,'-dpdf');
