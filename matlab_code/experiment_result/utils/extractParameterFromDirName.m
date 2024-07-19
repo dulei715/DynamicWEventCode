@@ -1,4 +1,4 @@
-function [budget, w_size] = extractParameterFromDirName(dir_name)
+function [budget, w_size] = extractParameterFromDirName(dir_name) %形如 p_2-0_w_20形式
 segment_name = strsplit(dir_name, '_');
 budget_str = strrep(segment_name(2), '-', '.');
 w_size_str = segment_name(4);

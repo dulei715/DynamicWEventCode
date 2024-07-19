@@ -1,4 +1,4 @@
-function y = drawBudgetChange(basic_path, default_budget)
+function y = drawWindowSizeChangeForSingleDataset(basic_path, default_budget)
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);

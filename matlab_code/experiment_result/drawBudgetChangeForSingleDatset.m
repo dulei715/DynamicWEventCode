@@ -1,4 +1,4 @@
-function y = drawBudgetChange(basic_path, default_window_size)
+function y = drawBudgetChangeForSingleDatset(basic_path, default_window_size, outputFileName)
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);
@@ -78,3 +78,5 @@ set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman')
 %h = legend('SubGeoI_2', 'MDSW','HUEM','DAM','DAMShrink', 'SubGeoI_1', 'RAM','Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
+%saveas(fig,outputFileName,'epsc');
+print(fig, outputFileName, '-depsc2');
