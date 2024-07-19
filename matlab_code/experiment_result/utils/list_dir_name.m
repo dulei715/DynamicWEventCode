@@ -1,4 +1,5 @@
 function folders = list_dir_name(basic_path)
+basic_path = char(basic_path);
 files = dir(basic_path);
 folders = {};
 %folders = [];

@@ -19,7 +19,7 @@ for temp_name = dir_names
     % disp(temp_budget);
     i = i + 1;
     x(i) = temp_budget;
-    data_path = fullfile(basic_path, temp_name, 'result.txt');
+    data_path = fullfile(char(basic_path), temp_name, 'result.txt');
     temp_table = readtable(data_path);
     y_bd(i) = log(temp_table(2,8).MRE);
     y_ba(i) = log(temp_table(3,8).MRE);
@@ -38,9 +38,9 @@ yLabelName = 'log(MRE)';
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 legend_names = ["BD";"BA";"PBD";"PBA"];
 figure_MarkerSize = 20;
-figure_FontSize = 20;
-figure_FontSize_X = 18;
-figure_FontSize_Y = 18;
+figure_FontSize = 28;
+figure_FontSize_X = 28;
+figure_FontSize_Y = 28;
 
 fig = figure;
 hold on;
@@ -73,5 +73,10 @@ set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman')
 %h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
-%saveas(fig,outputFileName,'epsc');
+legend('off');
+%saveas(fig,outputFileName,'eps');
 %print(fig, outputFileName, '-depsc2');
+%saveas(fig,outputFileName,'fig');
+export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
+%export_fig(outputFileName, '.eps');
+%print(fig, outputFileName,'-dpdf');

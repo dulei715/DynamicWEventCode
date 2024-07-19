@@ -6,7 +6,8 @@ i = 0;
 for dir_name = dataset_dirs
     i = i + 1;
     abs_dir = strcat(input_basicPath, dir_name);
-    outputFileName = strcat(output_basicPath, 'fig/', 'experiment_result/', output_dataset_names(i), "_budget_change.eps");
+    %outputFileName = strcat(output_basicPath, 'fig/', 'experiment_result/', output_dataset_names(i), "_budget_change.eps");
+    outputFileName = fullfile(char(output_basicPath), 'fig', 'experiment_result', char(strcat(output_dataset_names(i),"_budget_change.eps")));
     %drawBudgetChangeForSingleDatset(abs_dir, default_window_size, outputFileName);
     drawBudgetChangeForSingleDatsetExceptDynamic(abs_dir, default_window_size, outputFileName);
 end
