@@ -109,8 +109,7 @@
         </attribute>
         <attribute name="BatchUnitSize">
             <dataType>java.lang.Integer</dataType>
-            <single name="default">3</single>
-            <single name="case1">2</single>
+            <single name="default">1</single>
             <variance name="default">1,2,3,4,5</variance>
         </attribute>
     </independentVariables>
