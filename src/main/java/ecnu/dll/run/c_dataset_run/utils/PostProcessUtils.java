@@ -95,7 +95,7 @@ public class PostProcessUtils {
         basicWrite.endWriting();
     }
 
-    public static void extractCombineResult(String inputDir, String outputDir) {
+    public static void combineAndExtractCombineResult(String inputDir, String outputDir) {
         File dirInputFile = new File(inputDir);
         File dirOutputFile = new File(outputDir);
         FileFilter directoryFileFilter = new DirectoryFileFilter();
@@ -113,6 +113,7 @@ public class PostProcessUtils {
             }
             segmentInputDirs = parametersChangeInputFile.listFiles(directoryFileFilter);
             for (File segmentInputDir : segmentInputDirs) {
+                combineResult(segmentInputDir.getAbsolutePath());
                 tempSegmentOutputName = segmentInputDir.getName();
                 tempOutputFile = new File(tempParametersChangeOutputFile, tempSegmentOutputName+".txt");
                 tempInputFile = new File(segmentInputDir, StringUtil.join(ConstantValues.FILE_SPLIT, "combine", "combine.txt"));
@@ -168,23 +169,16 @@ public class PostProcessUtils {
 
         File tempParametersChangeOutputFile, tempOutputFile, tempInputFile;
         File[] datasetDirFile = dirInputFile.listFiles(directoryFileFilter);
-        File[] dirFiles;
         File[] segmentInputFiles;
         for (File datasetFile : datasetDirFile) {
             dirInnerOutputFile = new File(dirOutputFile, datasetFile.getName());
             if (!dirInnerOutputFile.exists()) {
                 dirInnerOutputFile.mkdirs();
             }
-            dirFiles = datasetFile.listFiles(directoryFileFilter);
-            for (File parametersChangeInputFile : dirFiles) {
-                tempParametersChangeOutputFile = new File(dirInnerOutputFile, parametersChangeInputFile.getName());
-                if (!tempParametersChangeOutputFile.exists()) {
-                    tempParametersChangeOutputFile.mkdirs();
-                }
-                segmentInputFiles = parametersChangeInputFile.listFiles(txtFilter);
-                tempOutputFile = new File(tempParametersChangeOutputFile, "result.txt");
-                furtherCombineFiles(tempOutputFile, segmentInputFiles);
-            }
+//            dirFiles = datasetFile.listFiles(directoryFileFilter);
+            segmentInputFiles = datasetFile.listFiles(txtFilter);
+            tempOutputFile = new File(dirInnerOutputFile, "result.txt");
+            furtherCombineFiles(tempOutputFile, segmentInputFiles);
         }
 
     }

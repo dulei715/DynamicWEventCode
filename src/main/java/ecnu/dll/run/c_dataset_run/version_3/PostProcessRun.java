@@ -2,9 +2,7 @@ package ecnu.dll.run.c_dataset_run.version_3;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
-import ecnu.dll._config.Constant;
 import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
-import ecnu.dll.utils.CatchSignal;
 
 import java.io.File;
 
@@ -32,7 +30,7 @@ public class PostProcessRun {
     public static void extractData(String datasetPath, String dirFileName) {
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, dirFileName);
         String inputDirPath = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
-        PostProcessUtils.extractCombineResult(inputDirPath, outputPath);
+        PostProcessUtils.combineAndExtractCombineResult(inputDirPath, outputPath);
     }
 
     public static void main(String[] args) {

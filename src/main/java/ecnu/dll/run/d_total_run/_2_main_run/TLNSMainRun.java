@@ -10,8 +10,6 @@ import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
 import ecnu.dll.run.c_dataset_run.version_3.TLNSDataSetRun;
 import ecnu.dll.utils.CatchSignal;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class TLNSMainRun {
     public static void main(String[] args) throws Exception {
         CatchSignal catchSignal = new CatchSignal();
@@ -35,7 +33,7 @@ public class TLNSMainRun {
         String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
         String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "extract_result");
         String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.extractCombineResult(rawDataDir, extractResultDir);
+        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
         PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
     }
 }
