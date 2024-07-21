@@ -39,9 +39,10 @@ public class DatasetSegmentRunUtils {
             startIndex = segmentIndex;
             endIndex = Math.min(startIndex + segmentUnitSize - 1, totalFileSize - 1);
 
+            CountDownLatch innerLatch = new CountDownLatch(budgetChangeList.size() + windowSizeChangeList.size() - 1);
 
             for (Double budget : budgetChangeList) {
-                tempRunnable =  new FixedSegmentParameterRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch);
+                tempRunnable =  new FixedSegmentParameterRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -56,11 +57,18 @@ public class DatasetSegmentRunUtils {
                     continue;
                 }
                 Integer windowSize = windowSizeChangeList.get(i);
-                tempRunnable =  new FixedSegmentParameterRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch);
+                tempRunnable =  new FixedSegmentParameterRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
             }
+
+            try {
+                innerLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
         try {
             latch.await();

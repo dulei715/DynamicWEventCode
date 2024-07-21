@@ -33,5 +33,9 @@ public class CheckInInitialize {
         CheckInDatasetPreprocessRun.recordBasicInformation();
         System.out.println("Program finished !");
 
+        // 6. dataset 抽取
+        CheckInDatasetPreprocessRun.extractUser();  // 抽取 5% 的 user 记录在 user.txt
+        CheckInDatasetPreprocessRun.extractUserData(); // 根据新的 user.txt 抽取 runInput 中的数据
+
     }
 }

@@ -14,16 +14,14 @@ public class CheckInMainRun {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        // 1. dataset 抽取
-        CheckInDatasetPreprocessRun.extractUser();  // 抽取 5% 的 user 记录在 user.txt
-        CheckInDatasetPreprocessRun.extractUserData(); // 根据新的 user.txt 抽取 runInput 中的数据
 
-        // 2. parameter 生成
+
+        // 1. parameter 生成
         UserGroupGenerator.generateUserIDType(Constant.checkInFilePath);
         UserGroupGenerator.generateUserToType(Constant.checkInFilePath);
         GenerateGroupParametersForCheckIn.generateParameters();
 
-        // 3. 执行
+        // 2. 执行
         CheckInDataSetRun.runCheckIn();
 
     }

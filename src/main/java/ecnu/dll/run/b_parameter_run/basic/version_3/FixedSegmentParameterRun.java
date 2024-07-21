@@ -48,9 +48,10 @@ public class FixedSegmentParameterRun implements Runnable {
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
     private CountDownLatch latch;
+    private CountDownLatch innerLatch;
 
 
-    public FixedSegmentParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
+    public FixedSegmentParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -61,6 +62,7 @@ public class FixedSegmentParameterRun implements Runnable {
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
         this.latch = latch;
+        this.innerLatch = innerLatch;
         initialize();
     }
 
@@ -143,7 +145,6 @@ public class FixedSegmentParameterRun implements Runnable {
                 experimentResultList.add(tempResult);
 
 //                System.out.println("Start BudgetAbsorption...");
-                // todo
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
@@ -180,6 +181,7 @@ public class FixedSegmentParameterRun implements Runnable {
     @Override
     public void run() {
         runSegmentBatch();
+        this.innerLatch.countDown();
         this.latch.countDown();
     }
 

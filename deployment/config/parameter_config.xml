@@ -22,17 +22,17 @@
             <latitudeSplitSize>10</latitudeSplitSize>
         </fileHandle>
         <fileHandle name="tlns">
-            <userSize>20000</userSize>
+            <userSize>10000</userSize>
             <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
         <fileHandle name="sin">
-            <userSize>20000</userSize>
+            <userSize>10000</userSize>
             <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
         <fileHandle name="log">
-            <userSize>20000</userSize>
+            <userSize>10000</userSize>
             <locationTypeSize>2</locationTypeSize> <!-- 这里2代表2个状态，0或者1 -->
             <timeStampSize>10000</timeStampSize>
         </fileHandle>
@@ -102,7 +102,8 @@
             <dataType>java.lang.Integer</dataType>
 <!--            <single name="default">100</single>-->
 <!--            <single name="default">5135</single>-->
-            <single name="default">5000</single>
+            <single name="default">250</single>
+            <single name="case2">5000</single>
             <single name="case1">6591</single>
             <variance name="default">1000,2000,3000,4000,5000</variance>
             <variance name="case1">25,50,100,150,200</variance>
