@@ -33,7 +33,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = "\epsilon";
 % yLabelName = 'MRE';
-yLabelName = "log(MRE)";
+yLabelName = "log(AMRE)";
 
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 legend_names = ["BD";"BA";"PBD";"PBA"];

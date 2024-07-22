@@ -1,7 +1,7 @@
 function y = drawBudgetChange(input_basicPath, output_basicPath)
-dataset_dirs = ["1.trajectory_result", "2.checkIn_result", "3.tlns_result", "4.sin_result", "5.log_result"];
+dataset_dirs = ["1.trajectory_result", "2.check_in_result", "3.tlns_result", "4.sin_result", "5.log_result"];
 output_dataset_names = ["trajectory", "check_in", "tlns", "sin", "log"];
-default_window_size = 30;
+default_window_size = 120;
 i = 0;
 for dir_name = dataset_dirs
     i = i + 1;

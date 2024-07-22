@@ -2,13 +2,18 @@ function y = drawWindowSizeChangeForSingleDatasetExceptDynamic(basic_path, defau
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);
-y_bd = zeros(1,5);
-y_ba = zeros(1,5);
-y_pbd = zeros(1,5);
-y_pba = zeros(1,5);
+
+%y_bd = zeros(1,5);
+%y_ba = zeros(1,5);
+%y_pbd = zeros(1,5);
+%y_pba = zeros(1,5);
+
+data = zeros(5,5);  % each line contains x and all methods' y
+
 %y_pdbd = zeros(1,5);
 %y_pdba = zeros(1,5);
-x = zeros(1,5);
+
+%x = zeros(1,5);
 i = 0;
 for temp_name = dir_names
     temp_name = cell2mat(temp_name);
@@ -16,25 +21,37 @@ for temp_name = dir_names
     if temp_budget ~= default_budget
         continue;
     end
-    % disp(temp_budget);
     i = i + 1;
-    x(i) = temp_window_size;
+    %x(i) = temp_window_size;
+    data(i,1) = temp_window_size;
     data_path = fullfile(char(basic_path), temp_name, 'result.txt');
     temp_table = readtable(data_path);
 
-    y_bd(i) = log(temp_table(2,8).MRE);
-    y_ba(i) = log(temp_table(3,8).MRE);
-    y_pbd(i) = log(temp_table(4,8).MRE);
-    y_pba(i) = log(temp_table(5,8).MRE);
+    %y_bd(i) = log(temp_table(2,8).MRE);
+    %y_ba(i) = log(temp_table(3,8).MRE);
+    %y_pbd(i) = log(temp_table(4,8).MRE);
+    %y_pba(i) = log(temp_table(5,8).MRE);
+    data(i,2) = log(temp_table(2,8).MRE);
+    data(i,3) = log(temp_table(3,8).MRE);
+    data(i,4) = log(temp_table(4,8).MRE);
+    data(i,5) = log(temp_table(5,8).MRE);
+    
 %    y_pdbd(i) = log(temp_table(6,8).MRE);
 %    y_pdba(i) = log(temp_table(7,8).MRE);
 end
+
+data = sortrows(data);
+x = data(:,1);
+y_bd = data(:,2);
+y_ba = data(:,3);
+y_pbd = data(:,4);
+y_pba = data(:,5);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = "w";
 % yLabelName = 'MRE';
-yLabelName = "log(MRE)";
+yLabelName = "log(AMRE)";
 
 legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;
