@@ -199,6 +199,13 @@ public class BasicTest {
         System.out.println(result);
     }
 
+    @Test
+    public void fun18() {
+        File file = new File("abcd");
+        File fileB = new File(file, "haha/huohuo");
+        System.out.println(fileB.getAbsolutePath());
+    }
+
 
 
 

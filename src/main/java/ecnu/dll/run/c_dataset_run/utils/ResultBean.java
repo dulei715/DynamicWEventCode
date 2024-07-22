@@ -46,6 +46,10 @@ public class ResultBean implements BeanInterface<ResultBean> {
         return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D);
     }
 
+    public static ResultBean getInitializedBean(String modelBeanName, Double privacyBudget, Integer windowSize) {
+        return new ResultBean(modelBeanName, -1, 0, 0L, privacyBudget, windowSize, 0D, 0D);
+    }
+
     public String getName() {
         return name;
     }
