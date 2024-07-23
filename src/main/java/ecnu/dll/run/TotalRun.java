@@ -13,7 +13,6 @@ public class TotalRun {
      *
      *
      *
-     * 实验一：
      * 对比方案
      *      1. 基本方案
      *          (1) BD (统一为最小的 privacy budget 和最大的 window size)
@@ -27,15 +26,15 @@ public class TotalRun {
      *          (3) PDBD
      *          (4) PDBA
      *
-     *  实验二：
+     *  实验一：
      *      1. 控制 window size 不变，变换 privacy budget
      *      2. 控制 privacy budget 不变，变换 window size
      *
-     *  实验三(针对PBD和PBA --- BD和BA)：
+     *  实验二(针对PBD和PBA --- BD和BA)：
      *      1. 在假设只有两种 privacy 的前提下调整 user 的最小privacy budget占比
      *      2. 在假设只有两种 window size 的前提下调整 user的最大 window size 占比
      *
-     *  实验四(针对PDBD和PDBA --- BD和BA)
+     *  实验三(针对PDBD和PDBA --- BD和BA) （之后补充）
      *      1. 在假设每个用户 backward privacy 足够大backward window size足够小，且只有两种 forward privacy 的前提下调整最小 forward privacy 占比
      *      2. 在假设每个用户 backward privacy 足够大backward window size足够小，且 forward privacy 统一的前提下调整最大 forward window size 的占比
      *
