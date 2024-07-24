@@ -3,7 +3,7 @@ package ecnu.dll.utils.run;
 import cn.edu.dll.struct.pair.BasicPair;
 
 public class ParameterUtils {
-    public static BasicPair<Double, Integer> extractParameters(String dirName) {
+    public static BasicPair<Double, Integer> extractParametersAccordingFileDirName(String dirName) {
         String[] paramStringArray = dirName.split("_");
         Double privacyBudget = Double.valueOf(paramStringArray[1].replace("-", "."));
         Integer windowSize = Integer.valueOf(paramStringArray[3]);

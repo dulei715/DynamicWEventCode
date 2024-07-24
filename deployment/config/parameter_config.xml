@@ -70,6 +70,12 @@
                 <ratio name="default">0.2,0.2,0.2,0.2,0.2</ratio>
             </attribute>
         </version_2>
+        <attribute name="TwoFixedPrivacyBudget">
+            <value name="default">0.4,0.6</value>
+        </attribute>
+        <attribute name="TwoFixedWindowSize">
+            <value name="default">80,100</value>
+        </attribute>
     </candidateSet>
     <independentVariables>
         <attribute name="PrivacyBudget">
@@ -89,6 +95,11 @@
             <variance name="default">40,80,120,160,200</variance>
             <variance name="case1">10,20,30,40,50</variance>
             <variance name="1">40,80,120,160,200</variance>
+        </attribute>
+        <attribute name="TwoFixedUserRatio">
+            <dataType>java.lang.Double</dataType>
+            <single name="default">0.5</single> <!-- no use -->
+            <variance name="default">0.1,0.3,0.5,0.7,0.9</variance>
         </attribute>
         <attribute name="UserType">
             <!--for dynamic mechanisms-->

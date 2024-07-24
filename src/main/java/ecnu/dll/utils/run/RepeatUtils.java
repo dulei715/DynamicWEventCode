@@ -3,11 +3,9 @@ package ecnu.dll.utils.run;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.filter.file_filter.DirectoryFileFilter;
-import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.write.CSVWrite;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 import cn.edu.dll.struct.pair.BasicPair;
-import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import ecnu.dll.run.c_dataset_run.utils.ResultBean;
 import ecnu.dll.utils.filters.RoundDirectoryFilter;
@@ -33,7 +31,7 @@ public class RepeatUtils {
         File parentFile;
         FileFilter direcortryFileFilter = new DirectoryFileFilter();
         for (String parameterFileDir : parameterSet) {
-            paramsPair = ParameterUtils.extractParameters(parameterFileDir);
+            paramsPair = ParameterUtils.extractParametersAccordingFileDirName(parameterFileDir);
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(direcortryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
 //            System.out.println(title);
             combineBeanList = new ArrayList<>();

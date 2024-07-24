@@ -217,6 +217,18 @@ public class ConfigureUtils {
         return textTrim;
     }
 
+    public static Double[] getTwoFixedPrivacyBudget() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//attribute[@name='TwoFixedPrivacyBudget']/value[@name='default']").get(0);
+        String[] budgetStrArr = element.getTextTrim().split(",");
+        return new Double[]{Double.valueOf(budgetStrArr[0]), Double.valueOf(budgetStrArr[1])};
+    }
+    public static Integer[] getTwoFixedWindowSize() {
+        Document document = Constant.xmlConfigure.getDocument();
+        Element element = (Element) document.selectNodes("//attribute[@name='TwoFixedWindowSize']/value[@name='default']").get(0);
+        String[] budgetStrArr = element.getTextTrim().split(",");
+        return new Integer[]{Integer.valueOf(budgetStrArr[0]), Integer.valueOf(budgetStrArr[1])};
+    }
 
 
     public static void main0(String[] args) {
@@ -256,10 +268,17 @@ public class ConfigureUtils {
         MyPrint.showList(result);
     }
 
-    public static void main(String[] args) {
+    public static void main5(String[] args) {
 //        List[] result = getGenerationPrivacyBudgetList();
         List[] result = getGenerationWindowSizeList();
         MyPrint.showList(result[0]);
         MyPrint.showList(result[1]);
+    }
+
+    public static void main(String[] args) {
+        Double[] budgetArr = getTwoFixedPrivacyBudget();
+        MyPrint.showArray(budgetArr, "; ");
+        Integer[] wSizeArr = getTwoFixedWindowSize();
+        MyPrint.showArray(wSizeArr, "; ");
     }
 }

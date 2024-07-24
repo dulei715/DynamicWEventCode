@@ -3,6 +3,7 @@ package ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parame
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.utils.UserGroupUtils;
 import ecnu.dll.utils.io.ListReadUtils;
 import ecnu.dll.utils.io.ListWriteUtils;
 
@@ -14,10 +15,11 @@ public class UserGroupGenerator {
     public static void generateUserIDType(String basicPath) {
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "userTypeID.txt");
         Integer userTypeSize = ConfigureUtils.getDefaultUserTypeSize();
-        List<String> userTypeStringList = new ArrayList<>();
-        for (int i = 0; i < userTypeSize; i++) {
-            userTypeStringList.add(String.valueOf(i));
-        }
+//        List<String> userTypeStringList = new ArrayList<>();
+        List<String> userTypeStringList = UserGroupUtils.getUserIDType(userTypeSize);
+//        for (int i = 0; i < userTypeSize; i++) {
+//            userTypeStringList.add(String.valueOf(i));
+//        }
         ListWriteUtils.writeList(outputPath, userTypeStringList, ",");
     }
     public static void generateUserToType(String basicPath) {
