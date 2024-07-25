@@ -28,12 +28,7 @@ public class CheckInInternalRun {
         // 2. 执行
         CheckInInternalDataSetRun.runInternalCheckIn();
 
-        // 3. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+
 
     }
 }

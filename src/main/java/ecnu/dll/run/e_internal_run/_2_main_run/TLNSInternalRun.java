@@ -33,11 +33,5 @@ public class TLNSInternalRun {
         // 3. 执行
         TLNSInternalDataSetRun.runInternalTLNS();
 
-        // 4. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
     }
 }

@@ -34,11 +34,11 @@ public class SinInternalRun {
         // 3. 执行
         SinInternalDataSetRun.runInternalSin();
 
-        // 4. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+//        // 4. 后处理
+//        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
+//        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
+//        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
+//        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
+//        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
     }
 }

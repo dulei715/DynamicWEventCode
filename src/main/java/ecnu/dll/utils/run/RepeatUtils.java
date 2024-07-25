@@ -21,7 +21,7 @@ public class RepeatUtils {
 //            , "PDBD", "PDBA"
     };
 
-    private static void combine(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
+    private static void combineMainProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
         BeanInterface<ResultBean> modelBean = new ResultBean();
@@ -29,10 +29,46 @@ public class RepeatUtils {
         String inputFilePath, outputFilePath, title;
         CSVWrite csvWrite = new CSVWrite();
         File parentFile;
-        FileFilter direcortryFileFilter = new DirectoryFileFilter();
+        FileFilter directoryFileFilter = new DirectoryFileFilter();
         for (String parameterFileDir : parameterSet) {
             paramsPair = ParameterUtils.extractParametersAccordingFileDirName(parameterFileDir);
-            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(direcortryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
+            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
+//            System.out.println(title);
+            combineBeanList = new ArrayList<>();
+            for (String beanName : nameStringArray) {
+                tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
+                combineBeanList.add(tempBean);
+            }
+            for (File inputMethodDir : inputMethodDirFileList) {
+                inputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, inputMethodDir, parameterFileDir, "result.txt");
+                updateBeanList = CSVReadEnhanced.readDataToBeanList(inputFilePath, modelBean);
+                update(combineBeanList, updateBeanList);
+            }
+            average(combineBeanList, inputMethodDirFileList.size());
+            parentFile = new File(outputMethodDirFile, parameterFileDir);
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
+            outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, parentFile.getAbsolutePath(), "result.txt");
+            csvWrite.startWriting(outputFilePath);
+            csvWrite.writeOneLine(title);
+            csvWrite.writeBeanList(combineBeanList);
+            csvWrite.endWriting();
+        }
+
+    }
+    private static void combineInternalProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
+        List<ResultBean> combineBeanList = null, updateBeanList;
+        ResultBean tempBean;
+        BeanInterface<ResultBean> modelBean = new ResultBean();
+        BasicPair<Double, Integer> paramsPair;
+        String inputFilePath, outputFilePath, title;
+        CSVWrite csvWrite = new CSVWrite();
+        File parentFile;
+        FileFilter directoryFileFilter = new DirectoryFileFilter();
+        for (String parameterFileDir : parameterSet) {
+            paramsPair = ParameterUtils.extractParametersAccordingFileDirName(parameterFileDir);
+            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
 //            System.out.println(title);
             combineBeanList = new ArrayList<>();
             for (String beanName : nameStringArray) {
@@ -116,7 +152,7 @@ public class RepeatUtils {
 //        System.out.println(outputDirFile);
 //        MyPrint.showList(datasetRoundList);
 //        MyPrint.showCollection(outputParamsFileNameSet);
-        combine(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
+        combineMainProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
     }
 
     public static void main(String[] args) {

@@ -27,11 +27,11 @@ public class TrajectoryMainRun {
         // 2. 执行
         TrajectoryDataSetRun.runTrajectory();
 
-        // 3. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "extract_result");
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+//        // 3. 后处理
+//        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
+//        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "extract_result");
+//        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
+//        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
+//        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
     }
 }

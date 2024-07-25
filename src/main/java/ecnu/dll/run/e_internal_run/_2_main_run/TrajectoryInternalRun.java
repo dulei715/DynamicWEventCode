@@ -31,11 +31,11 @@ public class TrajectoryInternalRun {
         // 2. 执行
         TrajectoryInternalDataSetRun.runInternalTrajectory();
 
-        // 3. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+//        // 3. 后处理
+//        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, rawDirName);
+//        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, extractDirName);
+//        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
+//        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
+//        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
     }
 }

@@ -62,7 +62,11 @@ public class PostProcessUtils {
         String title = CSVReadEnhanced.readDataTitle(files[0].getAbsolutePath());
         List<String> dataStringList;
         for (File file : files) {
+            // here
             dataStringList = CSVReadEnhanced.readDataLinesWithoutTitle(file.getAbsolutePath());
+            if (dataStringList.isEmpty()) {
+                continue;
+            }
             tempList = new ArrayList<>();
             for (String str : dataStringList) {
 //                if (str.contains("30.0")) {
@@ -113,6 +117,7 @@ public class PostProcessUtils {
             }
             segmentInputDirs = parametersChangeInputFile.listFiles(directoryFileFilter);
             for (File segmentInputDir : segmentInputDirs) {
+                // here
                 combineResult(segmentInputDir.getAbsolutePath());
                 tempSegmentOutputName = segmentInputDir.getName();
                 tempOutputFile = new File(tempParametersChangeOutputFile, tempSegmentOutputName+".txt");
