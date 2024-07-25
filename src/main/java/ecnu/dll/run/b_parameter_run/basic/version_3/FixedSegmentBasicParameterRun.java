@@ -9,7 +9,6 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._1_WEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
-import ecnu.dll.run.a_mechanism_run._3_PersonalizedDynamicEventMechanismRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.utils.ParameterGroupInitializeUtils;
 import ecnu.dll.run.c_dataset_run.utils.DatasetParameterUtils;
 import ecnu.dll.schemes._basic_struct.Mechanism;
@@ -30,7 +29,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentParameterTotalMechanismRun implements Runnable {
+public class FixedSegmentBasicParameterRun implements Runnable {
     private String basicPath;
     private String dataTypeFileName;
     private Integer singleBatchSize;
@@ -48,9 +47,10 @@ public class FixedSegmentParameterTotalMechanismRun implements Runnable {
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
     private CountDownLatch latch;
+    private CountDownLatch innerLatch;
 
 
-    public FixedSegmentParameterTotalMechanismRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
+    public FixedSegmentBasicParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -61,6 +61,7 @@ public class FixedSegmentParameterTotalMechanismRun implements Runnable {
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
         this.latch = latch;
+        this.innerLatch = innerLatch;
         initialize();
     }
 
@@ -143,7 +144,6 @@ public class FixedSegmentParameterTotalMechanismRun implements Runnable {
                 experimentResultList.add(tempResult);
 
 //                System.out.println("Start BudgetAbsorption...");
-                // todo
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
@@ -155,13 +155,11 @@ public class FixedSegmentParameterTotalMechanismRun implements Runnable {
                 experimentResultList.add(tempResult);
 
 
-//                System.out.println("Start DynamicPersonalizedBudgetDistribution...");
-                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-                experimentResultList.add(tempResult);
-
-//                System.out.println("Start DynamicPersonalizedBudgetAbsorption...");
-                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-                experimentResultList.add(tempResult);
+//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+//                experimentResultList.add(tempResult);
+//
+//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+//                experimentResultList.add(tempResult);
 
                 // write result
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
@@ -182,6 +180,7 @@ public class FixedSegmentParameterTotalMechanismRun implements Runnable {
     @Override
     public void run() {
         runSegmentBatch();
+        this.innerLatch.countDown();
         this.latch.countDown();
     }
 

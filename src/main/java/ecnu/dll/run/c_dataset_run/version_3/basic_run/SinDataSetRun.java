@@ -1,4 +1,4 @@
-package ecnu.dll.run.c_dataset_run.version_3;
+package ecnu.dll.run.c_dataset_run.version_3.basic_run;
 
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;

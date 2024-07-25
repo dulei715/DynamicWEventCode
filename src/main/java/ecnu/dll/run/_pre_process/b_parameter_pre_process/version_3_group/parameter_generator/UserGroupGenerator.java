@@ -15,11 +15,7 @@ public class UserGroupGenerator {
     public static void generateUserIDType(String basicPath) {
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "userTypeID.txt");
         Integer userTypeSize = ConfigureUtils.getDefaultUserTypeSize();
-//        List<String> userTypeStringList = new ArrayList<>();
         List<String> userTypeStringList = UserGroupUtils.getUserIDType(userTypeSize);
-//        for (int i = 0; i < userTypeSize; i++) {
-//            userTypeStringList.add(String.valueOf(i));
-//        }
         ListWriteUtils.writeList(outputPath, userTypeStringList, ",");
     }
     public static void generateUserToType(String basicPath) {
@@ -27,22 +23,7 @@ public class UserGroupGenerator {
         String userTypeIDInputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "userTypeID.txt");
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "user_to_type.txt");
 
-        String tempOutputString;
-        List<String> userIDDataList = ListReadUtils.readAllDataList(userIDInputPath, ",");
-        List<String> userTypeIDDataList = ListReadUtils.readAllDataList(userTypeIDInputPath, ",");
-        Iterator<String> userIDIterator = userIDDataList.iterator();
-        Integer groupElementSize = (int)Math.ceil(userIDDataList.size() * 1.0 / userTypeIDDataList.size());
-        Integer groupID = 0;
-        String tempUserID;
-        List<String> userToTypeData = new ArrayList<>();
-        while (userIDIterator.hasNext()) {
-            for (int i = 0; i < groupElementSize && userIDIterator.hasNext(); i++) {
-                tempUserID = userIDIterator.next();
-                tempOutputString = StringUtil.join(",", tempUserID, groupID);
-                userToTypeData.add(tempOutputString);
-            }
-            ++groupID;
-        }
+        List<String> userToTypeData = UserGroupUtils.getUserToTypeInAverage(userIDInputPath, userTypeIDInputPath);
         ListWriteUtils.writeList(outputPath, userToTypeData, ",");
     }
 }

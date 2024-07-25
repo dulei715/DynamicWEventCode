@@ -210,6 +210,18 @@ public class ConfigureUtils {
         return result;
     }
 
+    public static List<Double> getIndependentUserRatioList(String varianceName) {
+        Document document = Constant.xmlConfigure.getDocument();;
+        Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='TwoFixedUserRatio']/variance[@name='" + varianceName + "']").get(0);
+        String textTrim = element.getTextTrim();
+        String[] strArr = textTrim.split(",");
+        List<Double> result = new ArrayList<>(strArr.length);
+        for (String str : strArr) {
+            result.add(Double.valueOf(str));
+        }
+        return result;
+    }
+
     public static String getFileHandleInfo(String datasetName, String subTagName) {
         Document document = Constant.xmlConfigure.getDocument();
         Element element = (Element) document.selectNodes("//datasets/fileHandle[@name='" + datasetName + "']/" + subTagName).get(0);

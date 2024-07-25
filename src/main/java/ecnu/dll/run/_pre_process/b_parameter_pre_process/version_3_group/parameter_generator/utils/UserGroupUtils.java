@@ -6,7 +6,6 @@ import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.utils.io.ListReadUtils;
-import ecnu.dll.utils.io.ListWriteUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +20,14 @@ public class UserGroupUtils {
         return userTypeStringList;
     }
 
+    public static List<String> getUserIDTypeRatio(List<Double> typeRatioList) {
+        List<String> userIDTypeRatioList = new ArrayList<>();
+        for (int i = 0; i < typeRatioList.size(); i++) {
+            userIDTypeRatioList.add(String.format("%d,%.2f", i, typeRatioList.get(i)));
+        }
+        return userIDTypeRatioList;
+    }
+
 
     public static List<String> getUserToTypeInAverage(String userIDInputPath, String userTypeIDInputPath) {
 
@@ -29,24 +36,23 @@ public class UserGroupUtils {
         List<String> userTypeIDDataList = ListReadUtils.readAllDataList(userTypeIDInputPath, ",");
         Iterator<String> userIDIterator = userIDDataList.iterator();
         Integer groupElementSize = (int)Math.ceil(userIDDataList.size() * 1.0 / userTypeIDDataList.size());
-        Integer groupID = 0;
         String tempUserID;
         List<String> userToTypeData = new ArrayList<>();
-        while (userIDIterator.hasNext()) {
+
+        for (String typeStr : userTypeIDDataList) {
             for (int i = 0; i < groupElementSize && userIDIterator.hasNext(); i++) {
                 tempUserID = userIDIterator.next();
-                tempOutputString = StringUtil.join(",", tempUserID, groupID);
+                tempOutputString = StringUtil.join(",", tempUserID, typeStr);
                 userToTypeData.add(tempOutputString);
             }
-            ++groupID;
         }
         return userToTypeData;
     }
-    public static List<String> getUserToTypeByRatio(String userIDInputPath, String userTypeIDRatioInputPath) {
+
+
+    public static List<String> getUserToTypeByRatio(List<String> userIDDataList, List<String> userTypeIDRatioDataList) {
 
         String tempOutputString;
-        List<String> userIDDataList = ListReadUtils.readAllDataList(userIDInputPath, ",");
-        List<String> userTypeIDRatioDataList = ListReadUtils.readAllDataList(userTypeIDRatioInputPath, ",");
         Iterator<String> userIDIterator = userIDDataList.iterator();
         Integer tempGroupElementSize, userSize = userIDDataList.size();
         String tempUserID, tempTypeID;
@@ -70,6 +76,12 @@ public class UserGroupUtils {
         }
         return userToTypeData;
     }
+    public static List<String> getUserToTypeByRatio(String userIDInputPath, String userTypeIDRatioInputPath) {
+
+        List<String> userIDDataList = ListReadUtils.readAllDataList(userIDInputPath, ",");
+        List<String> userTypeIDRatioDataList = ListReadUtils.readAllDataList(userTypeIDRatioInputPath, ",");
+        return getUserToTypeByRatio(userIDDataList, userTypeIDRatioDataList);
+    }
 
     public static void main(String[] args) {
         String userIDInputPath = StringUtil.join(ConstantValues.FILE_SPLIT,
@@ -77,6 +89,15 @@ public class UserGroupUtils {
         String userTypeIDRatioInputPath = StringUtil.join(ConstantValues.FILE_SPLIT,
                 Constant.basicDatasetPath, "..", "test", "userTypeIDRatio.txt");
         List<String> result = getUserToTypeByRatio(userIDInputPath, userTypeIDRatioInputPath);
+        MyPrint.showList(result, ConstantValues.LINE_SPLIT);
+    }
+
+    public static void main2(String[] args) {
+        String userIDInputPath = StringUtil.join(ConstantValues.FILE_SPLIT,
+                Constant.basicDatasetPath, "..", "test", "user.txt");
+        String userTypeIDRatioInputPath = StringUtil.join(ConstantValues.FILE_SPLIT,
+                Constant.basicDatasetPath, "..", "test", "userTypeID.txt");
+        List<String> result = getUserToTypeInAverage(userIDInputPath, userTypeIDRatioInputPath);
         MyPrint.showList(result, ConstantValues.LINE_SPLIT);
     }
 

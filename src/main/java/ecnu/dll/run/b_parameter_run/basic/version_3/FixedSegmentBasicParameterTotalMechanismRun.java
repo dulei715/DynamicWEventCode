@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentParameterRun implements Runnable {
+public class FixedSegmentBasicParameterTotalMechanismRun implements Runnable {
     private String basicPath;
     private String dataTypeFileName;
     private Integer singleBatchSize;
@@ -48,10 +48,9 @@ public class FixedSegmentParameterRun implements Runnable {
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
     private CountDownLatch latch;
-    private CountDownLatch innerLatch;
 
 
-    public FixedSegmentParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
+    public FixedSegmentBasicParameterTotalMechanismRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -62,7 +61,6 @@ public class FixedSegmentParameterRun implements Runnable {
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
         this.latch = latch;
-        this.innerLatch = innerLatch;
         initialize();
     }
 
@@ -145,6 +143,7 @@ public class FixedSegmentParameterRun implements Runnable {
                 experimentResultList.add(tempResult);
 
 //                System.out.println("Start BudgetAbsorption...");
+                // todo
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
@@ -156,11 +155,13 @@ public class FixedSegmentParameterRun implements Runnable {
                 experimentResultList.add(tempResult);
 
 
-//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-//                experimentResultList.add(tempResult);
-//
-//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-//                experimentResultList.add(tempResult);
+//                System.out.println("Start DynamicPersonalizedBudgetDistribution...");
+                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+                experimentResultList.add(tempResult);
+
+//                System.out.println("Start DynamicPersonalizedBudgetAbsorption...");
+                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+                experimentResultList.add(tempResult);
 
                 // write result
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
@@ -181,7 +182,6 @@ public class FixedSegmentParameterRun implements Runnable {
     @Override
     public void run() {
         runSegmentBatch();
-        this.innerLatch.countDown();
         this.latch.countDown();
     }
 
