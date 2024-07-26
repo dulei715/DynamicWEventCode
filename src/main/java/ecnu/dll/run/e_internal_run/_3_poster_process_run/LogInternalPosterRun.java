@@ -8,13 +8,13 @@ import ecnu.dll.utils.CatchSignal;
 import ecnu.dll.utils.run.CombineForEachRoundInternal;
 import ecnu.dll.utils.run.RepeatUtils;
 
-public class TLNSInternalPosterRun {
+public class LogInternalPosterRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_internal_result";
+        String datasetPath = Constant.logFilePath;
+        String finalResultDirName = "5.log_internal_result";
         String rawDirName = "group_output_internal";
         String extractDirName = "extract_internal_result";
         String basicOutputFileString = "../1.result_internal";
@@ -29,7 +29,6 @@ public class TLNSInternalPosterRun {
             PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
             PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
         }
-
 
         // 5. 合并
         CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);

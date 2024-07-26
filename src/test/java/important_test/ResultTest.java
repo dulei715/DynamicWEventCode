@@ -42,7 +42,7 @@ public class ResultTest {
         Double originalValue, improveValue;
         for (File dirFile : fileDirFile) {
             dirName = dirFile.getName();
-            epsilonList.add(ParameterUtils.extractParametersAccordingFileDirName(dirName).getKey());
+            epsilonList.add(ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(dirName).getKey());
             resultFile = new File(dirFile, "result.txt");
             tempResult = CSVReadEnhanced.readDataToBeanList(resultFile.getAbsolutePath(), bean);
             improveBean = searchBeanByName(tempResult, improveMethodName).get(0);
@@ -73,7 +73,7 @@ public class ResultTest {
         Double originalValue, improveValue;
         for (File dirFile : fileDirFile) {
             dirName = dirFile.getName();
-            windowSizeList.add(ParameterUtils.extractParametersAccordingFileDirName(dirName).getValue());
+            windowSizeList.add(ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(dirName).getValue());
             resultFile = new File(dirFile, "result.txt");
             tempResult = CSVReadEnhanced.readDataToBeanList(resultFile.getAbsolutePath(), bean);
             improveBean = searchBeanByName(tempResult, improveMethodName).get(0);
@@ -116,7 +116,7 @@ public class ResultTest {
         Integer tempWindowSize;
         for (File innerDir : totalDirFileArray) {
             innerDirName = innerDir.getName();
-            tempPair = ParameterUtils.extractParametersAccordingFileDirName(innerDirName);
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
             tempBudget = tempPair.getKey();
             tempWindowSize = tempPair.getValue();
             if (tempWindowSize.equals(defaultWindowSize)) {
@@ -159,7 +159,7 @@ public class ResultTest {
         Integer tempWindowSize;
         for (File innerDir : totalDirFileArray) {
             innerDirName = innerDir.getName();
-            tempPair = ParameterUtils.extractParametersAccordingFileDirName(innerDirName);
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
             tempBudget = tempPair.getKey();
             tempWindowSize = tempPair.getValue();
             if (tempBudget.equals(defaultEpsilon)) {

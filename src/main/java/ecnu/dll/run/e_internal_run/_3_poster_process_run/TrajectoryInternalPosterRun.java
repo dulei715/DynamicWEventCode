@@ -8,13 +8,14 @@ import ecnu.dll.utils.CatchSignal;
 import ecnu.dll.utils.run.CombineForEachRoundInternal;
 import ecnu.dll.utils.run.RepeatUtils;
 
-public class TLNSInternalPosterRun {
+public class TrajectoryInternalPosterRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_internal_result";
+        String datasetPath = Constant.trajectoriesFilePath;
+        String finalResultDirName = "1.trajectory_internal_result";
+
         String rawDirName = "group_output_internal";
         String extractDirName = "extract_internal_result";
         String basicOutputFileString = "../1.result_internal";
@@ -22,7 +23,7 @@ public class TLNSInternalPosterRun {
         String roundFormat = "round_%d_internal";
 
         for (int i = 1; i <= 10; i++) {
-            // 4. 后处理
+            // 3. 后处理
             String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), rawDirName);
             String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), extractDirName);
             String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), finalResultDirName);
@@ -30,8 +31,7 @@ public class TLNSInternalPosterRun {
             PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
         }
 
-
-        // 5. 合并
+        // 4. 合并
         CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);
         RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath);
     }

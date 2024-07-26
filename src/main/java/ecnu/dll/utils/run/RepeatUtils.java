@@ -6,6 +6,8 @@ import cn.edu.dll.filter.file_filter.DirectoryFileFilter;
 import cn.edu.dll.io.write.CSVWrite;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 import cn.edu.dll.struct.pair.BasicPair;
+import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import ecnu.dll.run.c_dataset_run.utils.ResultBean;
 import ecnu.dll.utils.filters.RoundDirectoryFilter;
@@ -31,7 +33,7 @@ public class RepeatUtils {
         File parentFile;
         FileFilter directoryFileFilter = new DirectoryFileFilter();
         for (String parameterFileDir : parameterSet) {
-            paramsPair = ParameterUtils.extractParametersAccordingFileDirName(parameterFileDir);
+            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
 //            System.out.println(title);
             combineBeanList = new ArrayList<>();
@@ -66,13 +68,15 @@ public class RepeatUtils {
         CSVWrite csvWrite = new CSVWrite();
         File parentFile;
         FileFilter directoryFileFilter = new DirectoryFileFilter();
+        Double[] twoFixedPrivacyBudget = ConfigureUtils.getTwoFixedPrivacyBudget();
+        Integer[] twoFixedWindowSize = ConfigureUtils.getTwoFixedWindowSize();
         for (String parameterFileDir : parameterSet) {
-            paramsPair = ParameterUtils.extractParametersAccordingFileDirName(parameterFileDir);
+//            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
 //            System.out.println(title);
             combineBeanList = new ArrayList<>();
             for (String beanName : nameStringArray) {
-                tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
+                tempBean = ResultBean.getInitializedBean(beanName, twoFixedPrivacyBudget[1], twoFixedWindowSize[1]);
                 combineBeanList.add(tempBean);
             }
             for (File inputMethodDir : inputMethodDirFileList) {
@@ -109,34 +113,17 @@ public class RepeatUtils {
         }
     }
 
-    /**
-     * input dir:
-     *      ${input_dir}/round_i/k.${dataset_name}/param_dir/result.txt
-     * output dir:
-     *      ${output_dir}/k.${dataset_name}/param_dir/result.txt
-     * @param inputDir
-     * @param outputDir
-     */
-    public static void combineMultipleRound(String inputDir, String outputDir) {
-        FileFilter directoryFilter = new DirectoryFileFilter();
-        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
-        File inputDirFile = new File(inputDir);
-        File outputDirFile = new File(outputDir);
+    private static File fillRoundAndParameterInfoAndGetOutputMethodDirFile(String outputDir, File inputDirFile, FileFilter roundDirectoryFileFilter, File outputDirFile, Set<String> outputParamsFileNameSet, List<File> datasetRoundList) {
         File outputMethodDirFile;
+        File[] roundDirs = inputDirFile.listFiles(roundDirectoryFileFilter);
+        File tempInputMethodDirFile = OtherUtils.getSubDatasetNameFile(roundDirs[0]);
+        String methodName = tempInputMethodDirFile.getName();
+        outputMethodDirFile = new File(outputDir, methodName);
         if (!outputDirFile.exists()) {
             outputDirFile.mkdirs();
         }
-//        System.out.println(inputDirFile.getAbsolutePath());
-//        File[] roundDirs = inputDirFile.listFiles(directoryFilter);
-        File[] roundDirs = inputDirFile.listFiles(roundDirectoryFileFilter);
-//        MyPrint.showArray(roundDirs, "; ");
+        FileFilter directoryFilter = new DirectoryFileFilter();
 
-        Set<String> outputParamsFileNameSet = new HashSet<>();
-        List<File> datasetRoundList = new ArrayList<>();
-        File tempInputMethodDirFile = OtherUtils.getSubDatasetNameFile(roundDirs[0]);
-
-        String methodName = tempInputMethodDirFile.getName();
-        outputMethodDirFile = new File(outputDir, methodName);
         if (!outputMethodDirFile.exists()) {
             outputMethodDirFile.mkdirs();
         }
@@ -149,17 +136,46 @@ public class RepeatUtils {
             File methodDirFile =  OtherUtils.getSubDatasetNameFile(roundDir);roundDir.listFiles(directoryFilter);
             datasetRoundList.add(methodDirFile);
         }
-//        System.out.println(outputDirFile);
-//        MyPrint.showList(datasetRoundList);
-//        MyPrint.showCollection(outputParamsFileNameSet);
+        return outputMethodDirFile;
+    }
+
+    /**
+     * input dir:
+     *      ${input_dir}/round_i/k.${dataset_name}/param_dir/result.txt
+     * output dir:
+     *      ${output_dir}/k.${dataset_name}/param_dir/result.txt
+     * @param inputDir
+     * @param outputDir
+     */
+    public static void combineMultipleMainRound(String inputDir, String outputDir) {
+        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
+        File inputDirFile = new File(inputDir);
+        File outputDirFile = new File(outputDir);
+        File outputMethodDirFile;
+        List<File> datasetRoundList = new ArrayList<>();
+        Set<String> outputParamsFileNameSet = new HashSet<>();
+        outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList);
+
         combineMainProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
+    }
+    public static void combineMultipleInternalRound(String inputDir, String outputDir) {
+        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
+        File inputDirFile = new File(inputDir);
+        File outputDirFile = new File(outputDir);
+        File outputMethodDirFile;
+        List<File> datasetRoundList = new ArrayList<>();
+        Set<String> outputParamsFileNameSet = new HashSet<>();
+        outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList);
+
+        combineInternalProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
     }
 
     public static void main(String[] args) {
-        String inputDir = args[0];
-        String outputDir = args[1];
-//        String inputDir = Constant.sinFilePath;
-//        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result");
-        combineMultipleRound(inputDir, outputDir);
+//        String inputDir = args[0];
+//        String outputDir = args[1];
+        String inputDir = Constant.tlnsFilePath;
+        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result_internal");
+//        combineMultipleMainRound(inputDir, outputDir);
+        combineMultipleInternalRound(inputDir, outputDir);
     }
 }

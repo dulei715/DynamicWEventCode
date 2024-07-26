@@ -71,10 +71,10 @@
             </attribute>
         </version_2>
         <attribute name="TwoFixedPrivacyBudget">
-            <value name="default">0.4,0.6</value>
+            <value name="default">1.0,0.6</value>
         </attribute>
         <attribute name="TwoFixedWindowSize">
-            <value name="default">80,100</value>
+            <value name="default">40,120</value>
         </attribute>
     </candidateSet>
     <independentVariables>

@@ -6,11 +6,9 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
 
 public class CombineForEachRoundInternal {
-    public static void main(String[] args) {
-//        String datasetBasicPath = args[0];
-//        String finalResultDirName = args[1];
-        String datasetBasicPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_internal_result";
+    public static void combineAllRoundInternal(String datasetBasicPath, String finalResultDirName) {
+//        String datasetBasicPath = Constant.tlnsFilePath;
+//        String finalResultDirName = "3.tlns_internal_result";
 
         String roundPattern = "round_%d_internal";
         String outputDir = "group_output_internal";

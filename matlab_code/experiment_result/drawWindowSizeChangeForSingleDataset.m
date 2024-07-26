@@ -12,7 +12,7 @@ x = zeros(1,5);
 i = 0;
 for temp_name = dir_names
     temp_name = cell2mat(temp_name);
-    [temp_budget, temp_window_size] = extractParameterFromDirName(temp_name);
+    [temp_budget, temp_window_size] = extractBudgetAndWSizeFromDirName(temp_name);
     if temp_budget ~= default_budget
         continue;
     end
