@@ -53,8 +53,8 @@ xLabelName = "user ratio";
 % yLabelName = 'MRE';
 yLabelName = "log(AMRE)";
 
-%legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
-legend_names = ["PBD";"PBA"];
+legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
+%legend_names = ["PBD";"PBA"];
 figure_MarkerSize = 20;
 figure_FontSize = 28;
 figure_FontSize_X = 28;
@@ -65,8 +65,8 @@ hold on;
 
 xlabel(xLabelName);
 %yyaxis left
-%plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-%plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pbd, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pba, 'go--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 %plot(x, y_pdbd, 'cd-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
@@ -87,8 +87,8 @@ set(gca,'FontName','Times New Roman' ,'FontSize',figure_FontSize);
 set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Times New Roman');
 set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
-%h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');
-h = legend(legend_names(1), legend_names(2), 'Location','Best');
+h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');
+%h = legend(legend_names(1), legend_names(2), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
 legend('off');
 %export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
