@@ -9,8 +9,6 @@ basic_path="../0.dataset/$dataset_dir_name";
 for i in {1..10}; do
   java ${totalMem} ${maxMem} -cp DynamicWEventCode-1.0-DMDP-jar-with-dependencies.jar ecnu.dll.run.e_internal_run._2_main_run.${main_java_file_name}InternalRun
   mkdir -p ${basic_path}/round_${i}_internal
-#  mv ${basic_path}/basic_info/userTypeID.txt ${basic_path}/round_${i}_internal/basic_info &
-#  mv ${basic_path}/basic_info/user_to_type.txt ${basic_path}/round_${i}_internal/basic_info &
   mv ${basic_path}/group_generated_parameters ${basic_path}/round_${i}_internal &
   mv ${basic_path}/group_output_internal ${basic_path}/round_${i}_internal &
   mv ${basic_path}/extract_internal_result ${basic_path}/round_${i}_internal &

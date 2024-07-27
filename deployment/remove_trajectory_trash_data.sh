@@ -10,3 +10,4 @@ rm -rf ${basic_path}/group_generated_parameters &
 rm -rf ${basic_path}/group_output &
 rm -rf ${basic_path}/extract_result &
 rm -rf ${basic_path}/${final_output_dir_name} &
+rm -rf ${basic_path}/group_output_internal &
