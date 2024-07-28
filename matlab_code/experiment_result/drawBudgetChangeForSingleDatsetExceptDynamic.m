@@ -31,7 +31,8 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "\epsilon";
+%xLabelName = "\epsilon";
+xLabelName = "$\mathcal{E}$";
 % yLabelName = 'MRE';
 yLabelName = "log(AMRE)";
 
@@ -45,7 +46,7 @@ figure_FontSize_Y = 28;
 fig = figure;
 hold on;
 
-xlabel(xLabelName);
+xlabel(xLabelName, 'Interpreter', 'latex');
 %yyaxis left
 plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
@@ -60,6 +61,7 @@ xlim([round(x(1),1) x(length(x))]);
 set(gca,'XTick',round(x,1));
 
 %figure_FontSize = 18;
+%set(get(gca,'XLabel'),'FontSize',figure_FontSize,'FontName','Times New Roman');
 set(get(gca,'XLabel'),'FontSize',figure_FontSize,'FontName','Times New Roman');
 set(get(gca,'YLabel'),'FontSize',figure_FontSize,'FontName','Times New Roman');
 
@@ -67,8 +69,8 @@ set(gca,'FontName','Times New Roman' ,'FontSize',figure_FontSize);
 %set(findobj('FontSize',10),'FontSize',figure_FontSize);
 
 
-set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Times New Roman');
-set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
+set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Time New Roman');
+%set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
 %h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');

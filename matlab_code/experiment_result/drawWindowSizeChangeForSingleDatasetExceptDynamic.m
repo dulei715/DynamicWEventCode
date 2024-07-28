@@ -49,7 +49,7 @@ y_pba = data(:,5);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "w";
+xLabelName = "$w$";
 % yLabelName = 'MRE';
 yLabelName = "log(AMRE)";
 
@@ -62,7 +62,7 @@ figure_FontSize_Y = 28;
 fig = figure;
 hold on;
 
-xlabel(xLabelName);
+xlabel(xLabelName,'Interpreter', 'latex');
 %yyaxis left
 plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
@@ -85,7 +85,7 @@ set(gca,'FontName','Times New Roman' ,'FontSize',figure_FontSize);
 
 
 set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Times New Roman');
-set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
+%set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
 %h = legend('SubGeoI_2', 'MDSW','HUEM','DAM','DAMShrink', 'SubGeoI_1', 'RAM','Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), 'Location','Best');

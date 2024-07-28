@@ -49,7 +49,7 @@ y_pba = data(:,5);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "user ratio";
+xLabelName = "user ratio of $\mathcal{E}_k$=1.0";
 % yLabelName = 'MRE';
 yLabelName = "log(AMRE)";
 
@@ -63,7 +63,7 @@ figure_FontSize_Y = 28;
 fig = figure;
 hold on;
 
-xlabel(xLabelName);
+xlabel(xLabelName, 'Interpreter', 'latex');
 %yyaxis left
 plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
