@@ -1,6 +1,6 @@
 package others.signal_test;
 
-import others.signal_handle.NoTerminalHandler;
+import cn.edu.dll.signal.signal_handle.NoTerminalHandler;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 

@@ -1,6 +1,6 @@
 package ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_pre_run;
 
-import ecnu.dll.utils.CatchSignal;
+import cn.edu.dll.signal.CatchSignal;
 
 import static ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_generator.ParameterGenerator.generateParametersForCheckIn;
 

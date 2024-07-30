@@ -1,11 +1,10 @@
 package ecnu.dll.run.c_dataset_run.version_1_2;
 
-import cn.edu.dll.configure.XMLConfigure;
+import cn.edu.dll.signal.CatchSignal;
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run.c_dataset_run.version_1_2.version_utils.DatasetRunUtils;
-import ecnu.dll.utils.CatchSignal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

@@ -2,12 +2,12 @@ package ecnu.dll.run.c_dataset_run.version_3.internal_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.signal.CatchSignal;
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
 import ecnu.dll.run.c_dataset_run.version_3.version_utils.DatasetSegmentRunUtils;
-import ecnu.dll.utils.CatchSignal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

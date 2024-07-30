@@ -1,10 +1,10 @@
 package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
+import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.function.TLNSFunction;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.synthetic_dataset.utils.SyntheticGenerationUtils;
-import ecnu.dll.utils.CatchSignal;
 
 public class TLNSDatasetPreprocessRun {
     private static void generateProbabilityParameters() {

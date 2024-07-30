@@ -1,9 +1,9 @@
 package ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_pre_run;
 
+import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.parameter_generator.DiscreteParameterGenerator;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
-import ecnu.dll.utils.CatchSignal;
 
 public class GenerateGroupParametersForTrajectory {
     public static void generateParameters() {

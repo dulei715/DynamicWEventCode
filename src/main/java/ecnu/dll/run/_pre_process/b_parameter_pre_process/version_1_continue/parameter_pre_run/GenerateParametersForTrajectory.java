@@ -1,7 +1,7 @@
 package ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_pre_run;
 
+import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_1_continue.parameter_generator.ParameterGenerator;
-import ecnu.dll.utils.CatchSignal;
 
 public class GenerateParametersForTrajectory {
     public static void main(String[] args) {

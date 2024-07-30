@@ -1,7 +1,6 @@
 package others.signal_test;
 
-import ecnu.dll.utils.CatchSignal;
-import sun.misc.Signal;
+import cn.edu.dll.signal.CatchSignal;
 
 import java.util.concurrent.TimeUnit;
 

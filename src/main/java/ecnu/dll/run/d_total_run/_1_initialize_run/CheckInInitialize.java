@@ -1,7 +1,7 @@
 package ecnu.dll.run.d_total_run._1_initialize_run;
 
+import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run.CheckInDatasetPreprocessRun;
-import ecnu.dll.utils.CatchSignal;
 
 public class CheckInInitialize {
     public static void main(String[] args) {
