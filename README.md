@@ -7,11 +7,10 @@
 # Run Process 
 
 ## Pre-process
-1. Create paths `${basic_path}/0.dataset/${dataset_name}` where `${basic_path}` is any fixed path setting by yourself, `$dataset_name` is any element in {`T-drive_Taxi_Trajectories`, `CheckIn_dataset_TIST2015`, `TLNS`, `Sin`, `Log`}. 
+1. Create paths `${basic_path}/0.dataset/${dataset_name}` where `${basic_path}` is any fixed path setting by yourself, `${dataset_name}` is any element in {`T-drive_Taxi_Trajectories`, `CheckIn_dataset_TIST2015`, `TLNS`, `Sin`, `Log`}. 
 2. Download *Taxi* and *Foursquare* data sets into paths `${basic_path}/0.dataset/T-drive_Taxi_Trajectories` and `${basic_path}/0.dataset/CheckIn_dataset_TIST2015`, respectively.
-3. Copy files in `deployment` to path `${basic_path/deployment}` and direct to `${basic_path/deployment}`.
-4. Direct to `${project_path/deployment}` directory.
-5. Pre-handle real data sets (*Taxi* and *Foursquare*) respectively by: 
+3. Copy files in `deployment` to path `${basic_path/deployment}` and direct to `${basic_path}/deployment`.
+4. Pre-handle real data sets (*Taxi* and *Foursquare*) respectively by: 
 	+ Run script `initialize_trajectory_run.sh`.
 	+ Run script `initialize_check_in_run.sh`.
 
