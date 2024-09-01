@@ -58,7 +58,7 @@ The final results are record in `${basic_path}/1.result` and `${basic_path}/1.re
 	
 
 # Draw Results
-## Initialize MATLAB (2017)
+## Initialize MATLAB (2017a)
 1. Direct to `${project_path}/matlab_code/experiment_result`.
 2. Run function `init_params()`.
 3. Create directory `${output_basic_path}/fig/experiment_result` to record the experiment results where `${output_basic_path}` is  any fixed path setting by yourself.
