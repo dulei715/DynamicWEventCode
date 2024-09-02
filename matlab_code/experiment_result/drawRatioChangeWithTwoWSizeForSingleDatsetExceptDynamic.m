@@ -66,8 +66,8 @@ hold on;
 xlabel(xLabelName, 'Interpreter', 'latex');
 %yyaxis left
 plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
-plot(x, y_pbd, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_ba, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_pbd, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pba, 'go--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 %plot(x, y_pdbd, 'cd-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 %plot(x, y_pdba, 'rd--','LineWidth',2, 'MarkerSize',figure_MarkerSize);

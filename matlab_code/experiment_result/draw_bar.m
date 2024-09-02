@@ -1,4 +1,4 @@
-function draw_bar_changeB()
+function draw_bar()
 fig = figure;
 hold on;
 
@@ -21,8 +21,8 @@ y_pba = x * 2;
 %e = plot(x_DAM_Zipf, y_DAM_Zipf, 'g*:', 'LineWidth', 2,'MarkerSize',figure_MarkerSize);
 
 a = plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-b = plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
-c = plot(x, y_pbd, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+b = plot(x, y_pbd, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+c = plot(x, y_ba, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
 d = plot(x, y_pba, 'go--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 %e = plot(x, y_pdbd, 'cd-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 %f = plot(x, y_pdba, 'rd--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
