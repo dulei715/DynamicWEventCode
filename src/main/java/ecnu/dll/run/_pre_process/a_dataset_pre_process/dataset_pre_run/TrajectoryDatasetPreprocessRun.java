@@ -2,9 +2,11 @@ package ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
+import cn.edu.dll.execute.CopyUtils;
 import cn.edu.dll.filter.file_filter.TxtFilter;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
+import cn.edu.dll.result.FileTool;
 import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
@@ -17,12 +19,36 @@ import ecnu.dll.run._pre_process.a_dataset_pre_process.dataset_pre_handler.utils
 import ecnu.dll.utils.FormatFileName;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 
 public class TrajectoryDatasetPreprocessRun {
 //    public static void main(String[] args) {
 //        System.out.println("hello");
 //    }
+
+    /**
+     * 0. 将taxi_log_2008_by_id 文件下的无效文件(文件中无数据记录)剔除掉，并将有效文件放入taxi_log_2008_by_id文件夹下
+     */
+
+    public static void removeInvalidFiles() {
+        FileFilter txtFileFilter = new TxtFilter();
+        String trajectoryDirectoryPath = Constant.trajectoriesFilePath;
+        File inputDirFile = new File(trajectoryDirectoryPath, "taxi_log_2008_by_id");
+        File outputDirFile = new File(trajectoryDirectoryPath, "taxi_log_2008_by_id_filter");
+        if (!outputDirFile.exists()) {
+            outputDirFile.mkdirs();
+        }
+        File[] sourceFiles = inputDirFile.listFiles(txtFileFilter);
+        File tempDestFile;
+        for (File sourceFile : sourceFiles) {
+            if (sourceFile.length() <= 0) {
+                continue;
+            }
+            tempDestFile = new File(outputDirFile, sourceFile.getName());
+            CopyUtils.fileCopyWithTransferTo(sourceFile.getAbsolutePath(), tempDestFile.getAbsolutePath());
+        }
+    }
 
     /**
      * 1. 抽取数据在经度[116,116.8]和纬度[39.5,40.3]之间的数据（和user_guide.pdf图像展示保持一致）
@@ -458,13 +484,15 @@ public class TrajectoryDatasetPreprocessRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
-//        extract();
+
+//        removeInvalidFiles();
+        extract();
 //        splitByTimeMultiThread();
 //        formatFileName("shuffle_by_time_slot");
 //        testSplitByTimeMultiThreadByIndex();
 //        testSplitByTimeIndex();
 //        mergeToExperimentRawData();
-        recordBasicInformation();
+//        recordBasicInformation();
     }
 
 

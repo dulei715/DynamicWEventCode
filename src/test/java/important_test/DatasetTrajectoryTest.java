@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class DatasetTrajectoryTest {
+
     /**
      * 测试所有用户数据量的最大值和最小值
      */
@@ -216,6 +217,7 @@ public class DatasetTrajectoryTest {
         }
         System.out.printf("最小时间戳：%d; 最大时间戳：%d\n", minTimeSlot, maxTimeSlot);
     }
+
 
     @Test
     public void testFilterTotalRecord2() {
