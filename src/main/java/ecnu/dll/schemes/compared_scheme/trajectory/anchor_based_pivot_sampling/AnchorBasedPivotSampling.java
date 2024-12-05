@@ -5,11 +5,11 @@ import cn.edu.dll.collection.CollectionTools;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.struct.point.TwoDimensionalDoublePoint;
 import cn.edu.dll.struct.point.TwoDimensionalDoublePointUtils;
-import ecnu.dll.construction.schemes.basic_schemes.square_wave.continued.DoubleSquareWave;
-import ecnu.dll.construction.schemes.basic_schemes.square_wave.continued.SimpleSquareWave;
-import ecnu.dll.construction.schemes.basic_schemes.square_wave.utils.SquareWaveUtils;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.basic_struct.TrajectoryExponentialMechanism;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.utils.PivotSamplingUtils;
+import ecnu.dll.schemes.basic_scheme.square_wave.continued.DoubleSquareWave;
+import ecnu.dll.schemes.basic_scheme.square_wave.continued.SimpleSquareWave;
+import ecnu.dll.schemes.basic_scheme.square_wave.utils.SquareWaveUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.basic_struct.TrajectoryExponentialMechanism;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.utils.PivotSamplingUtils;
 
 import java.util.HashSet;
 import java.util.List;

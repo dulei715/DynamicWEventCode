@@ -2,8 +2,8 @@ package ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.speci
 
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.struct.point.TwoDimensionalIntegerPoint;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.CellNeighboringOneHotUtils;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.CellNeighboringUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.CellNeighboringOneHotUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.CellNeighboringUtils;
 
 public class CellNeighboring {
     public static final int Angle = 0;

@@ -5,6 +5,8 @@ import cn.edu.dll.configure.XMLConfigure;
 import cn.edu.dll.constant_values.ConstantValues;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class Constant {
     public static String projectPath = System.getProperty("user.dir");
@@ -129,6 +131,27 @@ public class Constant {
     public static final String PersonalizedBudgetAbsorptionSchemeName = "PersonalizedBudgetAbsorptionScheme";
     public static final String DynamicPersonalizedBudgetDistributionSchemeName = "DynamicPersonalizedBudgetDistributionScheme";
     public static final String DynamicPersonalizedBudgetAbsorptionSchemeName = "DynamicPersonalizedBudgetAbsorptionScheme";
+
+
+
+    // for trajectory
+    public static final Integer SampleTrajectoryGridSideLength = 300;
+    //    public static final Integer TrajectorySamplingSize = 10000;
+    public static final Integer TrajectorySamplingSize = 1000;
+    //    public static final Integer TrajectorySamplingSize = 10;
+    // 这里的轨迹长度是指轨迹中关注点的数量
+    public static final Integer TrajectorySamplingLengthLowerBound = 2;
+    public static final Integer TrajectorySamplingLengthUpperBound = 200;
+
+
+    // for LDPTrace
+    public static final double LDPTraceAlpha = 0.3;
+    public static final double LDPTraceBeta = 0.2;
+    public static final double LDPTraceLambda = 2.5;
+    public static final Integer generatingTrajectorySizeFromSynthetic = TrajectorySamplingSize;
+
+    public static final List<Integer> CandidateSectorSizeListForNYC = Arrays.asList(5, 10, 15, 20);
+
 
 
     public static void main(String[] args) {

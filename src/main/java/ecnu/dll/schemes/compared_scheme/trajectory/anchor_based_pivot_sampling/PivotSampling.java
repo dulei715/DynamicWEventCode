@@ -6,10 +6,10 @@ import cn.edu.dll.differential_privacy.ldp.frequency_oracle.foImp.GeneralizedRan
 import cn.edu.dll.struct.pair.IdentityPair;
 import cn.edu.dll.struct.point.TwoDimensionalDoublePoint;
 import cn.edu.dll.struct.point.TwoDimensionalDoublePointUtils;
-import ecnu.dll.construction._config.Constant;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.basic_struct.SectorAreas;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.basic_struct.TrajectoryExponentialMechanism;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.utils.PivotSamplingUtils;
+import ecnu.dll._config.Constant;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.basic_struct.SectorAreas;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.basic_struct.TrajectoryExponentialMechanism;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.utils.PivotSamplingUtils;
 
 import java.util.*;
 

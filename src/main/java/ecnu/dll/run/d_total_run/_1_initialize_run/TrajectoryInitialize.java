@@ -8,6 +8,9 @@ public class TrajectoryInitialize {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
+        // 0. 将taxi_log_2008_by_id 文件下的无效文件(文件中无数据记录)剔除掉，并将有效文件放入taxi_log_2008_by_id文件夹下
+        TrajectoryDatasetPreprocessRun.removeInvalidFiles();
+
         // 1. 抽取数据在经度[116,116.8]和纬度[39.5,40.3]之间的数据（和user_guide.pdf图像展示保持一致）
         TrajectoryDatasetPreprocessRun.extract();
 

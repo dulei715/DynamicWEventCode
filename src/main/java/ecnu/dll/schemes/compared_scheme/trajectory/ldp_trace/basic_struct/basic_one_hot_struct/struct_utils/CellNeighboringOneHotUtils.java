@@ -1,7 +1,7 @@
 package ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils;
 
 import cn.edu.dll.struct.point.TwoDimensionalIntegerPoint;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.special_Collect_struct.sub_struct.CellNeighboring;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.special_Collect_struct.sub_struct.CellNeighboring;
 
 public class CellNeighboringOneHotUtils {
     private static final TwoDimensionalIntegerPoint nullPoint = new TwoDimensionalIntegerPoint(-1, -1);

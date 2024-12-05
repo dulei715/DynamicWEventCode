@@ -482,11 +482,11 @@ public class TrajectoryDatasetPreprocessRun {
 
 
     public static void main(String[] args) {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-
+//        CatchSignal catchSignal = new CatchSignal();
+//        catchSignal.startCatch();
+//
 //        removeInvalidFiles();
-        extract();
+//        extract();
 //        splitByTimeMultiThread();
 //        formatFileName("shuffle_by_time_slot");
 //        testSplitByTimeMultiThreadByIndex();

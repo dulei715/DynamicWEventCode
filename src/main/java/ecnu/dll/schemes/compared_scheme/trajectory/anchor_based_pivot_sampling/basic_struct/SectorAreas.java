@@ -3,7 +3,7 @@ package ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.
 import cn.edu.dll.geometry.Line;
 import cn.edu.dll.struct.pair.BasicPair;
 import cn.edu.dll.struct.point.TwoDimensionalDoublePoint;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.anchor_based_pivot_sampling.utils.SectorAreasUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory.anchor_based_pivot_sampling.utils.SectorAreasUtils;
 
 import java.util.List;
 

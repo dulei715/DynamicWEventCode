@@ -4,13 +4,13 @@ import cn.edu.dll.differential_privacy.ldp.frequency_oracle.FrequencyOracle;
 import cn.edu.dll.differential_privacy.ldp.frequency_oracle.foImp.OptimizedUnaryEncoding;
 import cn.edu.dll.struct.one_hot.OneHot;
 import cn.edu.dll.struct.point.TwoDimensionalIntegerPoint;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.AbsolutePositionOneHot;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.CellNeighboringOneHot;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.TrajectoryLengthOneHot;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.special_Collect_struct.UserTrajectoryOneHotStruct;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.special_Collect_struct.UserTrajectoryOriginalStruct;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.basic_struct.special_Collect_struct.sub_struct.CellNeighboring;
-import ecnu.dll.construction.schemes.compared_schemes.trajectory.ldp_trace.utils.TrajectoryFOUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.AbsolutePositionOneHot;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.CellNeighboringOneHot;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.basic_one_hot_struct.TrajectoryLengthOneHot;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.special_Collect_struct.UserTrajectoryOneHotStruct;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.special_Collect_struct.UserTrajectoryOriginalStruct;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.basic_struct.special_Collect_struct.sub_struct.CellNeighboring;
+import ecnu.dll.schemes.compared_scheme.trajectory.ldp_trace.utils.TrajectoryFOUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,6 +90,7 @@ public class TrajectoryFO implements FrequencyOracle<UserTrajectoryOriginalStruc
          */
         throw new RuntimeException("You are not use this function, use other aggregating function instead!");
     }
+
 
     public Double[] aggregateTrajectoryLength(Collection<OneHot<Integer>> trajectoryLengthDataCollection) {
         int userSize = trajectoryLengthDataCollection.size();
