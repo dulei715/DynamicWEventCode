@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentBasicParameterRun implements Runnable {
+public class FixedSegmentBasicParameterSerialRun {
     private String basicPath;
     private String dataTypeFileName;
     private Integer singleBatchSize;
@@ -46,11 +46,9 @@ public class FixedSegmentBasicParameterRun implements Runnable {
     private String dynamicPrivacyBudgetBasicPath;
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
-    private CountDownLatch latch;
-    private CountDownLatch innerLatch;
 
 
-    public FixedSegmentBasicParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
+    public FixedSegmentBasicParameterSerialRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -60,8 +58,6 @@ public class FixedSegmentBasicParameterRun implements Runnable {
         this.startFileIndex = startFileIndex;
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
-        this.latch = latch;
-        this.innerLatch = innerLatch;
         initialize();
     }
 
@@ -110,7 +106,7 @@ public class FixedSegmentBasicParameterRun implements Runnable {
         List<List<Double>> remainBackwardPrivacyBudgetListBatchList = new ArrayList<>(), forwardPrivacyBudgetListBatchList = new ArrayList<>();
         List<List<Integer>> backwardWindowSizeListBatchList = new ArrayList<>(), forwardWindowSizeListBatchList = new ArrayList<>();
 
-        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "group_output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "group_output_time_cost", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
         File basicOutputFile = new File(basicOutputPathDir);
         if (!basicOutputFile.exists()) {
             basicOutputFile.mkdirs();
@@ -177,12 +173,6 @@ public class FixedSegmentBasicParameterRun implements Runnable {
         return experimentResultList;
     }
 
-    @Override
-    public void run() {
-        runSegmentBatch();
-        this.innerLatch.countDown();
-        this.latch.countDown();
-    }
 
     public static void main(String[] args) {
 //        String basicPath = Constant.checkInFilePath;

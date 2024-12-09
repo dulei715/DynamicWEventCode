@@ -2,8 +2,9 @@ package ecnu.dll.run.c_dataset_run.version_3.version_utils;
 
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterRun;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentInternalParameterRun;
+import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterParallelRun;
+import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterSerialRun;
+import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentInternalParameterParallelRun;
 import ecnu.dll.utils.filters.NumberTxtFilter;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class DatasetSegmentRunUtils {
             CountDownLatch innerLatch = new CountDownLatch(budgetChangeList.size() + windowSizeChangeList.size() - 1);
 
             for (Double budget : budgetChangeList) {
-                tempRunnable =  new FixedSegmentBasicParameterRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempRunnable =  new FixedSegmentBasicParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -57,7 +58,7 @@ public class DatasetSegmentRunUtils {
                     continue;
                 }
                 Integer windowSize = windowSizeChangeList.get(i);
-                tempRunnable =  new FixedSegmentBasicParameterRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempRunnable =  new FixedSegmentBasicParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -112,7 +113,7 @@ public class DatasetSegmentRunUtils {
                     int endFileIndex, Integer segmentID, Boolean changeStatus, CountDownLatch latch,
                     CountDownLatch innerLatch
                  */
-                tempRunnable =  new FixedSegmentInternalParameterRun(basicPath, dataTypeFileName, singleBatchSize, userRatio, timeStampDataFiles, startIndex, endIndex, segmentID, FixedSegmentInternalParameterRun.Change_Two_Privacy_Budget_Status, latch, innerLatch);
+                tempRunnable =  new FixedSegmentInternalParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, userRatio, timeStampDataFiles, startIndex, endIndex, segmentID, FixedSegmentInternalParameterParallelRun.Change_Two_Privacy_Budget_Status, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -128,7 +129,7 @@ public class DatasetSegmentRunUtils {
                     int endFileIndex, Integer segmentID, Boolean changeStatus, CountDownLatch latch,
                     CountDownLatch innerLatch
                  */
-                tempRunnable =  new FixedSegmentInternalParameterRun(basicPath, dataTypeFileName, singleBatchSize, userRatio, timeStampDataFiles, startIndex, endIndex, segmentID, FixedSegmentInternalParameterRun.Change_Two_Window_Size_Status, latch, innerLatch);
+                tempRunnable =  new FixedSegmentInternalParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, userRatio, timeStampDataFiles, startIndex, endIndex, segmentID, FixedSegmentInternalParameterParallelRun.Change_Two_Window_Size_Status, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -145,6 +146,50 @@ public class DatasetSegmentRunUtils {
             latch.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public static void seriallyDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        List<Double> budgetChangeList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
+        List<Integer> windowSizeChangeList = ConfigureUtils.getIndependentWindowSizeList("default");
+
+        Double budgetDefault = budgetChangeList.get(2);
+        Integer windowSizeDefault = windowSizeChangeList.get(2);
+
+        File dirFile = new File(basicPath, "runInput");
+        File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
+        int totalFileSize = timeStampDataFiles.length;
+
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("SegmentUnitSize", "default", "default");
+        Integer segmentUnitSize = independentData.getValue();
+
+        Integer startIndex, endIndex;
+        Integer segmentID = 0;
+        FixedSegmentBasicParameterSerialRun serialRun;
+        for (Double budget : budgetChangeList) {
+            // 对每个budget执行所有的segment
+            for (int segmentIndex = 0; segmentIndex < totalFileSize; segmentIndex+=segmentUnitSize, ++segmentID) {
+                startIndex = segmentIndex;
+                endIndex = Math.min(startIndex + segmentUnitSize - 1, totalFileSize - 1);
+                serialRun = new FixedSegmentBasicParameterSerialRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID);
+                serialRun.runSegmentBatch();
+                System.out.println("Start budget change segmentBatch running with segment " + segmentID);
+
+            }
+        }
+
+        for (int i = 0; i < windowSizeChangeList.size(); i++) {
+            // 对除默认值以外的每个windowSize执行所有的segment
+            if (i == 2) {
+                continue;
+            }
+            for (int segmentIndex = 0; segmentIndex < totalFileSize; segmentIndex+=segmentUnitSize, ++segmentID) {
+                startIndex = segmentIndex;
+                endIndex = Math.min(startIndex + segmentUnitSize - 1, totalFileSize - 1);
+                serialRun = new FixedSegmentBasicParameterSerialRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSizeChangeList.get(i), timeStampDataFiles, startIndex, endIndex, segmentID);
+                serialRun.runSegmentBatch();
+                System.out.println("Start window size segmentBatch running with segment " + segmentID);
+
+            }
         }
     }
 }

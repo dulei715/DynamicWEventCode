@@ -22,10 +22,19 @@ public class TrajectoryDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.basicDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runTrajectorySerially() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-        runTrajectory();
+        String basicPath = Constant.trajectoriesFilePath;
+        String dataTypeFileName = "cell.txt";
+//        Integer singleBatchSize = 2;
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.seriallyDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+
+//    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+//        CatchSignal catchSignal = new CatchSignal();
+//        catchSignal.startCatch();
+//        runTrajectory();
+//    }
 }

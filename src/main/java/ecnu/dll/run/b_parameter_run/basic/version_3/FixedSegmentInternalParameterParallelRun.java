@@ -1,6 +1,5 @@
 package ecnu.dll.run.b_parameter_run.basic.version_3;
 
-import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -33,7 +32,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentInternalParameterRun implements Runnable {
+public class FixedSegmentInternalParameterParallelRun implements Runnable {
     public static final Boolean Change_Two_Privacy_Budget_Status = false;
     public static final Boolean Change_Two_Window_Size_Status = true;
 
@@ -60,7 +59,7 @@ public class FixedSegmentInternalParameterRun implements Runnable {
     private CountDownLatch innerLatch;
 
 
-    public FixedSegmentInternalParameterRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double userRatio, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, Boolean changeStatus, CountDownLatch latch, CountDownLatch innerLatch) {
+    public FixedSegmentInternalParameterParallelRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double userRatio, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, Boolean changeStatus, CountDownLatch latch, CountDownLatch innerLatch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;

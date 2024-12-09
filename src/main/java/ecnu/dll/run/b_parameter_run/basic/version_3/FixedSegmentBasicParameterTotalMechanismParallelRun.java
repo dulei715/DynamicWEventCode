@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentBasicParameterTotalMechanismRun implements Runnable {
+public class FixedSegmentBasicParameterTotalMechanismParallelRun implements Runnable {
     private String basicPath;
     private String dataTypeFileName;
     private Integer singleBatchSize;
@@ -50,7 +50,7 @@ public class FixedSegmentBasicParameterTotalMechanismRun implements Runnable {
     private CountDownLatch latch;
 
 
-    public FixedSegmentBasicParameterTotalMechanismRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
+    public FixedSegmentBasicParameterTotalMechanismParallelRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
