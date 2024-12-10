@@ -98,6 +98,44 @@ public class RepeatUtils {
 
     }
 
+    private static void combineSerialProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
+        // todo: 还未修改成关于串行的运行结果的合并。。。
+        List<ResultBean> combineBeanList = null, updateBeanList;
+        ResultBean tempBean;
+        BeanInterface<ResultBean> modelBean = new ResultBean();
+        BasicPair<Double, Integer> paramsPair;
+        String inputFilePath, outputFilePath, title;
+        CSVWrite csvWrite = new CSVWrite();
+        File parentFile;
+        FileFilter directoryFileFilter = new DirectoryFileFilter();
+        for (String parameterFileDir : parameterSet) {
+            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
+            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
+//            System.out.println(title);
+            combineBeanList = new ArrayList<>();
+            for (String beanName : nameStringArray) {
+                tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
+                combineBeanList.add(tempBean);
+            }
+            for (File inputMethodDir : inputMethodDirFileList) {
+                inputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, inputMethodDir, parameterFileDir, "result.txt");
+                updateBeanList = CSVReadEnhanced.readDataToBeanList(inputFilePath, modelBean);
+                update(combineBeanList, updateBeanList);
+            }
+            average(combineBeanList, inputMethodDirFileList.size());
+            parentFile = new File(outputMethodDirFile, parameterFileDir);
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
+            outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, parentFile.getAbsolutePath(), "result.txt");
+            csvWrite.startWriting(outputFilePath);
+            csvWrite.writeOneLine(title);
+            csvWrite.writeBeanList(combineBeanList);
+            csvWrite.endWriting();
+        }
+
+    }
+
     private static void update(List<ResultBean> combineBeanList, List<ResultBean> updateBeanList) {
         ResultBean combineBean, updateBean;
         for (int i = 0; i < combineBeanList.size(); i++) {
@@ -168,6 +206,18 @@ public class RepeatUtils {
         outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList);
 
         combineInternalProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
+    }
+
+    public static void combineMultipleSerialRound(String inputDir, String outputDir) {
+        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
+        File inputDirFile = new File(inputDir);
+        File outputDirFile = new File(outputDir);
+        File outputMethodDirFile;
+        List<File> datasetRoundList = new ArrayList<>();
+        Set<String> outputParamsFileNameSet = new HashSet<>();
+        outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList);
+
+        combineSerialProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
     }
 
     public static void main(String[] args) {

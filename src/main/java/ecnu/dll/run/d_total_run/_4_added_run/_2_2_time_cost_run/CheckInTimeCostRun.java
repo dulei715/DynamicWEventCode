@@ -12,7 +12,7 @@ public class CheckInTimeCostRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.checkInFilePath;
-        String finalResultDirName = "2.checkIn_result_time_cost";
+//        String finalResultDirName = "2.checkIn_time_cost_result";
 
 
         // 1. parameter 生成

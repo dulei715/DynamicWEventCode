@@ -13,7 +13,7 @@ public class TrajectoryTimeCostRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.trajectoriesFilePath;
-        String finalResultDirName = "1.trajectory_result_time_cost";
+//        String finalResultDirName = "1.trajectory_time_cost_result";
 
 
         // 1. parameter 生成
@@ -30,5 +30,6 @@ public class TrajectoryTimeCostRun {
 //        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
 //        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
 //        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+
     }
 }

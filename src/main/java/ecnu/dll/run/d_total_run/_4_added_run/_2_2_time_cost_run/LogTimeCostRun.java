@@ -13,7 +13,7 @@ public class LogTimeCostRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.logFilePath;
-        String finalResultDirName = "5.log_result_time_cost";
+//        String finalResultDirName = "5.log_time_cost_result";
 
         // 1. dataset 生成
         LogDatasetPreprocessRun.generateDataset();

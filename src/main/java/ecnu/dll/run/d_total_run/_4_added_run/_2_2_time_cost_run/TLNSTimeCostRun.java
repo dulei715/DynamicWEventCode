@@ -13,7 +13,7 @@ public class TLNSTimeCostRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_result_time_cost";
+//        String finalResultDirName = "3.tlns_time_cost_result";
 
         // 1. dataset 生成
         TLNSDatasetPreprocessRun.generateDataset();

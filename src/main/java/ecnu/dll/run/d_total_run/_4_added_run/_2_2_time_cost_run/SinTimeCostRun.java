@@ -14,7 +14,7 @@ public class SinTimeCostRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.sinFilePath;
-        String finalResultDirName = "4.sin_result_time_cost";
+//        String finalResultDirName = "4.sin_time_cost_result";
 
         // 1. dataset 生成
         SinDatasetPreprocessRun.generateDataset();
