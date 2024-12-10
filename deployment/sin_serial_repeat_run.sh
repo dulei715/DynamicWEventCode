@@ -1,6 +1,6 @@
 #!/bin/bash
-dataset_dir_name="TLNS";
-final_output_dir_name="3.tlns_time_cost_result"
+dataset_dir_name="Sin";
+final_output_dir_name="4.sin_time_cost_result"
 basic_path="../0.dataset/$dataset_dir_name";
 #totalMem="-Xms120g"
 #maxMem="-Xmx2400g"
