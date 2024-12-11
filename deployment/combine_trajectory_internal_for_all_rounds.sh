@@ -1,8 +1,8 @@
 #!/bin/bash
-dataset_dir_name="T-drive_Taxi_Trajectories";
-final_output_dir_name="1.trajectory_internal_result"
-basic_path="../0.dataset/$dataset_dir_name";
-basic_output_path="../1.result_internal";
+#dataset_dir_name="T-drive_Taxi_Trajectories";
+#final_output_dir_name="1.trajectory_internal_result"
+#basic_path="../0.dataset/$dataset_dir_name";
+#basic_output_path="../2.result_internal";
 class_name="Trajectory"
 
 #totalMem="-Xms120g"

@@ -23,6 +23,12 @@ public class RepeatUtils {
 //            , "PDBD", "PDBA"
     };
 
+    /**
+     * 将每轮最终结果合并取平均值
+     * @param outputMethodDirFile
+     * @param inputMethodDirFileList
+     * @param parameterSet
+     */
     private static void combineMainProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
@@ -171,7 +177,8 @@ public class RepeatUtils {
         }
 
         for (File roundDir : roundDirs) {
-            File methodDirFile =  OtherUtils.getSubDatasetNameFile(roundDir);roundDir.listFiles(directoryFilter);
+            File methodDirFile =  OtherUtils.getSubDatasetNameFile(roundDir);
+            roundDir.listFiles(directoryFilter);
             datasetRoundList.add(methodDirFile);
         }
         return outputMethodDirFile;
@@ -223,9 +230,11 @@ public class RepeatUtils {
     public static void main(String[] args) {
 //        String inputDir = args[0];
 //        String outputDir = args[1];
-        String inputDir = Constant.tlnsFilePath;
-        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result_internal");
-//        combineMultipleMainRound(inputDir, outputDir);
-        combineMultipleInternalRound(inputDir, outputDir);
+        String inputDir = Constant.trajectoriesFilePath;
+        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result");
+        combineMultipleMainRound(inputDir, outputDir);
+//        String inputDir = Constant.tlnsFilePath;
+//        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result_internal");
+//        combineMultipleInternalRound(inputDir, outputDir);
     }
 }

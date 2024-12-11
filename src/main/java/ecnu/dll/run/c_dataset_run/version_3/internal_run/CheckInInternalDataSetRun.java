@@ -21,9 +21,9 @@ public class CheckInInternalDataSetRun {
         DatasetSegmentRunUtils.internalDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-        runInternalCheckIn();
-    }
+//    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+//        CatchSignal catchSignal = new CatchSignal();
+//        catchSignal.startCatch();
+//        runInternalCheckIn();
+//    }
 }

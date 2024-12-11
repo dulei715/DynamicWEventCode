@@ -22,14 +22,14 @@ public class CheckInInternalPosterRun {
         String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
         String roundFormat = "round_%d_internal";
 
-        for (int i = 1; i <= 10; i++) {
-            // 3. 后处理
-            String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), rawDirName);
-            String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), extractDirName);
-            String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), finalResultDirName);
-            PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-            PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
-        }
+//        for (int i = 1; i <= 10; i++) {
+//            // 3. 后处理
+//            String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), rawDirName);
+//            String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), extractDirName);
+//            String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), finalResultDirName);
+//            PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
+//            PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+//        }
 
 
         // 4. 合并

@@ -21,20 +21,20 @@ public class TLNSInternalDataSetRun {
         DatasetSegmentRunUtils.internalDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        CatchSignal catchSignal = new CatchSignal();
-        catchSignal.startCatch();
-
-        String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_result";
-
-        runInternalTLNS();
-
-        // 4. 后处理
-        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
-        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "extract_result");
-        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
-        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
-        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
-    }
+//    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+//        CatchSignal catchSignal = new CatchSignal();
+//        catchSignal.startCatch();
+//
+//        String datasetPath = Constant.tlnsFilePath;
+//        String finalResultDirName = "3.tlns_result";
+//
+//        runInternalTLNS();
+//
+//        // 4. 后处理
+//        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
+//        String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "extract_result");
+//        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
+//        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
+//        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+//    }
 }

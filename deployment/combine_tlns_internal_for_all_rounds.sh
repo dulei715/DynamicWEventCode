@@ -1,8 +1,8 @@
 #!/bin/bash
 dataset_dir_name="TLNS";
-final_output_dir_name="3.tlns_internal_result"
-basic_path="../0.dataset/$dataset_dir_name";
-basic_output_path="../1.result_internal";
+#final_output_dir_name="3.tlns_internal_result"
+#basic_path="../0.dataset/$dataset_dir_name";
+#basic_output_path="../2.result_internal";
 #totalMem="-Xms120g"
 #maxMem="-Xmx2400g"
 #java ${totalMem} ${maxMem} -cp DynamicWEventCode-1.0-DMDP-jar-with-dependencies.jar ecnu.dll.utils.run.CombineForEachRoundInternal ${basic_path} ${final_output_dir_name}

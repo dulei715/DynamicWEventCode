@@ -1,8 +1,8 @@
 #!/bin/bash
-dataset_dir_name="CheckIn_dataset_TIST2015";
-final_output_dir_name="2.check_in_internal_result"
-basic_path="../0.dataset/$dataset_dir_name";
-basic_output_path="../1.result_internal";
+#dataset_dir_name="CheckIn_dataset_TIST2015";
+#final_output_dir_name="2.check_in_internal_result"
+#basic_path="../0.dataset/$dataset_dir_name";
+#basic_output_path="../2.result_internal";
 class_name="CheckIn"
 
 #totalMem="-Xms120g"

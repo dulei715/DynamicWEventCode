@@ -1,28 +1,31 @@
-package ecnu.dll.run.e_internal_run._3_poster_process_run;
+package ecnu.dll.run.d_total_run._3_poster_process_run;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
-import ecnu.dll.utils.run.CombineForEachRoundInternal;
+import ecnu.dll.utils.run.CombineForEachRound;
 import ecnu.dll.utils.run.RepeatUtils;
 
-public class TLNSInternalPosterRun {
+public class TrajectoryPosterRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_internal_result";
-        String rawDirName = "group_output_internal";
-        String extractDirName = "extract_internal_result";
-        String basicOutputFileString = "../2.result_internal";
-        String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
-        String roundFormat = "round_%d_internal";
+        String datasetPath = Constant.trajectoriesFilePath;
+        String finalResultDirName = "1.trajectory_result";
 
-//        for (int i = 1; i <= 10; i++) {
-//            // 4. 后处理
+        String basicOutputFileString = "../1.result";
+        String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
+        String roundPattern = "round_%d";
+        String outputDir = "group_output";
+        String extractDir = "extract_result";
+
+        int roundSize = 10;
+
+//        for (int i = 1; i <= roundSize; i++) {
+//            // 3. 后处理
 //            String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), rawDirName);
 //            String extractResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), extractDirName);
 //            String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, String.format(roundFormat, i), finalResultDirName);
@@ -30,9 +33,9 @@ public class TLNSInternalPosterRun {
 //            PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
 //        }
 
-
-        // 5. 合并
-        CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);
-        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath);
+        // 3. 后处理
+        CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
+        // 4. 合并每轮
+        RepeatUtils.combineMultipleMainRound(datasetPath, basicOutputPath);
     }
 }
