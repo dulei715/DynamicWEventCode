@@ -86,6 +86,7 @@ public class PostProcessUtils {
                 tempBean = innerList.get(i);
                 resultPartBean.setBatchSize(resultPartBean.getBatchSize()+ tempBean.getBatchSize());
                 resultPartBean.setbRE(resultPartBean.getbRE() + tempBean.getbRE());
+                resultPartBean.setTimeCost(resultPartBean.getTimeCost() + tempBean.getTimeCost());
             }
             resultPartBean.setmRE(resultPartBean.getbRE() / resultPartBean.getBatchSize());
             resultList.add(resultPartBean);
@@ -148,6 +149,7 @@ public class PostProcessUtils {
                 tempBean = innerList.get(i);
                 resultBean.setBatchSize(resultBean.getBatchSize()+ tempBean.getBatchSize());
                 resultBean.setBre(resultBean.getBre() + tempBean.getBre());
+                resultBean.setTimeCost(resultBean.getTimeCost() + tempBean.getTimeCost());
                 resultBean.setMre(resultBean.getMre() + tempBean.getMre()*tempBean.getBatchSize());
             }
             resultBean.setMre(resultBean.getMre() / resultBean.getBatchSize());
