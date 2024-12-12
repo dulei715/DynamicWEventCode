@@ -14,8 +14,8 @@ import ecnu.dll.run.b_parameter_run.basic.version_2.utils.ParameterInitializeUti
 import ecnu.dll.run.c_dataset_run.utils.DatasetParameterUtils;
 import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
-import ecnu.dll.schemes.compared_scheme.w_event.BudgetAbsorption;
-import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetAbsorption;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetAbsorption;

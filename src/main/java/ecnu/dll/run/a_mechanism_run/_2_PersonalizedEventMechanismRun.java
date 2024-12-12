@@ -4,7 +4,6 @@ import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.statistic.StatisticTool;
 import ecnu.dll._config.Constant;
-import ecnu.dll.schemes.compared_scheme.w_event.WEventMechanism;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedEventMechanism;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;

@@ -5,7 +5,7 @@ import cn.edu.dll.configure.XMLConfigureUtils;
 import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.struct.pair.PurePair;
 import cn.edu.dll.struct.pair.PureTriple;
-import ecnu.dll.schemes.compared_scheme.w_event.BudgetDistribution;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetDistribution;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
