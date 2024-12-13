@@ -90,6 +90,8 @@ public class Constant {
     public static final String WindowSize = "Window Size";
     public static final String MRE = "MRE"; // MeanRelativeError, 是所有相对误差的均值
     public static final String BRE = "BRE"; // BatchRelativeError, 是一个batch中的所有相对误差的总和
+    public static final String MJSD = "MJSD";// MeanJSDivergence (AJSD), 是所有时刻JS散度的均值
+    public static final String BJSD = "BJSD"; // BatchJSDivergence, 是一个batch中的所有JS散度的总和
 
     public static final String  nonPrivacyName = "NP";
     public static final String  budgetDistributionName = "BD";
@@ -129,6 +131,7 @@ public class Constant {
     public static final String BudgetAbsorptionSchemeName = "BudgetAbsorptionScheme";
     public static final String PersonalizedBudgetDistributionSchemeName = "PersonalizedBudgetDistributionScheme";
     public static final String PersonalizedBudgetAbsorptionSchemeName = "PersonalizedBudgetAbsorptionScheme";
+    public static final String PersonalizedLDPBudgetUniformSchemeName = "PersonalizedBudgetLDPScheme";
     public static final String DynamicPersonalizedBudgetDistributionSchemeName = "DynamicPersonalizedBudgetDistributionScheme";
     public static final String DynamicPersonalizedBudgetAbsorptionSchemeName = "DynamicPersonalizedBudgetAbsorptionScheme";
 

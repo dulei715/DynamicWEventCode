@@ -4,16 +4,15 @@ import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.struct.point.TwoDimensionalIntegerPoint;
 import ecnu.dll._config.Constant;
 import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.PrivateTrace;
-import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.SampleLDPTraceStatus;
-import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.special_Collect_struct.TrajectoryEstimationStruct;
 import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.TrajectoryFO;
 import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.AbsolutePositionOneHotUtils;
 import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.basic_one_hot_struct.struct_utils.CellNeighboringOneHotUtils;
+import ecnu.dll.schemes.compared_scheme.trajectory_ldp.basic_schemes.ldp_trace.basic_struct.special_Collect_struct.TrajectoryEstimationStruct;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class LDPTrace extends PrivateTrace {
+@Deprecated
+public class LDPTraceBefore extends PrivateTrace {
     private int rowSize;
     private int colSize;
     private Double totalPrivacyBudget;
@@ -26,7 +25,7 @@ public class LDPTrace extends PrivateTrace {
     // 这个参数在调用trajectorySynthesis前完成就行
     private TrajectoryEstimationStruct trajectoryEstimationStruct;
 
-    public LDPTrace(int gridRowSize, int gridColSize, Double totalPrivacyBudget, Integer maxTravelDistance) {
+    public LDPTraceBefore(int gridRowSize, int gridColSize, Double totalPrivacyBudget, Integer maxTravelDistance) {
         this.rowSize = gridRowSize;
         this.colSize = gridColSize;
         this.totalPrivacyBudget = totalPrivacyBudget;
@@ -59,38 +58,23 @@ public class LDPTrace extends PrivateTrace {
         return index + 1;
     }
 
-    protected static TwoDimensionalIntegerPoint sampleStartCell(Double[] startEstimationData, int colSize) {
+    protected TwoDimensionalIntegerPoint sampleStartCell(Double[] startEstimationData) {
         Integer index = RandomUtil.getRandomIndexGivenCountPoint(startEstimationData);
-        TwoDimensionalIntegerPoint result = AbsolutePositionOneHotUtils.toOriginalData(index, colSize);
+        TwoDimensionalIntegerPoint result = AbsolutePositionOneHotUtils.toOriginalData(index, this.colSize);
         return result;
     }
 
-    protected TwoDimensionalIntegerPoint sampleStartCell(Double[] startEstimationData) {
-        return sampleStartCell(startEstimationData, this.colSize);
-    }
-
-    protected static TwoDimensionalIntegerPoint sampleNextCell(Double[] cellNeighboringEstimationData, Double[] endEstimationData, int trajectoryLength, TwoDimensionalIntegerPoint currentCell, Integer rowSize, Integer colSize, Double alpha, Double beta) {
-        if (cellNeighboringEstimationData.length == 0) {
-            return currentCell;
-        }
-        int[] innerIndexRange = CellNeighboringOneHotUtils.toOneHotDataIndexRange(currentCell, rowSize, colSize);
-        int endIndex = AbsolutePositionOneHotUtils.toOneHotDataIndex(currentCell, colSize);
-        Double[] endReWeightEstimation = new Double[]{endEstimationData[endIndex]*(alpha+beta*trajectoryLength)};
-        Integer[] chosenIndexPair = RandomUtil.getTwoPartsRandomIndexGivenCountPoint(cellNeighboringEstimationData, innerIndexRange[0], innerIndexRange[1], endReWeightEstimation, 0, 0);
-        if (chosenIndexPair[0] == 0) {
-            return CellNeighboringOneHotUtils.toOriginalNeighboringData(chosenIndexPair[1], rowSize, colSize);
-        }
-        return CellNeighboringOneHotUtils.getNullNeighboringPoint();
-    }
     protected TwoDimensionalIntegerPoint sampleNextCell(Double[] cellNeighboringEstimationData, Double[] endEstimationData, int trajectoryLength, TwoDimensionalIntegerPoint currentCell) {
         if (cellNeighboringEstimationData.length == 0) {
             return currentCell;
         }
         int[] innerIndexRange = CellNeighboringOneHotUtils.toOneHotDataIndexRange(currentCell, this.rowSize, this.colSize);
         int endIndex = AbsolutePositionOneHotUtils.toOneHotDataIndex(currentCell, this.colSize);
+//        Integer chosenIndex = RandomUtil.getRandomIndexGivenCountPoint(cellNeighboringEstimationData, innerIndexRange[0], innerIndexRange[1]);
         Double[] endReWeightEstimation = new Double[]{endEstimationData[endIndex]*(this.alpha+this.beta*trajectoryLength)};
         Integer[] chosenIndexPair = RandomUtil.getTwoPartsRandomIndexGivenCountPoint(cellNeighboringEstimationData, innerIndexRange[0], innerIndexRange[1], endReWeightEstimation, 0, 0);
         if (chosenIndexPair[0] == 0) {
+//            return CellNeighboringOneHotUtils.toOriginalData(chosenIndexPair[1], this.rowSize, this.colSize);
             return CellNeighboringOneHotUtils.toOriginalNeighboringData(chosenIndexPair[1], this.rowSize, this.colSize);
         }
         return CellNeighboringOneHotUtils.getNullNeighboringPoint();
@@ -113,25 +97,6 @@ public class LDPTrace extends PrivateTrace {
             resultList.add(tempPoint);
         }
         return resultList;
-    }
-
-    public static SampleLDPTraceStatus trajectorySynthesisSampleNextPoint(SampleLDPTraceStatus status) {
-        /*
-            如果超出sample长度，不断返回最后节点
-         */
-        TrajectoryEstimationStruct trajectoryEstimationStruct = status.trajectoryEstimationStruct;
-        if (status.trajectoryLength == null) {
-            status.trajectoryLength = sampleLength(trajectoryEstimationStruct.trajectoryLengthEstimation);
-            status.currentPoint = sampleStartCell(trajectoryEstimationStruct.startCellEstimation, status.colSize);
-            status.currentPointIndex++;
-            return status;
-        }
-        if (status.currentPointIndex >= status.trajectoryLength) {
-            return status;
-        }
-        status.currentPoint = sampleNextCell(trajectoryEstimationStruct.neighboringEstimation, trajectoryEstimationStruct.endCellEstimation, status.trajectoryLength, status.currentPoint, status.rowSize, status.colSize, status.alpha, status.bata);
-        status.currentPointIndex++;
-        return status;
     }
 
 }

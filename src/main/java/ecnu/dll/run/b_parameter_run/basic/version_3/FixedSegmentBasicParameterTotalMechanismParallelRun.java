@@ -16,8 +16,8 @@ import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.basic_scheme.NonPrivacyMechanism;
 import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetAbsorption;
 import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetDistribution;
-import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
-import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetAbsorption;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetDistribution;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamCountData;
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.CountDownLatch;
 
+@Deprecated
 public class FixedSegmentBasicParameterTotalMechanismParallelRun implements Runnable {
     private String basicPath;
     private String dataTypeFileName;

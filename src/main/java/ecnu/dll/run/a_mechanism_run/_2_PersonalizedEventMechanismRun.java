@@ -4,7 +4,7 @@ import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.result.ExperimentResult;
 import cn.edu.dll.statistic.StatisticTool;
 import ecnu.dll._config.Constant;
-import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedEventMechanism;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.PersonalizedEventMechanism;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 import ecnu.dll.struts.stream_data.StreamNoiseCountData;
@@ -61,6 +61,7 @@ public class _2_PersonalizedEventMechanismRun {
         StreamNoiseCountData publicationData;
         long startTime, endTime, timeCost;
         double batchTotalVarianceStatistic = 0;
+        double batchTotalDivergence = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeBatchSize);
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeBatchSize; i++) {
@@ -80,9 +81,11 @@ public class _2_PersonalizedEventMechanismRun {
             rawPublicationData = rawPublicationBatchList.get(i);
             publicationData = publicationList.get(i);
             batchTotalVarianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            batchTotalDivergence += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
 //        batchTotalVarianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
+        experimentResult.addPair(Constant.BJSD, String.valueOf(batchTotalDivergence));
         return experimentResult;
     }
 }

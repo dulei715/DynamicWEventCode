@@ -9,6 +9,7 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._1_WEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
+import ecnu.dll.run.a_mechanism_run._4_LDPPersonalizedEventMechanismRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.utils.ParameterGroupInitializeUtils;
 import ecnu.dll.run.c_dataset_run.utils.DatasetParameterUtils;
 import ecnu.dll.schemes._basic_struct.Mechanism;
@@ -17,6 +18,7 @@ import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetAbsorption;
 import ecnu.dll.schemes.compared_scheme.w_event_dp.BudgetDistribution;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetDistribution;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.ldp.impl.PersonalizedLDPBudgetUniform;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.b_dynamic_windown_size.DynamicPersonalizedBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamCountData;
@@ -27,8 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
 
-public class FixedSegmentBasicParameterSerialRun {
+public class FixedSegmentEnhancedParameterParallelRun implements Runnable {
     private String basicPath;
     private String dataTypeFileName;
     private Integer singleBatchSize;
@@ -45,9 +48,11 @@ public class FixedSegmentBasicParameterSerialRun {
     private String dynamicPrivacyBudgetBasicPath;
     private String dynamicWindowSizeBasicPath;
     private String userToTypeFilePath;
+    private CountDownLatch latch;
+    private CountDownLatch innerLatch;
 
 
-    public FixedSegmentBasicParameterSerialRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID) {
+    public FixedSegmentEnhancedParameterParallelRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
@@ -57,6 +62,8 @@ public class FixedSegmentBasicParameterSerialRun {
         this.startFileIndex = startFileIndex;
         this.endFileIndex = endFileIndex;
         this.segmentID = segmentID;
+        this.latch = latch;
+        this.innerLatch = innerLatch;
         initialize();
     }
 
@@ -81,11 +88,16 @@ public class FixedSegmentBasicParameterSerialRun {
         PersonalizedBudgetAbsorption personalizedBudgetAbsorption = new PersonalizedBudgetAbsorption(dataType, privacyBudgetList, windowSizeList);
         this.mechanismMap.put(Constant.PersonalizedBudgetAbsorptionSchemeName, personalizedBudgetAbsorption);
 
+        PersonalizedLDPBudgetUniform personalizedLDPBudgetUniform = new PersonalizedLDPBudgetUniform(dataType, privacyBudgetList, windowSizeList);
+        this.mechanismMap.put(Constant.PersonalizedLDPBudgetUniformSchemeName, personalizedLDPBudgetUniform);
+
         Integer userSize = ParameterGroupInitializeUtils.getUserSize(StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "user.txt"));
         DynamicPersonalizedBudgetDistribution dynamicPersonalizedBudgetDistribution = new DynamicPersonalizedBudgetDistribution(dataType, userSize);
         this.mechanismMap.put(Constant.DynamicPersonalizedBudgetDistributionSchemeName, dynamicPersonalizedBudgetDistribution);
         DynamicPersonalizedBudgetAbsorption dynamicPersonalizedBudgetAbsorption = new DynamicPersonalizedBudgetAbsorption(dataType, userSize);
         this.mechanismMap.put(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName, dynamicPersonalizedBudgetAbsorption);
+
+
     }
 
 
@@ -105,7 +117,7 @@ public class FixedSegmentBasicParameterSerialRun {
         List<List<Double>> remainBackwardPrivacyBudgetListBatchList = new ArrayList<>(), forwardPrivacyBudgetListBatchList = new ArrayList<>();
         List<List<Integer>> backwardWindowSizeListBatchList = new ArrayList<>(), forwardWindowSizeListBatchList = new ArrayList<>();
 
-        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "group_output_time_cost", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "group_output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
         File basicOutputFile = new File(basicOutputPathDir);
         if (!basicOutputFile.exists()) {
             basicOutputFile.mkdirs();
@@ -142,6 +154,8 @@ public class FixedSegmentBasicParameterSerialRun {
                 tempResult = _1_WEventMechanismRun.runBatch((BudgetAbsorption)mechanismMap.get(Constant.BudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
 
+
+
 //                System.out.println("Start PersonalizedBudgetDistribution...");
                 tempResult = _2_PersonalizedEventMechanismRun.runBatch((PersonalizedBudgetDistribution)mechanismMap.get(Constant.PersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList);
                 experimentResultList.add(tempResult);
@@ -155,6 +169,9 @@ public class FixedSegmentBasicParameterSerialRun {
 //
 //                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
 //                experimentResultList.add(tempResult);
+
+                tempResult = _4_LDPPersonalizedEventMechanismRun.runBatch((PersonalizedLDPBudgetUniform)mechanismMap.get(Constant.PersonalizedLDPBudgetUniformSchemeName), batchID, batchDataList, rawPublicationBatchList);
+                experimentResultList.add(tempResult);
 
                 // write result
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
@@ -172,6 +189,12 @@ public class FixedSegmentBasicParameterSerialRun {
         return experimentResultList;
     }
 
+    @Override
+    public void run() {
+        runSegmentBatch();
+        this.innerLatch.countDown();
+        this.latch.countDown();
+    }
 
     public static void main(String[] args) {
 //        String basicPath = Constant.checkInFilePath;

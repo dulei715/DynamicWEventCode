@@ -1,4 +1,4 @@
-package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
+package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp;
 
 import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;

@@ -1,8 +1,9 @@
-package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size;
+package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl;
 
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.PersonalizedEventMechanism;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
 import java.util.ArrayList;

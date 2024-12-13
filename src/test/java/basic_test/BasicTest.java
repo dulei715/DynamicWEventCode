@@ -206,6 +206,14 @@ public class BasicTest {
         System.out.println(fileB.getAbsolutePath());
     }
 
+    @Test
+    public void fun19() {
+        Double x = 0.0;
+        Integer y = 0;
+        System.out.println(x.equals(0.00));
+        System.out.println(y.equals(0.0));
+    }
+
 
 
 

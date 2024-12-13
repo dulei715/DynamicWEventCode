@@ -53,6 +53,7 @@ public class _0_NonPrivacyMechanismRun {
         experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(0.0));
         experimentResult.addPair(Constant.WindowSize, String.valueOf(0));
         experimentResult.addPair(Constant.BRE, String.valueOf(0));
+        experimentResult.addPair(Constant.BJSD, String.valueOf(0));
         return new PurePair<>(experimentResult, publicationList);
     }
 

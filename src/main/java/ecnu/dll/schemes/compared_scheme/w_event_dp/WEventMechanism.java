@@ -14,6 +14,7 @@ public abstract class WEventMechanism extends Mechanism {
     protected int currentTime;
 
     //    protected List<StreamDataElement<Boolean>> currentDataElementList;
+    // windowSize窗口内的总的privacyBudget
     protected Double privacyBudget;
     protected Integer windowSize;
 

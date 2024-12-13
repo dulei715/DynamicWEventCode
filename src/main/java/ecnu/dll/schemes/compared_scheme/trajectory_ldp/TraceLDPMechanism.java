@@ -7,8 +7,7 @@ import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 
-public abstract class TrajectoryLDPMechanism<T extends PrivateTrace> extends Mechanism {
-
+public abstract class TraceLDPMechanism extends Mechanism {
 
 
     public abstract Double getPrivacyBudget();

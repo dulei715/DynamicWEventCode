@@ -7,8 +7,8 @@ import cn.edu.dll.struct.pair.PurePair;
 import ecnu.dll._config.ParameterUtils;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
-import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetAbsorption;
-import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.PersonalizedBudgetDistribution;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetAbsorption;
+import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 

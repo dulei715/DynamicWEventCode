@@ -32,6 +32,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         StreamNoiseCountData publicationData;
         long startTime, endTime, timeCost;
         double varianceStatistic = 0;
+        double batchTotalDivergence = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeUpperBound);
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeUpperBound; t++) {
@@ -48,7 +49,9 @@ public class _3_PersonalizedDynamicEventMechanismRun {
             rawPublicationData = rawPublicationList.get(i);
             publicationData = publicationList.get(i);
             varianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            batchTotalDivergence += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
+        // todo: 这里未修改为batch，也没加KL散度
         varianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.MRE, String.valueOf(varianceStatistic));
         return experimentResult;
