@@ -11,6 +11,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
     protected Integer windowSize;
     protected Double bre;
     protected Double mre;
+    protected Double bjsd;
+    protected Double mjsd;
 
     @Override
     public ResultBean toBean(String[] data) {
@@ -22,8 +24,12 @@ public class ResultBean implements BeanInterface<ResultBean> {
         Integer windowSize = Integer.valueOf(data[5]);
         Double bre = Double.valueOf(data[6]);
         Double mre = Double.valueOf(data[7]);
-        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre);
-
+        if (data.length > 8) {
+            Double bjsd = Double.valueOf(data[8]);
+            Double mjsd = Double.valueOf(data[9]);
+            return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre, bjsd, mjsd);
+        }
+        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre, 0D, 0D);
     }
 
 
@@ -31,7 +37,7 @@ public class ResultBean implements BeanInterface<ResultBean> {
     public ResultBean() {
     }
 
-    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double mre) {
+    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double mre, Double bjsd, Double mjsd) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
@@ -40,14 +46,16 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.windowSize = windowSize;
         this.bre = bre;
         this.mre = mre;
+        this.bjsd = bjsd;
+        this.mjsd = mjsd;
     }
 
     public static ResultBean getInitializedBean(ResultBean modelBean) {
-        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D);
+        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D, 0D, 0D);
     }
 
     public static ResultBean getInitializedBean(String modelBeanName, Double privacyBudget, Integer windowSize) {
-        return new ResultBean(modelBeanName, -1, 0, 0L, privacyBudget, windowSize, 0D, 0D);
+        return new ResultBean(modelBeanName, -1, 0, 0L, privacyBudget, windowSize, 0D, 0D, 0D, 0D);
     }
 
     public String getName() {
@@ -114,6 +122,22 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.mre = mre;
     }
 
+    public Double getBjsd() {
+        return bjsd;
+    }
+
+    public void setBjsd(Double bjsd) {
+        this.bjsd = bjsd;
+    }
+
+    public Double getMjsd() {
+        return mjsd;
+    }
+
+    public void setMjsd(Double mjsd) {
+        this.mjsd = mjsd;
+    }
+
     @Override
     public String toString() {
         return "ResultBean{" +
@@ -125,6 +149,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
                 ", windowSize=" + windowSize +
                 ", bre=" + bre +
                 ", mre=" + mre +
+                ", bjsd=" + bjsd +
+                ", mjsd=" + mjsd +
                 '}';
     }
 
@@ -138,7 +164,9 @@ public class ResultBean implements BeanInterface<ResultBean> {
         stringBuilder.append(this.privacyBudget).append(",");
         stringBuilder.append(this.windowSize).append(",");
         stringBuilder.append(this.bre).append(",");
-        stringBuilder.append(this.mre);
+        stringBuilder.append(this.mre).append(",");
+        stringBuilder.append(this.bjsd).append(",");
+        stringBuilder.append(this.mjsd);
         return stringBuilder.toString();
     }
 }

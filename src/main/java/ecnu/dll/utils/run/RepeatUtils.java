@@ -148,12 +148,15 @@ public class RepeatUtils {
             combineBean = combineBeanList.get(i);
             updateBean = updateBeanList.get(i);
             combineBean.setMre(combineBean.getMre()+ updateBean.getMre());
+            combineBean.setTimeCost(combineBean.getTimeCost() + updateBean.getTimeCost());
         }
     }
 
     private static void average(List<ResultBean> combineBeanList, int size) {
         for (ResultBean bean : combineBeanList) {
             bean.setMre(bean.getMre()*1.0/size);
+            bean.setTimeCost(bean.getTimeCost()/size);
+            bean.setMjsd(bean.getMjsd()*1.0/size);
         }
     }
 

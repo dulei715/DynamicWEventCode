@@ -30,6 +30,7 @@ public class _2_PersonalizedEventMechanismRun {
         StreamNoiseCountData publicationData;
         long startTime, endTime, timeCost;
         double varianceStatistic = 0;
+        double divergenceStatistic = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeUpperBound);
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeUpperBound; i++) {
@@ -46,9 +47,12 @@ public class _2_PersonalizedEventMechanismRun {
             rawPublicationData = rawPublicationList.get(i);
             publicationData = publicationList.get(i);
             varianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            divergenceStatistic += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
         varianceStatistic /= timeUpperBound;
+        divergenceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.MRE, String.valueOf(varianceStatistic));
+        experimentResult.addPair(Constant.MJSD, String.valueOf(divergenceStatistic));
         return experimentResult;
     }
 

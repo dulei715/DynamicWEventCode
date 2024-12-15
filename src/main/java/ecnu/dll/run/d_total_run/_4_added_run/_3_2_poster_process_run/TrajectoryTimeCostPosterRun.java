@@ -21,7 +21,8 @@ public class TrajectoryTimeCostPosterRun {
         String extractDir = "extract_time_cost_result";
         String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
 
-        int roundSize = 10;
+//        int roundSize = 10;
+        int roundSize = 3;
 
 //        for (int i = 1; i <= roundSize; i++) {
 //            // 3. 后处理
