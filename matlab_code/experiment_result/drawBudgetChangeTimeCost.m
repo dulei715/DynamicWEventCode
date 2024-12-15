@@ -1,5 +1,5 @@
 function y = drawBudgetChangeTimeCost(input_basicPath, output_basicPath)
-dataset_dirs = ["1.trajectory_result", "2.check_in_result", "3.tlns_result", "4.sin_result", "5.log_result"];
+dataset_dirs = ["1.trajectory_time_cost_result", "2.check_in_time_cost_result", "3.tlns_time_cost_result", "4.sin_time_cost_result", "5.log_time_cost_result"];
 output_dataset_names = ["trajectory", "check_in", "tlns", "sin", "log"];
 default_window_size = 120;
 i = 0;

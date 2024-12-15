@@ -1,4 +1,4 @@
-function y = drawBudgetChangeOnlyForTimeCost(basic_path, default_window_size, outputFileName)
+function y = drawBudgetChangeOnlyForTimeCostSingleDataset(basic_path, default_window_size, outputFileName)
 % haha = @utils/list_dir_name;
 % disp(haha);
 dir_names = list_dir_name(basic_path);
