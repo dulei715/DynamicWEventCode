@@ -31,10 +31,10 @@ for temp_name = dir_names
     %y_ba(i) = log(temp_table(3,8).MRE);
     %y_pbd(i) = log(temp_table(4,8).MRE);
     %y_pba(i) = log(temp_table(5,8).MRE);
-    data(i,2) = temp_table(2,4).Var4;
-    data(i,3) = temp_table(3,4).Var4;
-    data(i,4) = temp_table(4,4).Var4;
-    data(i,5) = temp_table(5,4).Var4;
+    data(i,2) = temp_table(2,4).Var4/1000;
+    data(i,3) = temp_table(3,4).Var4/1000;
+    data(i,4) = temp_table(4,4).Var4/1000;
+    data(i,5) = temp_table(5,4).Var4/1000;
     
 %    y_pdbd(i) = log(temp_table(6,8).MRE);
 %    y_pdba(i) = log(temp_table(7,8).MRE);
@@ -51,7 +51,7 @@ y_pba = data(:,5);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = "$w$";
 % yLabelName = 'MRE';
-yLabelName = "running time";
+yLabelName = "running time (s)";
 
 legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;

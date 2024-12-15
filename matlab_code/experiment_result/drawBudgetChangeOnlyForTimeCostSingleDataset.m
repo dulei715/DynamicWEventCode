@@ -21,10 +21,10 @@ for temp_name = dir_names
     x(i) = temp_budget;
     data_path = fullfile(char(basic_path), temp_name, 'result.txt');
     temp_table = readtable(data_path);
-    y_bd(i) = temp_table(2,4).Var4; % 如果表头和数据对应，改成temp_table(x,y).TimeCost
-    y_ba(i) = temp_table(3,4).Var4;
-    y_pbd(i) = temp_table(4,4).Var4;
-    y_pba(i) = temp_table(5,4).Var4;
+    y_bd(i) = temp_table(2,4).Var4/1000; % 如果表头和数据对应，改成temp_table(x,y).TimeCost
+    y_ba(i) = temp_table(3,4).Var4/1000;
+    y_pbd(i) = temp_table(4,4).Var4/1000;
+    y_pba(i) = temp_table(5,4).Var4/1000;
 %    y_pdbd(i) = log(temp_table(6,8).MRE);
 %    y_pdba(i) = log(temp_table(7,8).MRE);
 end
@@ -34,7 +34,7 @@ end
 %xLabelName = "\epsilon";
 xLabelName = "$\mathcal{E}$";
 % yLabelName = 'MRE';
-yLabelName = "runing time";
+yLabelName = "runing time (s)";
 
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 legend_names = ["BD";"BA";"PBD";"PBA"];
