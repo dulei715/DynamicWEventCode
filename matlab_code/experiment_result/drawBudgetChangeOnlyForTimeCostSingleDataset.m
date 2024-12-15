@@ -34,7 +34,7 @@ end
 %xLabelName = "\epsilon";
 xLabelName = "$\mathcal{E}$";
 % yLabelName = 'MRE';
-yLabelName = "runing time (s)";
+yLabelName = "running time (s)";
 
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 legend_names = ["BD";"BA";"PBD";"PBA"];
