@@ -1,6 +1,5 @@
 #!/bin/bash
-dataset_dir_name="TLNS";
-#final_output_dir_name="3.tlns_result"
+dataset_dir_name="Log";
 basic_path="../0.dataset/$dataset_dir_name";
 #totalMem="-Xms120g"
 #maxMem="-Xmx2400g"

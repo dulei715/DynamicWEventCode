@@ -13,7 +13,7 @@ public class TrajectoryContainingLDPRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.trajectoriesFilePath;
-        String finalResultDirName = "1.trajectory_result";
+        String finalResultDirName = "1.trajectory_containing_ldp_result";
 
 
         // 1. parameter 生成

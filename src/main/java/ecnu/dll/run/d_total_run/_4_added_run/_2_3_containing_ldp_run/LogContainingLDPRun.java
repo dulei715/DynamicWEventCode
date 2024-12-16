@@ -13,7 +13,7 @@ public class LogContainingLDPRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.logFilePath;
-        String finalResultDirName = "5.log_result";
+        String finalResultDirName = "5.log_containing_ldp_result";
 
         // 1. dataset 生成
         LogDatasetPreprocessRun.generateDataset();

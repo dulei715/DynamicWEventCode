@@ -13,7 +13,7 @@ public class TLNSContainingLDPRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.tlnsFilePath;
-        String finalResultDirName = "3.tlns_result";
+        String finalResultDirName = "3.tlns_containing_ldp_result";
 
         // 1. dataset 生成
         TLNSDatasetPreprocessRun.generateDataset();

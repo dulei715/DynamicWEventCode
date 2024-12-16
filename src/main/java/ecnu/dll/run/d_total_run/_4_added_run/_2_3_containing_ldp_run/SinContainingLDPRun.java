@@ -14,7 +14,7 @@ public class SinContainingLDPRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.sinFilePath;
-        String finalResultDirName = "4.sin_result";
+        String finalResultDirName = "4.sin_containing_ldp_result";
 
         // 1. dataset 生成
         SinDatasetPreprocessRun.generateDataset();

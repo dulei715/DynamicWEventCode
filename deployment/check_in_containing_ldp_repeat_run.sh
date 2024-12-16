@@ -1,8 +1,6 @@
 #!/bin/bash
-dataset_dir_name="T-drive_Taxi_Trajectories";
-main_java_file_name="Trajectory"
-#final_output_dir_name="1.trajectory_result"
-#position_file_name="cell.txt"
+dataset_dir_name="CheckIn_dataset_TIST2015";
+main_java_file_name="CheckIn"
 basic_path="../0.dataset/$dataset_dir_name";
 #totalMem="-Xms120g"
 #maxMem="-Xmx2400g"

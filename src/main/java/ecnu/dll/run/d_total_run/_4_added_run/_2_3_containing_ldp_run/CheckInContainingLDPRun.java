@@ -12,7 +12,7 @@ public class CheckInContainingLDPRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.checkInFilePath;
-        String finalResultDirName = "2.checkIn_result";
+        String finalResultDirName = "2.checkIn_containing_ldp_result";
 
 
         // 1. parameter 生成
