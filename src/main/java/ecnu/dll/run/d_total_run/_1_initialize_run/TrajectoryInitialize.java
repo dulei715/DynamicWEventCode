@@ -17,7 +17,7 @@ public class TrajectoryInitialize {
         // 2. 将用户数据按照time stamp分类
         TrajectoryDatasetPreprocessRun.splitByTimeMultiThread();
 
-        // 3. 统一time_stamp文件名格式
+        // 3. 统一time_stamp文件名格式 (需要在上条语句运行完运行这条)
         TrajectoryDatasetPreprocessRun.formatFileName("shuffle_by_time_slot");
 
         // 4. 只保留每个time stamp中的最新的用户数据，并记录道runInput中

@@ -1,5 +1,6 @@
 package ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.ldp.impl;
 
+import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.differential_privacy.ldp.frequency_oracle.foImp.GeneralizedRandomizedResponse;
 import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.ldp.PersonalizedLDPEventMechanism;
@@ -73,8 +74,10 @@ public class PersonalizedLDPBudgetUniform extends PersonalizedLDPEventMechanism 
         int size = data.size();
         boolean status;
         List<String> result = new ArrayList<>(size);
+
         for (StreamDataElement<Boolean> element : data) {
             status = false;
+            List<String> keyList = element.getKeyList();
             for (Map.Entry<String, Boolean> entry : element.getDataMap().entrySet()) {
                 if (targetValue.equals(entry.getValue())) {
                     status = true;
@@ -83,7 +86,9 @@ public class PersonalizedLDPBudgetUniform extends PersonalizedLDPEventMechanism 
                 }
             }
             if (status == false) {
-                throw new RuntimeException("Not find target value!");
+                result.add(keyList.get(RandomUtil.getRandomInteger(0, keyList.size() - 1)));
+                System.out.println("Not find target value! Use random value instead!");
+//                throw new RuntimeException("Not find target value!");
             }
         }
         return result;
