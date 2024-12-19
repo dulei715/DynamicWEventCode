@@ -21,7 +21,8 @@ public class TrajectoryContainingLDPPosterRun {
         String extractDir = "extract_containing_ldp_result";
         String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
 
-        int roundSize = 10;
+//        int roundSize = 10;
+        int roundSize = 4;
 
 //        for (int i = 1; i <= roundSize; i++) {
 //            // 3. 后处理
@@ -33,7 +34,7 @@ public class TrajectoryContainingLDPPosterRun {
 //        }
 
         // 3. 后处理
-        CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
+//        CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
         // 4. 合并每轮
         RepeatUtils.combineMultipleMainRound(datasetPath, basicOutputPath);
     }
