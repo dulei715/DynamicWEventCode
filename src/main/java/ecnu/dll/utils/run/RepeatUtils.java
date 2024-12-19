@@ -21,6 +21,7 @@ public class RepeatUtils {
     private static final String[] nameStringArray = new String[]{
             "NP", "BD", "BA", "PBD", "PBA"
 //            , "PDBD", "PDBA"
+            , "PLBU"
     };
 
     /**
@@ -147,16 +148,23 @@ public class RepeatUtils {
         for (int i = 0; i < combineBeanList.size(); i++) {
             combineBean = combineBeanList.get(i);
             updateBean = updateBeanList.get(i);
-            combineBean.setMre(combineBean.getMre()+ updateBean.getMre());
+            combineBean.setBatchSize(combineBean.getBatchSize() + updateBean.getBatchSize());
             combineBean.setTimeCost(combineBean.getTimeCost() + updateBean.getTimeCost());
+            combineBean.setBre(combineBean.getBre() + updateBean.getBre());
+            combineBean.setBjsd(combineBean.getBjsd() + updateBean.getBjsd());
+            combineBean.setMre(combineBean.getMre()+ updateBean.getMre());
+            combineBean.setMjsd(combineBean.getMjsd() + updateBean.getMjsd());
         }
     }
 
     private static void average(List<ResultBean> combineBeanList, int size) {
         for (ResultBean bean : combineBeanList) {
-            bean.setMre(bean.getMre()*1.0/size);
+            bean.setBatchSize(bean.getBatchSize()/size);
             bean.setTimeCost(bean.getTimeCost()/size);
-            bean.setMjsd(bean.getMjsd()*1.0/size);
+            bean.setBre(bean.getBre()/size);
+            bean.setBjsd(bean.getBjsd()/size);
+            bean.setMre(bean.getMre()/size);
+            bean.setMjsd(bean.getMjsd()/size);
         }
     }
 

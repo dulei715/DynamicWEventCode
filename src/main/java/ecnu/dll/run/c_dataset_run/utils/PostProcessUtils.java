@@ -70,9 +70,6 @@ public class PostProcessUtils {
             }
             tempList = new ArrayList<>();
             for (String str : dataStringList) {
-//                if (str.contains("30.0")) {
-//                    System.out.println("woc!");
-//                }
                 tempList.add(ResultPartBean.toBean(str));
             }
             dataList.add(tempList);
@@ -87,14 +84,16 @@ public class PostProcessUtils {
                 resultPartBean.setBatchSize(resultPartBean.getBatchSize()+ tempBean.getBatchSize());
                 resultPartBean.setbRE(resultPartBean.getbRE() + tempBean.getbRE());
                 resultPartBean.setTimeCost(resultPartBean.getTimeCost() + tempBean.getTimeCost());
+                resultPartBean.setbJSD(resultPartBean.getbJSD() + tempBean.getbJSD());
             }
             resultPartBean.setmRE(resultPartBean.getbRE() / resultPartBean.getBatchSize());
+            resultPartBean.setmJSD(resultPartBean.getbJSD() / resultPartBean.getBatchSize());
             resultList.add(resultPartBean);
         }
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, dirPath, "combine", "combine.txt");
         BasicWrite basicWrite = new BasicWrite(",");
         basicWrite.startWriting(outputPath);
-        basicWrite.writeOneLine(title + ",MRE");
+        basicWrite.writeOneLine(title + ",MRE" + ",MJSD");
         for (ResultPartBean bean : resultList) {
             basicWrite.writeOneLine(bean.toCSVString());
         }
@@ -148,11 +147,14 @@ public class PostProcessUtils {
             for (List<ResultBean> innerList : dataList) {
                 tempBean = innerList.get(i);
                 resultBean.setBatchSize(resultBean.getBatchSize()+ tempBean.getBatchSize());
-                resultBean.setBre(resultBean.getBre() + tempBean.getBre());
                 resultBean.setTimeCost(resultBean.getTimeCost() + tempBean.getTimeCost());
+                resultBean.setBre(resultBean.getBre() + tempBean.getBre());
                 resultBean.setMre(resultBean.getMre() + tempBean.getMre()*tempBean.getBatchSize());
+                resultBean.setBjsd(resultBean.getBjsd() + tempBean.getBjsd());
+                resultBean.setMjsd(resultBean.getMjsd() + tempBean.getMjsd() * tempBean.getBatchSize());
             }
             resultBean.setMre(resultBean.getMre() / resultBean.getBatchSize());
+            resultBean.setMjsd(resultBean.getMjsd() / resultBean.getBatchSize());
             resultList.add(resultBean);
         }
         String outputPath = tempOutputFile.getAbsolutePath();

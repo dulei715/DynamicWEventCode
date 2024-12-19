@@ -10,15 +10,17 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
     protected Double privacyBudget;
     protected Integer windowSize;
     protected Double bRE;
+    protected Double bJSD;
 
     protected Double mRE = 0D;
+    protected Double mJSD = 0D;
 
 
 
 
 
 
-    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE) {
+    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE, Double bJSD) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
@@ -26,6 +28,7 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         this.privacyBudget = privacyBudget;
         this.windowSize = windowSize;
         this.bRE = bRE;
+        this.bJSD = bJSD;
     }
 
     public String toCSVString() {
@@ -37,7 +40,9 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         stringBuilder.append(this.privacyBudget).append(",");
         stringBuilder.append(this.windowSize).append(",");
         stringBuilder.append(this.bRE).append(",");
-        stringBuilder.append(this.mRE);
+        stringBuilder.append(this.bJSD).append(",");
+        stringBuilder.append(this.mRE).append(",");
+        stringBuilder.append(this.mJSD);
         return stringBuilder.toString();
     }
 
@@ -45,7 +50,7 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
     }
 
     public static ResultPartBean getInitializedBean(ResultPartBean modelBean) {
-        return new ResultPartBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D);
+        return new ResultPartBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D);
     }
 
     public String getName() {
@@ -112,6 +117,22 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         this.mRE = mRE;
     }
 
+    public Double getbJSD() {
+        return bJSD;
+    }
+
+    public void setbJSD(Double bJSD) {
+        this.bJSD = bJSD;
+    }
+
+    public Double getmJSD() {
+        return mJSD;
+    }
+
+    public void setmJSD(Double mJSD) {
+        this.mJSD = mJSD;
+    }
+
     public static ResultPartBean toBean(String line) {
         String[] data = line.split(",");
         String name = data[0];
@@ -122,7 +143,11 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         Double tempDouble = Double.valueOf(data[5]);
         Integer windowSize = (int)Math.round(tempDouble);
         Double bRE = Double.valueOf(data[6]);
-        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
+        Double bJSD = 0D;
+        if (data.length > 7) {
+            bJSD = Double.valueOf(data[7]);
+        }
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD);
     }
 
     @Override
@@ -134,7 +159,11 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         Double privacyBudget = Double.valueOf(data[4]);
         Integer windowSize = Integer.valueOf(data[5]);
         Double bRE = Double.valueOf(data[6]);
-        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE);
+        Double bJSD = 0D;
+        if (data.length > 7) {
+            bJSD = Double.valueOf(data[7]);
+        }
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD);
     }
 
     @Override
