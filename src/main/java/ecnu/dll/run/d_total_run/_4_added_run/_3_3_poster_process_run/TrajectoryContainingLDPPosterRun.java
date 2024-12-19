@@ -34,7 +34,7 @@ public class TrajectoryContainingLDPPosterRun {
 //        }
 
         // 3. 后处理
-//        CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
+        CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
         // 4. 合并每轮
         RepeatUtils.combineMultipleMainRound(datasetPath, basicOutputPath);
     }
