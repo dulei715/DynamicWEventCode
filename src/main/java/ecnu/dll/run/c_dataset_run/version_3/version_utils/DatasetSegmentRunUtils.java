@@ -194,9 +194,6 @@ public class DatasetSegmentRunUtils {
         }
     }
     public static void enhancedDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        /**
-         * 包含了Trace相关的两个方案
-         */
         List<Double> budgetChangeList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
         List<Integer> windowSizeChangeList = ConfigureUtils.getIndependentWindowSizeList("default");
 

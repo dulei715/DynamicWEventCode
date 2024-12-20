@@ -51,7 +51,7 @@ y_pba = data(:,5);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = "$w$";
 % yLabelName = 'MRE';
-yLabelName = "log(AMRE)";
+yLabelName = "ln(AMRE)";
 
 legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;

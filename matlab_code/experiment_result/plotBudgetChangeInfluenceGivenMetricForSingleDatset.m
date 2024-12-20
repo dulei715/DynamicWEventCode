@@ -47,7 +47,7 @@ end
 %xLabelName = "\epsilon";
 xLabelName = "$\mathcal{E}$";
 if metric_whether_log 
-    yLabelName = "log(" + metric_name + ")";
+    yLabelName = "ln(" + metric_name + ")";
 else
     yLabelName = metric_name;
 end

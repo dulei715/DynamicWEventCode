@@ -39,7 +39,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = '$w$ size';
 % yLabelName = 'MRE';
-yLabelName = 'log(MRE)';
+yLabelName = 'ln(MRE)';
 
 legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;

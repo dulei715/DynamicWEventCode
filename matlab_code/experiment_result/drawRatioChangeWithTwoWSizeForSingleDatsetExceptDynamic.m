@@ -51,7 +51,7 @@ y_pba = data(:,5);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 xLabelName = "user ratio of $w_k$=40";
 % yLabelName = 'MRE';
-yLabelName = "log(AMRE)";
+yLabelName = "ln(AMRE)";
 
 legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 %legend_names = ["PBD";"PBA"];
@@ -91,5 +91,5 @@ h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), '
 %h = legend(legend_names(1), legend_names(2), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
 legend('off');
-export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
+%export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
 %print(fig, outputFileName,'-depsc2')
