@@ -17,7 +17,7 @@ end
 i = 0;
 metric_col_index = 10; % 数据中MJS所在列
 metric_name = "AJSD";
-metric_whether_log = 0;
+metric_whether_log = 1;
 for dir_name = dataset_dirs
     i = i + 1;
     abs_dir = strcat(input_basicPath, dir_name);

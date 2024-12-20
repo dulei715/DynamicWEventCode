@@ -92,13 +92,13 @@ set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Time New Roman');
 %h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
 h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
-%legend('off');
+legend('off');
 
 %saveas(fig,outputFileName,'eps');
 %print(fig, outputFileName, '-depsc2');
 %saveas(fig,outputFileName,'fig');
 
-%export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName); %for windows system
+export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName); %for windows system
 
 %export_fig(outputFileName, '.eps');
 %print(fig, outputFileName,'-dpdf');
