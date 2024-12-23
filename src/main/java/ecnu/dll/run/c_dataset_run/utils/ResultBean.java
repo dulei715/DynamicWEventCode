@@ -37,7 +37,7 @@ public class ResultBean implements BeanInterface<ResultBean> {
     public ResultBean() {
     }
 
-    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double mre, Double bjsd, Double mjsd) {
+    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double bjsd, Double mre, Double mjsd) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
@@ -45,8 +45,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.privacyBudget = privacyBudget;
         this.windowSize = windowSize;
         this.bre = bre;
-        this.mre = mre;
         this.bjsd = bjsd;
+        this.mre = mre;
         this.mjsd = mjsd;
     }
 
@@ -148,8 +148,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
                 ", privacyBudget=" + privacyBudget +
                 ", windowSize=" + windowSize +
                 ", bre=" + bre +
-                ", mre=" + mre +
                 ", bjsd=" + bjsd +
+                ", mre=" + mre +
                 ", mjsd=" + mjsd +
                 '}';
     }

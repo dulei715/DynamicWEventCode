@@ -21,9 +21,9 @@ public class TrajectoryContainingLDPPosterRun {
         String extractDir = "extract_containing_ldp_result";
         String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
 
-        int roundSize = 10;
+//        int roundSize = 10;
 //        int roundSize = 2;
-//        int roundSize = 4;
+        int roundSize = 4;
 
 //        for (int i = 1; i <= roundSize; i++) {
 //            // 3. 后处理

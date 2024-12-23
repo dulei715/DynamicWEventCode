@@ -105,7 +105,8 @@ public class ResultTest {
         Integer defaultWindowSize = 120;
 //        boolean whetherLog = false;
         boolean whetherLog = true;
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
+//        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
         List<File> dirFileList;
@@ -149,6 +150,91 @@ public class ResultTest {
 //        boolean whetherLog = false;
         boolean whetherLog = true;
         String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Integer, File> windowSizeFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempBudget.equals(defaultEpsilon)) {
+//                dirFileList.add(innerDir);
+                windowSizeFileMap.put(tempWindowSize, innerDir);
+            }
+        }
+        dirFileList = new ArrayList<>();
+        dirFileList.addAll(windowSizeFileMap.values());
+        File[] dirFileArray = dirFileList.toArray(new File[0]);
+        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        MyPrint.showList(result[0]);
+        MyPrint.showList(result[1]);
+        double sum = ListUtils.sum(result[1]);
+        System.out.println(sum / result[1].size());
+    }
+
+    @Test
+    public void testContainingLDPBudgetChangeImprove() {
+//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+//        String datasetOrderName = "2.check_in_containing_ldp_result";
+        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "4.sin_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
+//        String originalMethodName = "BD";
+//        String improveMethodName = "PBD";
+        String originalMethodName = "BA";
+        String improveMethodName = "PBA";
+        Integer defaultWindowSize = 120;
+//        boolean whetherLog = false;
+        boolean whetherLog = true;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Double, File> budgetFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempWindowSize.equals(defaultWindowSize)) {
+                budgetFileMap.put(tempBudget, innerDir);
+            }
+        }
+        dirFileList = new ArrayList<>();
+        dirFileList.addAll(budgetFileMap.values());
+        File[] dirFileArray = dirFileList.toArray(new File[0]);
+        List[] result = getAverageImprovementForBudgetChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        MyPrint.showList(result[0]);
+        MyPrint.showList(result[1]);
+        double sum = ListUtils.sum(result[1]);
+        System.out.println(sum / result[1].size());
+    }
+
+    @Test
+    public void testContainingLDPWindowSizeImprove() {
+//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+//        String datasetOrderName = "2.check_in_containing_ldp_result";
+//        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "4.sin_containing_ldp_result";
+        String datasetOrderName = "5.log_containing_ldp_result";
+//        String originalMethodName = "BD";
+//        String improveMethodName = "PBD";
+        String originalMethodName = "BA";
+        String improveMethodName = "PBA";
+        Double defaultEpsilon = 0.6;
+        boolean whetherLog = false;
+//        boolean whetherLog = true;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
         List<File> dirFileList;
