@@ -44,8 +44,8 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%xLabelName = "\epsilon";
-xLabelName = "$\mathcal{E}$";
+xLabelName = "\epsilon";
+%xLabelName = "$\mathcal{E}$";
 if metric_whether_log 
     yLabelName = "ln(" + metric_name + ")";
 else

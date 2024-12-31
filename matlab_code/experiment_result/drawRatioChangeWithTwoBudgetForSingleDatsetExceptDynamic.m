@@ -49,7 +49,8 @@ y_pba = data(:,5);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "user ratio of $\mathcal{E}_k$=1.0";
+%xLabelName = "user ratio of $\mathcal{E}_k$=1.0";
+xLabelName = "user ratio of $\epsilon_k$=1.0";
 % yLabelName = 'MRE';
 yLabelName = "ln(AMRE)";
 

@@ -31,8 +31,8 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%xLabelName = "\epsilon";
-xLabelName = "$\mathcal{E}$";
+xLabelName = "\epsilon";
+%xLabelName = "$\mathcal{E}$";
 % yLabelName = 'MRE';
 yLabelName = "running time (s)";
 
