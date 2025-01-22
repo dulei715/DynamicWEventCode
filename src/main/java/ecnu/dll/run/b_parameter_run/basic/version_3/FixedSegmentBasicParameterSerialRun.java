@@ -9,6 +9,7 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.run.a_mechanism_run._0_NonPrivacyMechanismRun;
 import ecnu.dll.run.a_mechanism_run._1_WEventMechanismRun;
 import ecnu.dll.run.a_mechanism_run._2_PersonalizedEventMechanismRun;
+import ecnu.dll.run.a_mechanism_run._3_PersonalizedDynamicEventMechanismRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.utils.ParameterGroupInitializeUtils;
 import ecnu.dll.run.c_dataset_run.utils.DatasetParameterUtils;
 import ecnu.dll.schemes._basic_struct.Mechanism;
@@ -150,11 +151,11 @@ public class FixedSegmentBasicParameterSerialRun {
                 experimentResultList.add(tempResult);
 
 
-//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-//                experimentResultList.add(tempResult);
-//
-//                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
-//                experimentResultList.add(tempResult);
+                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetDistribution)mechanismMap.get(Constant.DynamicPersonalizedBudgetDistributionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+                experimentResultList.add(tempResult);
+
+                tempResult = _3_PersonalizedDynamicEventMechanismRun.runBatch((DynamicPersonalizedBudgetAbsorption)mechanismMap.get(Constant.DynamicPersonalizedBudgetAbsorptionSchemeName), batchID, batchDataList, rawPublicationBatchList, remainBackwardPrivacyBudgetListBatchList, backwardWindowSizeListBatchList, forwardPrivacyBudgetListBatchList, forwardWindowSizeListBatchList);
+                experimentResultList.add(tempResult);
 
                 // write result
                 outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
