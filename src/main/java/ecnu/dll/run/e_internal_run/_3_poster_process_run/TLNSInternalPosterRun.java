@@ -32,7 +32,8 @@ public class TLNSInternalPosterRun {
 
 
         // 5. 合并
+        int roundSize = 10;
         CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);
-        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath);
+        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath, roundSize);
     }
 }

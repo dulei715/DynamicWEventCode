@@ -9,6 +9,6 @@ public class CombineMultipleInternalRound {
 //        String inputDir = Constant.tlnsFilePath;
 //        String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "1.result_internal");
 //        combineMultipleMainRound(inputDir, outputDir);
-        RepeatUtils.combineMultipleInternalRound(inputDir, outputDir);
+        RepeatUtils.combineMultipleInternalRound(inputDir, outputDir, 10);
     }
 }

@@ -29,9 +29,10 @@ public class LogInternalPosterRun {
 //            PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
 //            PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
 //        }
+        int roundSize = 10;
 
         // 5. 合并
         CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);
-        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath);
+        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath, roundSize);
     }
 }

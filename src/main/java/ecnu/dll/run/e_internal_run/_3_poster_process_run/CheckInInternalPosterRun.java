@@ -31,9 +31,10 @@ public class CheckInInternalPosterRun {
 //            PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
 //        }
 
+        int roundSize = 10;
 
         // 4. 合并
         CombineForEachRoundInternal.combineAllRoundInternal(datasetPath, finalResultDirName);
-        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath);
+        RepeatUtils.combineMultipleInternalRound(datasetPath, basicOutputPath, roundSize);
     }
 }
