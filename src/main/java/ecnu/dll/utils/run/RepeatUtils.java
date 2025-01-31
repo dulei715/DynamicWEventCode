@@ -21,7 +21,7 @@ public class RepeatUtils {
 
     private static final String[] nameStringArray = new String[]{
             "NP", "BD", "BA", "PBD", "PBA"
-//            , "PDBD", "PDBA"
+            , "PDBD", "PDBA"
             , "PLBU"
     };
 
@@ -107,7 +107,7 @@ public class RepeatUtils {
     }
 
     private static void combineSerialProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
-        // todo: 还未修改成关于串行的运行结果的合并。。。
+        // todo: 还未修改成关于串行的运行结果的合并(目前和combineMainProcess完全相同)
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
         BeanInterface<ResultBean> modelBean = new ResultBean();

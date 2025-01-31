@@ -54,6 +54,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         // todo: 这里未修改为batch，也没加KL散度
         varianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.MRE, String.valueOf(varianceStatistic));
+        experimentResult.addPair(Constant.BJSD, String.valueOf(batchTotalDivergence));
         return experimentResult;
     }
 
@@ -70,6 +71,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         StreamNoiseCountData publicationData;
         long startTime, endTime, timeCost;
         double batchTotalVarianceStatistic = 0;
+        double batchTotalDivergence = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeBatchSize);
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeBatchSize; t++) {
@@ -89,9 +91,11 @@ public class _3_PersonalizedDynamicEventMechanismRun {
             rawPublicationData = rawPublicationBatchList.get(i);
             publicationData = publicationList.get(i);
             batchTotalVarianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            batchTotalDivergence += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
 //        batchTotalVarianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
+        experimentResult.addPair(Constant.BJSD, String.valueOf(batchTotalDivergence));
         return experimentResult;
     }
 }

@@ -4,19 +4,17 @@ output_dataset_names = ["trajectory", "check_in", "tlns", "sin", "log"];
 default_window_size = 120;
 
 i = 0;
-metric_col_index = 9; % 数据中MRE所在列
-metric_name = "AMRE";
+metric_col_index = 9; % 数据中MRE�?���?metric_name = "AMRE";
 metric_whether_log = 1;
 for dir_name = dataset_dirs
     i = i + 1;
     abs_dir = strcat(input_basicPath, dir_name);
-    outputFileName = fullfile(char(output_basicPath), 'fig', 'experiment_result_add', char(strcat(output_dataset_names(i),"_budget_change_", metric_name,"_containing_ldp.eps")));
+    outputFileName = fullfile(char(output_basicPath), 'figures', 'experiment_result_add', char(strcat(output_dataset_names(i),"_budget_change_", metric_name,"_containing_ldp.eps")));
     plotBudgetChangeInfluenceGivenMetricForSingleDatset(abs_dir, default_window_size, metric_col_index, metric_name, metric_whether_log, outputFileName);
 end
 
 i = 0;
-metric_col_index = 10; % 数据中MJS所在列
-metric_name = "AJSD";
+metric_col_index = 10; % 数据中MJS�?���?metric_name = "AJSD";
 metric_whether_log = 1;
 for dir_name = dataset_dirs
     i = i + 1;

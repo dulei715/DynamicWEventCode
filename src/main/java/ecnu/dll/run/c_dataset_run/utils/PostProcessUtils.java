@@ -219,6 +219,7 @@ public class PostProcessUtils {
     public static void main(String[] args) {
         String inputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "result");
         String outputDir = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "result_combine");
-        furtherCombine(inputDir, outputDir);
+        combineResult(inputDir);
+//        furtherCombine(inputDir, outputDir);
     }
 }
