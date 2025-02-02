@@ -53,7 +53,7 @@ end
 
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
 %legend_names = ["BD";"BA";"PLBU";"PBD";"PBA"];
-legend_names = ["BD";"BA";"PLBU";"PBD";"PBA", "PDBD","PDBA"];
+legend_names = ["BD";"BA";"PLBU";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;
 figure_FontSize = 28;
 figure_FontSize_X = 28;
