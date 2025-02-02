@@ -4,7 +4,8 @@ output_dataset_names = ["trajectory", "check_in", "tlns", "sin", "log"];
 default_window_size = 120;
 
 i = 0;
-metric_col_index = 9; % æ•°æ®ä¸­MREæ‰?œ¨åˆ?metric_name = "AMRE";
+metric_col_index = 9; % metric_name = "AMRE";
+metric_name = "AMRE";
 metric_whether_log = 1;
 for dir_name = dataset_dirs
     i = i + 1;
@@ -14,7 +15,8 @@ for dir_name = dataset_dirs
 end
 
 i = 0;
-metric_col_index = 10; % æ•°æ®ä¸­MJSæ‰?œ¨åˆ?metric_name = "AJSD";
+metric_col_index = 10; % metric_name = "AJSD";
+metric_name = 'AJSD';
 metric_whether_log = 1;
 for dir_name = dataset_dirs
     i = i + 1;

@@ -1,12 +1,11 @@
-function y = plotBudgetChangeInfluenceGivenMetricForSingleDatset( ...
-    basic_path, default_window_size, metric_col_index, metric_name, metric_whether_log, outputFileName)
+function y = plotBudgetChangeInfluenceGivenMetricForSingleDatset(basic_path, default_window_size, metric_col_index, metric_name, metric_whether_log, outputFileName)
 dir_names = list_dir_name(basic_path);
 y_bd = zeros(1,5);
 y_ba = zeros(1,5);
 y_pbd = zeros(1,5);
 y_pba = zeros(1,5);
-%y_pdbd = zeros(1,5);
-%y_pdba = zeros(1,5);
+y_pdbd = zeros(1,5);
+y_pdba = zeros(1,5);
 y_plbu = zeros(1,5);
 
 x = zeros(1,5);
@@ -27,25 +26,25 @@ for temp_name = dir_names
             y_ba(i) = log(temp_table{3,metric_col_index});
             y_pbd(i) = log(temp_table{4,metric_col_index});
             y_pba(i) = log(temp_table{5,metric_col_index});
-%            y_pdbd(i) = log(temp_table{6,metric_col_index});
-%            y_pdba(i) = log(temp_table{7,metric_col_index});
-            y_plbu(i) = log(temp_table{6,metric_col_index});
+            y_pdbd(i) = log(temp_table{6,metric_col_index});
+            y_pdba(i) = log(temp_table{7,metric_col_index});
+            y_plbu(i) = log(temp_table{8,metric_col_index});
     else
             y_bd(i) = temp_table{2,metric_col_index};
             y_ba(i) = temp_table{3,metric_col_index};
             y_pbd(i) = temp_table{4,metric_col_index};
             y_pba(i) = temp_table{5,metric_col_index};
-%            y_pdbd(i) = temp_table{6,metric_col_index};
-%            y_pdba(i) = temp_table{7,metric_col_index};
-            y_plbu(i) = temp_table{6,metric_col_index};        
+            y_pdbd(i) = temp_table{6,metric_col_index};
+            y_pdba(i) = temp_table{7,metric_col_index};
+            y_plbu(i) = temp_table{8,metric_col_index};        
     end
 
 end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xLabelName = "$\epsilon$";
-%xLabelName = "$\mathcal{E}$";
+%xLabelName = "$\epsilon$";
+xLabelName = "$\mathcal{E}$";
 if metric_whether_log 
     yLabelName = "ln(" + metric_name + ")";
 else
@@ -53,7 +52,8 @@ else
 end
 
 %legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
-legend_names = ["BD";"BA";"PLBU";"PBD";"PBA"];
+%legend_names = ["BD";"BA";"PLBU";"PBD";"PBA"];
+legend_names = ["BD";"BA";"PLBU";"PBD";"PBA", "PDBD","PDBA"];
 figure_MarkerSize = 20;
 figure_FontSize = 28;
 figure_FontSize_X = 28;
@@ -69,8 +69,8 @@ plot(x, y_ba, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_plbu, 'c*--', 'LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pbd, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pba, 'go--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-%plot(x, y_pdbd, 'cd-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-%plot(x, y_pdba, 'rd--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_pdbd, 'cs:','LineWidth',2, 'MarkerSize',figure_MarkerSize);
+plot(x, y_pdba, 'ro:','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 ylabel(yLabelName);
 
 
@@ -90,7 +90,7 @@ set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Time New Roman');
 %set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
 %h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), 'Location','Best');
-h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), 'Location','Best');
+h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4), legend_names(5), legend_names(6), legend_names(7), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
 legend('off');
 
