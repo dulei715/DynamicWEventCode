@@ -30,16 +30,17 @@ public class ResultTest {
         return resultList;
     }
 
-    public static List[] getAverageImprovementForBudgetChange(File[] fileDirFile, String improveMethodName, String originalMethodName, boolean whetherLog) {
+    public static List[] getAverageImprovementForBudgetChange(File[] fileDirFile, String furtherImproveMethodName, String improveMethodName, String originalMethodName, boolean whetherLog) {
         BeanInterface<ResultBean> bean = new ResultBean();
         String dirName;
         int dataLength = fileDirFile.length;
         List<Double> epsilonList = new ArrayList<>(dataLength);
         List<Double> improveRatioList = new ArrayList<>(dataLength);
+        List<Double> furtherImproveRatioList = new ArrayList<>(dataLength);
         List<ResultBean> tempResult;
-        ResultBean improveBean, originalBean;
+        ResultBean improveBean, furtherImproveBean, originalBean;
         File resultFile;
-        Double originalValue, improveValue;
+        Double originalValue, improveValue, furtherImproveValue;
         for (File dirFile : fileDirFile) {
             dirName = dirFile.getName();
             epsilonList.add(ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(dirName).getKey());
@@ -47,66 +48,79 @@ public class ResultTest {
             tempResult = CSVReadEnhanced.readDataToBeanList(resultFile.getAbsolutePath(), bean);
             improveBean = searchBeanByName(tempResult, improveMethodName).get(0);
             originalBean = searchBeanByName(tempResult, originalMethodName).get(0);
+            furtherImproveBean = searchBeanByName(tempResult, furtherImproveMethodName).get(0);
             originalValue = originalBean.getMre();
             improveValue = improveBean.getMre();
+            furtherImproveValue = furtherImproveBean.getMre();
             if (whetherLog) {
                 improveRatioList.add((Math.log(originalValue) - Math.log(improveValue)) / Math.log(originalValue));
+                furtherImproveRatioList.add((Math.log(originalValue) - Math.log(furtherImproveValue)) / Math.log(originalValue));
             } else {
                 improveRatioList.add((originalValue - improveValue) / originalValue);
+                furtherImproveRatioList.add((originalValue - furtherImproveValue) / originalValue);
             }
         }
         List[] resultList = new List[] {
                 epsilonList,
-                improveRatioList
+                improveRatioList,
+                furtherImproveRatioList
         };
         return resultList;
     }
-    public static List[] getAverageImprovementForWindowSizeChange(File[] fileDirFile, String improveMethodName, String originalMethodName, boolean whetherLog) {
+    public static List[] getAverageImprovementForWindowSizeChange(File[] fileDirFile, String furtherImproveMethodName, String improveMethodName, String originalMethodName, boolean whetherLog) {
         BeanInterface<ResultBean> bean = new ResultBean();
         String dirName;
         int dataLength = fileDirFile.length;
         List<Integer> windowSizeList = new ArrayList<>(dataLength);
         List<Double> improveRatioList = new ArrayList<>(dataLength);
+        List<Double> furtherImproveRatioList = new ArrayList<>(dataLength);
         List<ResultBean> tempResult;
-        ResultBean improveBean, originalBean;
+        ResultBean improveBean, furtherImproveBean, originalBean;
         File resultFile;
-        Double originalValue, improveValue;
+        Double originalValue, improveValue, furtherImproveValue;
         for (File dirFile : fileDirFile) {
             dirName = dirFile.getName();
             windowSizeList.add(ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(dirName).getValue());
             resultFile = new File(dirFile, "result.txt");
             tempResult = CSVReadEnhanced.readDataToBeanList(resultFile.getAbsolutePath(), bean);
             improveBean = searchBeanByName(tempResult, improveMethodName).get(0);
+            furtherImproveBean = searchBeanByName(tempResult, furtherImproveMethodName).get(0);
             originalBean = searchBeanByName(tempResult, originalMethodName).get(0);
             originalValue = originalBean.getMre();
             improveValue = improveBean.getMre();
+            furtherImproveValue = furtherImproveBean.getMre();
             if (whetherLog) {
                 improveRatioList.add((Math.log(originalValue) - Math.log(improveValue)) / Math.log(originalValue));
+                furtherImproveRatioList.add((Math.log(originalValue) - Math.log(furtherImproveValue)) / Math.log(originalValue));
             } else {
                 improveRatioList.add((originalValue - improveValue) / originalValue);
+                furtherImproveRatioList.add((originalValue - furtherImproveValue) / originalValue);
             }
         }
         List[] resultList = new List[] {
                 windowSizeList,
-                improveRatioList
+                improveRatioList,
+                furtherImproveRatioList
         };
         return resultList;
     }
 
     @Test
     public void testBudgetChangeImprove() {
-//        String datasetOrderName = "1.trajectory_result";
-//        String datasetOrderName = "2.check_in_result";
-        String datasetOrderName = "5.log_result";
-//        String originalMethodName = "BD";
-//        String improveMethodName = "PBD";
-        String originalMethodName = "BA";
-        String improveMethodName = "PBA";
+//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+        String datasetOrderName = "2.check_in_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
+        String originalMethodName = "BD";
+        String improveMethodName = "PBD";
+        String furtherImproveMethodName = "PDBD";
+//        String originalMethodName = "BA";
+//        String improveMethodName = "PBA";
+//        String furtherImproveMethodName = "PDBA";
         Integer defaultWindowSize = 120;
 //        boolean whetherLog = false;
         boolean whetherLog = true;
 //        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result", datasetOrderName);
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
         List<File> dirFileList;
@@ -128,11 +142,14 @@ public class ResultTest {
         dirFileList = new ArrayList<>();
         dirFileList.addAll(budgetFileMap.values());
         File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForBudgetChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        List[] result = getAverageImprovementForBudgetChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
         MyPrint.showList(result[0]);
         MyPrint.showList(result[1]);
         double sum = ListUtils.sum(result[1]);
         System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
     }
 
     @Test
@@ -144,8 +161,10 @@ public class ResultTest {
         String datasetOrderName = "5.log_result";
 //        String originalMethodName = "BD";
 //        String improveMethodName = "PBD";
+//        String furtherImproveMethodName = "PDBD";
         String originalMethodName = "BA";
         String improveMethodName = "PBA";
+        String furtherImproveMethodName = "PDBA";
         Double defaultEpsilon = 0.6;
 //        boolean whetherLog = false;
         boolean whetherLog = true;
@@ -171,27 +190,32 @@ public class ResultTest {
         dirFileList = new ArrayList<>();
         dirFileList.addAll(windowSizeFileMap.values());
         File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
         MyPrint.showList(result[0]);
         MyPrint.showList(result[1]);
         double sum = ListUtils.sum(result[1]);
         System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
     }
 
     @Test
     public void testContainingLDPBudgetChangeImprove() {
 //        String datasetOrderName = "1.trajectory_containing_ldp_result";
 //        String datasetOrderName = "2.check_in_containing_ldp_result";
-        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "3.tlns_containing_ldp_result";
 //        String datasetOrderName = "4.sin_containing_ldp_result";
-//        String datasetOrderName = "5.log_containing_ldp_result";
+        String datasetOrderName = "5.log_containing_ldp_result";
 //        String originalMethodName = "BD";
 //        String improveMethodName = "PBD";
+//        String furtherImproveMethodName = "PDBD";
         String originalMethodName = "BA";
         String improveMethodName = "PBA";
+        String furtherImproveMethodName = "PDBA";
         Integer defaultWindowSize = 120;
-//        boolean whetherLog = false;
-        boolean whetherLog = true;
+        boolean whetherLog = false;
+//        boolean whetherLog = true;
         String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
@@ -213,11 +237,14 @@ public class ResultTest {
         dirFileList = new ArrayList<>();
         dirFileList.addAll(budgetFileMap.values());
         File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForBudgetChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        List[] result = getAverageImprovementForBudgetChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
         MyPrint.showList(result[0]);
         MyPrint.showList(result[1]);
         double sum = ListUtils.sum(result[1]);
         System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
     }
 
     @Test
@@ -229,8 +256,10 @@ public class ResultTest {
         String datasetOrderName = "5.log_containing_ldp_result";
 //        String originalMethodName = "BD";
 //        String improveMethodName = "PBD";
+//        String furtherImproveMethodName = "PDBD";
         String originalMethodName = "BA";
         String improveMethodName = "PBA";
+        String furtherImproveMethodName = "PDBA";
         Double defaultEpsilon = 0.6;
         boolean whetherLog = false;
 //        boolean whetherLog = true;
@@ -256,11 +285,14 @@ public class ResultTest {
         dirFileList = new ArrayList<>();
         dirFileList.addAll(windowSizeFileMap.values());
         File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, improveMethodName, originalMethodName, whetherLog);
+        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
         MyPrint.showList(result[0]);
         MyPrint.showList(result[1]);
         double sum = ListUtils.sum(result[1]);
         System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
     }
 
 }
