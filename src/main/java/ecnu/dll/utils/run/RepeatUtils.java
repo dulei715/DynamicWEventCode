@@ -24,6 +24,10 @@ public class RepeatUtils {
             , "PDBD", "PDBA"
             , "PLBU"
     };
+    private static final String[] nameStringArrayOnlyForTimeCost = new String[]{
+            "NP", "BD", "BA", "PBD", "PBA"
+            , "PDBD", "PDBA"
+    };
 
     /**
      * 将每轮最终结果合并取平均值
@@ -107,7 +111,7 @@ public class RepeatUtils {
     }
 
     private static void combineSerialProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
-        // todo: 还未修改成关于串行的运行结果的合并(目前和combineMainProcess完全相同)
+        // todo: 还未修改成关于串行的运行结果的合并(目前和combineMainProcess除了nameStringArrayOnlyForTimeCost外完全相同)
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
         BeanInterface<ResultBean> modelBean = new ResultBean();
@@ -121,7 +125,7 @@ public class RepeatUtils {
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
 //            System.out.println(title);
             combineBeanList = new ArrayList<>();
-            for (String beanName : nameStringArray) {
+            for (String beanName : nameStringArrayOnlyForTimeCost) {
                 tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
                 combineBeanList.add(tempBean);
             }
