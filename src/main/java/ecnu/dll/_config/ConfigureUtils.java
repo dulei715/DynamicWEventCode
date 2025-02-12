@@ -145,14 +145,17 @@ public class ConfigureUtils {
             return datasetFile.getAbsolutePath();
         }
         List<Element> elemnetList = document.selectNodes("//datasets/basicPath[@type='absolute']");
+        List<String> testPathList = new ArrayList<>();
         for (Element element : elemnetList) {
             absolutePath = element.getTextTrim();
             absolutePath = absolutePath.replace(";", ConstantValues.FILE_SPLIT);
+            testPathList.add(absolutePath);
             datasetFile = new File(absolutePath);
             if (datasetFile.exists()) {
                 return datasetFile.getAbsolutePath();
             }
         }
+        MyPrint.showList(testPathList, ConstantValues.LINE_SPLIT);
         throw new RuntimeException("No valid data set path!");
     }
 
