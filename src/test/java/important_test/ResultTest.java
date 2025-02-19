@@ -204,9 +204,9 @@ public class ResultTest {
     public void testContainingLDPBudgetChangeImprove() {
 //        String datasetOrderName = "1.trajectory_containing_ldp_result";
 //        String datasetOrderName = "2.check_in_containing_ldp_result";
-//        String datasetOrderName = "3.tlns_containing_ldp_result";
+        String datasetOrderName = "3.tlns_containing_ldp_result";
 //        String datasetOrderName = "4.sin_containing_ldp_result";
-        String datasetOrderName = "5.log_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
 //        String originalMethodName = "BD";
 //        String improveMethodName = "PBD";
 //        String furtherImproveMethodName = "PDBD";
@@ -261,8 +261,8 @@ public class ResultTest {
         String improveMethodName = "PBA";
         String furtherImproveMethodName = "PDBA";
         Double defaultEpsilon = 0.6;
-        boolean whetherLog = false;
-//        boolean whetherLog = true;
+//        boolean whetherLog = false;
+        boolean whetherLog = true;
         String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
