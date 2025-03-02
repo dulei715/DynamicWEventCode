@@ -1,4 +1,4 @@
-function y = plotWindowSizeChangeInfluenceGivenMetricForSingleDatset( ...
+function y = plotBasicWindowSizeTimeCost( ...
     basic_path, default_budget, metric_col_index, metric_name, metric_whether_log, shrink_ratio, outputFileName)
 dir_names = list_dir_name(basic_path);
 y_bd = zeros(1,5);
@@ -7,7 +7,7 @@ y_pbd = zeros(1,5);
 y_pba = zeros(1,5);
 y_pdbd = zeros(1,5);
 y_pdba = zeros(1,5);
-y_plbu = zeros(1,5);
+%y_plbu = zeros(1,5);
 
 x = zeros(1,5);
 i = 0;
@@ -30,7 +30,7 @@ for temp_name = dir_names
         data(i,5) = log(temp_table{5,metric_col_index})*shrink_ratio;
         data(i,6) = log(temp_table{6,metric_col_index})*shrink_ratio;
         data(i,7) = log(temp_table{7,metric_col_index})*shrink_ratio;
-        data(i,8) = log(temp_table{8,metric_col_index})*shrink_ratio;
+        %data(i,8) = log(temp_table{8,metric_col_index})*shrink_ratio;
     else
         data(i,2) = temp_table{2,metric_col_index}*shrink_ratio;
         data(i,3) = temp_table{3,metric_col_index}*shrink_ratio;
@@ -38,7 +38,7 @@ for temp_name = dir_names
         data(i,5) = temp_table{5,metric_col_index}*shrink_ratio;
         data(i,6) = temp_table{6,metric_col_index}*shrink_ratio;
         data(i,7) = temp_table{7,metric_col_index}*shrink_ratio;
-        data(i,8) = temp_table{8,metric_col_index}*shrink_ratio;
+        %data(i,8) = temp_table{8,metric_col_index}*shrink_ratio;
     end
 
 end
@@ -51,7 +51,7 @@ y_pbd = data(:,4);
 y_pba = data(:,5);
 y_pdbd = data(:,6);
 y_pdba = data(:,7);
-y_plbu = data(:,8);
+%y_plbu = data(:,8);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +65,8 @@ end
 
 
 %legend_names = ["BD";"BA"; "PLBU";"PBD";"PBA"];
-legend_names = ["BD";"BA";"PLBU";"PBD";"PBA";"PDBD";"PDBA"];
+legend_names = ["BD";"BA";"PBD";"PBA";"PDBD";"PDBA"];
+%legend_names = ["BD";"BA";"PLBU";"PBD";"PBA";"PDBD";"PDBA"];
 figure_MarkerSize = 20;
 figure_FontSize = 28;
 figure_FontSize_X = 28;
@@ -78,7 +79,7 @@ xlabel(xLabelName,'Interpreter', 'latex');
 %yyaxis left
 plot(x, y_bd, 'ks-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_ba, 'mo-','LineWidth',2, 'MarkerSize',figure_MarkerSize);
-plot(x, y_plbu, 'c*--', 'LineWidth',2, 'MarkerSize',figure_MarkerSize);
+%plot(x, y_plbu, 'c*--', 'LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pbd, 'bs--', 'LineWidth', 2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pba, 'go--','LineWidth',2, 'MarkerSize',figure_MarkerSize);
 plot(x, y_pdbd, 'cs:','LineWidth',2, 'MarkerSize',figure_MarkerSize);
@@ -101,7 +102,8 @@ set(get(gca,'XLabel'),'FontSize',figure_FontSize_X,'FontName','Times New Roman')
 %set(get(gca,'YLabel'),'FontSize',figure_FontSize_Y,'FontName','Times New Roman');
 
 %h = legend('SubGeoI_2', 'MDSW','HUEM','DAM','DAMShrink', 'SubGeoI_1', 'RAM','Location','Best');
-h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4),legend_names(5),legend_names(6), legend_names(7), 'Location','Best');
+h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4),legend_names(5),legend_names(6), 'Location','Best');
+%h = legend(legend_names(1), legend_names(2), legend_names(3), legend_names(4),legend_names(5),legend_names(6), legend_names(7), 'Location','Best');
 set(h,'FontName','Times New Roman','FontSize',14,'FontWeight','normal');
 legend('off');
 export_fig(fig , '-pdf' , '-r256' , '-transparent' , outputFileName);
