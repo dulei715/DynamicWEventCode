@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class ResultTest {
+public class ResultTestBasic {
 
     public static List<ResultBean> searchBeanByName(List<ResultBean> data, String name) {
         List<ResultBean> resultList = new ArrayList<>();
@@ -28,6 +28,64 @@ public class ResultTest {
             }
         }
         return resultList;
+    }
+
+    public static TreeMap<Double, List<ResultBean>> getResultBeanListMapByBudget(File[] fileDirFile) {
+        BeanInterface<ResultBean> bean = new ResultBean();
+        String dirName;
+        TreeMap<Double, List<ResultBean>> resultMap = new TreeMap<>();
+        List<ResultBean> tempResult;
+        File resultFile;
+        Double tempEpsilon;
+        for (File dirFile : fileDirFile) {
+            dirName = dirFile.getName();
+            tempEpsilon = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(dirName).getKey();
+            resultFile = new File(dirFile, "result.txt");
+            tempResult = CSVReadEnhanced.readDataToBeanList(resultFile.getAbsolutePath(), bean);
+            resultMap.put(tempEpsilon, tempResult);
+        }
+        return resultMap;
+    }
+
+    @Test
+    public void resultMapTest() {
+        String datasetOrderName = "1.trajectory_containing_ldp_result";
+//        String datasetOrderName = "2.check_in_containing_ldp_result";
+//        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "4.sin_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
+        String originalMethodName = "BD";
+        String improveMethodName = "PBD";
+        String furtherImproveMethodName = "PDBD";
+//        String originalMethodName = "BA";
+//        String improveMethodName = "PBA";
+//        String furtherImproveMethodName = "PDBA";
+        Integer defaultWindowSize = 120;
+        boolean whetherLog = false;
+//        boolean whetherLog = true;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Double, File> budgetFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempWindowSize.equals(defaultWindowSize)) {
+                budgetFileMap.put(tempBudget, innerDir);
+            }
+        }
+        dirFileList = new ArrayList<>();
+        dirFileList.addAll(budgetFileMap.values());
+        File[] dirFileArray = dirFileList.toArray(new File[0]);
+        TreeMap<Double, List<ResultBean>> result = getResultBeanListMapByBudget(dirFileArray);
+        MyPrint.showMap(result, ConstantValues.LINE_SPLIT);
     }
 
     public static List[] getAverageImprovementForBudgetChange(File[] fileDirFile, String furtherImproveMethodName, String improveMethodName, String originalMethodName, boolean whetherLog) {
@@ -105,108 +163,17 @@ public class ResultTest {
         return resultList;
     }
 
-    @Test
-    public void testBudgetChangeImprove() {
-//        String datasetOrderName = "1.trajectory_containing_ldp_result";
-        String datasetOrderName = "2.check_in_containing_ldp_result";
-//        String datasetOrderName = "5.log_containing_ldp_result";
-        String originalMethodName = "BD";
-        String improveMethodName = "PBD";
-        String furtherImproveMethodName = "PDBD";
-//        String originalMethodName = "BA";
-//        String improveMethodName = "PBA";
-//        String furtherImproveMethodName = "PDBA";
-        Integer defaultWindowSize = 120;
-//        boolean whetherLog = false;
-        boolean whetherLog = true;
-//        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
-        File file = new File(datasetPath);
-        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
-        List<File> dirFileList;
-        TreeMap<Double, File> budgetFileMap = new TreeMap<>();
-        String innerDirName;
-        BasicPair<Double, Integer> tempPair;
-        Double tempBudget;
-        Integer tempWindowSize;
-        for (File innerDir : totalDirFileArray) {
-            innerDirName = innerDir.getName();
-            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
-            tempBudget = tempPair.getKey();
-            tempWindowSize = tempPair.getValue();
-            if (tempWindowSize.equals(defaultWindowSize)) {
-//                dirFileList.add(innerDir);
-                budgetFileMap.put(tempBudget, innerDir);
-            }
-        }
-        dirFileList = new ArrayList<>();
-        dirFileList.addAll(budgetFileMap.values());
-        File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForBudgetChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
-        MyPrint.showList(result[0]);
-        MyPrint.showList(result[1]);
-        double sum = ListUtils.sum(result[1]);
-        System.out.println(sum / result[1].size());
-        double sum2 = ListUtils.sum(result[2]);
-        MyPrint.showList(result[2]);
-        System.out.println(sum2 / result[2].size());
-    }
 
     @Test
-    public void testWindowSizeImprove() {
-//        String datasetOrderName = "1.trajectory_result";
-//        String datasetOrderName = "2.check_in_result";
-//        String datasetOrderName = "3.tlns_result";
-//        String datasetOrderName = "4.sin_result";
-        String datasetOrderName = "5.log_result";
-//        String originalMethodName = "BD";
-//        String improveMethodName = "PBD";
-//        String furtherImproveMethodName = "PDBD";
-        String originalMethodName = "BA";
-        String improveMethodName = "PBA";
-        String furtherImproveMethodName = "PDBA";
-        Double defaultEpsilon = 0.6;
-//        boolean whetherLog = false;
-        boolean whetherLog = true;
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "1.result", datasetOrderName);
-        File file = new File(datasetPath);
-        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
-        List<File> dirFileList;
-        TreeMap<Integer, File> windowSizeFileMap = new TreeMap<>();
-        String innerDirName;
-        BasicPair<Double, Integer> tempPair;
-        Double tempBudget;
-        Integer tempWindowSize;
-        for (File innerDir : totalDirFileArray) {
-            innerDirName = innerDir.getName();
-            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
-            tempBudget = tempPair.getKey();
-            tempWindowSize = tempPair.getValue();
-            if (tempBudget.equals(defaultEpsilon)) {
-//                dirFileList.add(innerDir);
-                windowSizeFileMap.put(tempWindowSize, innerDir);
-            }
-        }
-        dirFileList = new ArrayList<>();
-        dirFileList.addAll(windowSizeFileMap.values());
-        File[] dirFileArray = dirFileList.toArray(new File[0]);
-        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
-        MyPrint.showList(result[0]);
-        MyPrint.showList(result[1]);
-        double sum = ListUtils.sum(result[1]);
-        System.out.println(sum / result[1].size());
-        double sum2 = ListUtils.sum(result[2]);
-        MyPrint.showList(result[2]);
-        System.out.println(sum2 / result[2].size());
-    }
-
-    @Test
-    public void testContainingLDPBudgetChangeImprove() {
+    public void testContainingLDPBudgetResult() {
         String datasetOrderName = "1.trajectory_containing_ldp_result";
 //        String datasetOrderName = "2.check_in_containing_ldp_result";
 //        String datasetOrderName = "3.tlns_containing_ldp_result";
 //        String datasetOrderName = "4.sin_containing_ldp_result";
 //        String datasetOrderName = "5.log_containing_ldp_result";
+        String[] stringNameArray = new String[]{
+                "BD", "BA", "PLBU", "PBD", "PBA", "DPBD", "DPBA"
+        };
         String originalMethodName = "BD";
         String improveMethodName = "PBD";
         String furtherImproveMethodName = "PDBD";
