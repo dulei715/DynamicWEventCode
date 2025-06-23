@@ -1,8 +1,5 @@
 import os
-import numpy as np
 import matplotlib.pyplot as plt
-import pylab as p
-from matplotlib.pyplot import figure
 
 plt.rcParams.update({
     "text.usetex": False,
