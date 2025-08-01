@@ -202,17 +202,17 @@ public class ResultTest {
 
     @Test
     public void testContainingLDPBudgetChangeImprove() {
-//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+        String datasetOrderName = "1.trajectory_containing_ldp_result";
 //        String datasetOrderName = "2.check_in_containing_ldp_result";
-        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "3.tlns_containing_ldp_result";
 //        String datasetOrderName = "4.sin_containing_ldp_result";
 //        String datasetOrderName = "5.log_containing_ldp_result";
-//        String originalMethodName = "BD";
-//        String improveMethodName = "PBD";
-//        String furtherImproveMethodName = "PDBD";
-        String originalMethodName = "BA";
-        String improveMethodName = "PBA";
-        String furtherImproveMethodName = "PDBA";
+        String originalMethodName = "BD";
+        String improveMethodName = "PBD";
+        String furtherImproveMethodName = "PDBD";
+//        String originalMethodName = "BA";
+//        String improveMethodName = "PBA";
+//        String furtherImproveMethodName = "PDBA";
         Integer defaultWindowSize = 120;
         boolean whetherLog = false;
 //        boolean whetherLog = true;
