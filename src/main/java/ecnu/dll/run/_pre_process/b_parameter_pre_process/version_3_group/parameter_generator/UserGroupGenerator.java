@@ -26,4 +26,9 @@ public class UserGroupGenerator {
         List<String> userToTypeData = UserGroupUtils.getUserToTypeInAverage(userIDInputPath, userTypeIDInputPath);
         ListWriteUtils.writeList(outputPath, userToTypeData, ",");
     }
+
+    /*
+    以下方法仅用于对维度的消融实验
+     */
+//    public static void generate
 }
