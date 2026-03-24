@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConfigureUtils {
 
@@ -132,6 +133,27 @@ public class ConfigureUtils {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public static Integer getDefaultPositionSize() {
+        Integer result;
+        try {
+            result = (Integer) Constant.xmlConfigure.getIndependentData("PositionSize", "default", "default").getValue();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+    public static List<Integer> getDefaultPositionSizeList() {
+        List<Object> objectList;
+        List<Integer> resultList;
+        try {
+            objectList = Constant.xmlConfigure.getIndependentData("PositionSize", "default", "default").getTag();
+            resultList = objectList.stream().map(o -> (Integer) o).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultList;
     }
 
     public static String getDatasetBasicPath() {

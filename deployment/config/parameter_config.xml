@@ -110,6 +110,11 @@
             <single name="default">0.5</single> <!-- no use -->
             <variance name="default">0.1,0.3,0.5,0.7,0.9</variance>
         </attribute>
+        <attribute name="PositionSize">
+            <dataType>java.lang.Integer</dataType>
+            <single name="default">2</single>
+            <variance name="default">2,20,38,56,74</variance>
+        </attribute>
         <attribute name="UserType">
             <!--for dynamic mechanisms-->
             <dataType>java.lang.Integer</dataType>
