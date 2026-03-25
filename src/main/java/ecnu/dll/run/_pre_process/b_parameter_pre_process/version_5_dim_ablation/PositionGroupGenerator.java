@@ -14,17 +14,25 @@ import java.util.*;
 public class PositionGroupGenerator {
     // 仅适用于真实数据集位置类别比较多的情况。分组的类别要小于位置类别
     public static void generatePositionToGroup(String basicPath, String positionFileName) {
-        String outputPositionPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "dim_ablation_run", "exchange_info_ablation", "groupPosition.txt");
+        String currentOutputPositionPath;
         String currentOutputRunInputPath;
         List<Integer> positionSizeList = ConfigureUtils.getDefaultPositionSizeList();
         String positionFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", positionFileName);
+        BasicWrite basicWrite = new BasicWrite();
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(positionFilePath);
         Set<String> totalPositionSet = new HashSet<>(basicRead.readAllWithoutLineNumberRecordInFile());
         basicRead.endReading();
         Map<Integer, Map<String, String>> positionSizeMapToGroupMap = new HashMap<>();
+        Map<String, String> currentMap;
+        List<String> groupPositionList;
         for (Integer positionSize : positionSizeList) {
-            positionSizeMapToGroupMap.put(positionSize, PositionGroupUtils.toGroup(totalPositionSet, positionSize));
+            currentMap = PositionGroupUtils.toGroup(totalPositionSet, positionSize);
+            positionSizeMapToGroupMap.put(positionSize, currentMap);
+            groupPositionList = new ArrayList<>(new HashSet<>(currentMap.values()));
+            currentOutputPositionPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "ablation_info", "groupPosition_"+positionSize+".txt");
+            basicWrite.startWriting(currentOutputPositionPath);
+            basicWrite.writeStringListWithoutSize(groupPositionList);
         }
 
 
@@ -35,7 +43,7 @@ public class PositionGroupGenerator {
         String splitTag = ",";
         basicRead = new BasicRead(splitTag);
         List<String> currentOriginalDataList;
-        BasicWrite basicWrite = new BasicWrite(splitTag);
+        basicWrite = new BasicWrite(splitTag);
         List<String> outputGroupDataList;
         for (File file : originalDataFile) {
             basicRead.startReading(file.getAbsolutePath());

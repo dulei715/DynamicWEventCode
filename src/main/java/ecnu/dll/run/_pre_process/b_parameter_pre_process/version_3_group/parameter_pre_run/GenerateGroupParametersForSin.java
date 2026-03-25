@@ -6,6 +6,7 @@ import ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.param
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
 
 public class GenerateGroupParametersForSin {
+    @Deprecated /** 新方法见 ecnu.dll.run._pre_process.b_parameter_pre_process.version_5_dim_ablation.parameter_pre_run.generateParameters(String datasetPath) */
     public static void generateParameters() {
         String privacyBudgetConfigVarianceName = "default";
         String windowSizeConfigVarianceName = "default";

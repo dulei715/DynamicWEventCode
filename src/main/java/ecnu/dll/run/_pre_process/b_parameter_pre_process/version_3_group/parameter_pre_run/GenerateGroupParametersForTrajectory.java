@@ -6,6 +6,7 @@ import ecnu.dll.run._pre_process.b_parameter_pre_process.version_2_decrete.param
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
 
 public class GenerateGroupParametersForTrajectory {
+    @Deprecated /** 新方法见 ecnu.dll.run._pre_process.b_parameter_pre_process.version_5_dim_ablation.parameter_pre_run.generateParameters(String datasetPath) */
     public static void generateParameters() {
         String privacyBudgetConfigVarianceName = "default";
         String windowSizeConfigVarianceName = "default";
@@ -13,9 +14,13 @@ public class GenerateGroupParametersForTrajectory {
         String basicParameterGenerationDirectoryName = "group_generated_parameters";
         String privacyBudgetFileNameForPersonalized = "typePrivacyBudgetFile.txt";
         String windowSizeFileNameForPersonalized = "typeWindowSizeFile.txt";
-        DiscreteParameterGenerator.generateParametersForTrajectory(privacyBudgetConfigVarianceName, windowSizeConfigVarianceName, userTypeIDFileName, basicParameterGenerationDirectoryName, privacyBudgetFileNameForPersonalized, windowSizeFileNameForPersonalized);
+        DiscreteParameterGenerator.generateParametersForTrajectory(privacyBudgetConfigVarianceName, windowSizeConfigVarianceName,
+                userTypeIDFileName, basicParameterGenerationDirectoryName, privacyBudgetFileNameForPersonalized, windowSizeFileNameForPersonalized);
 
     }
+
+
+
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();

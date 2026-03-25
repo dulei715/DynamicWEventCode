@@ -4,7 +4,7 @@ import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterParallelRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterSerialRun;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentEnhancedParameterParallelRun;
+import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentContainingLDPBUParameterParallelRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentInternalParameterParallelRun;
 import ecnu.dll.utils.filters.NumberTxtFilter;
 
@@ -14,6 +14,16 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class DatasetSegmentRunUtils {
+    /**
+     * 运行BD、BA、PBD、PBA、DPBD、DPBA
+     * @param basicPath
+     * @param dataTypeFileName
+     * @param singleBatchSize
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     */
     public static void basicDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         List<Double> budgetChangeList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
         List<Integer> windowSizeChangeList = ConfigureUtils.getIndependentWindowSizeList("default");
@@ -193,7 +203,18 @@ public class DatasetSegmentRunUtils {
             }
         }
     }
-    public static void enhancedDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+
+    /**
+     * 比 basicDatasetRun 多了LDP相关方法
+     * @param basicPath
+     * @param dataTypeFileName
+     * @param singleBatchSize
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     */
+    public static void containingLDPBUDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         List<Double> budgetChangeList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
         List<Integer> windowSizeChangeList = ConfigureUtils.getIndependentWindowSizeList("default");
 
@@ -223,7 +244,7 @@ public class DatasetSegmentRunUtils {
             CountDownLatch innerLatch = new CountDownLatch(budgetChangeList.size() + windowSizeChangeList.size() - 1);
 
             for (Double budget : budgetChangeList) {
-                tempRunnable =  new FixedSegmentEnhancedParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempRunnable =  new FixedSegmentContainingLDPBUParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budget, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
@@ -238,7 +259,7 @@ public class DatasetSegmentRunUtils {
                     continue;
                 }
                 Integer windowSize = windowSizeChangeList.get(i);
-                tempRunnable =  new FixedSegmentEnhancedParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempRunnable =  new FixedSegmentContainingLDPBUParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
