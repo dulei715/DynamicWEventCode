@@ -2,6 +2,7 @@ package ecnu.dll.run.c_dataset_run.version_3.version_utils;
 
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterParallelRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterSerialRun;
 import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentContainingLDPBUParameterParallelRun;
@@ -11,6 +12,7 @@ import ecnu.dll.utils.filters.NumberTxtFilter;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 public class DatasetSegmentRunUtils {
@@ -203,7 +205,6 @@ public class DatasetSegmentRunUtils {
             }
         }
     }
-
     /**
      * 比 basicDatasetRun 多了LDP相关方法
      * @param basicPath
@@ -264,6 +265,71 @@ public class DatasetSegmentRunUtils {
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
             }
+
+            try {
+                innerLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void ablateDatasetRun(String basicPath, String dataTypeFileName, Integer singleBatchSize) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+//        List<Double> budgetChangeList = ConfigureUtils.getIndependentPrivacyBudgetList("default");
+//        List<Integer> windowSizeChangeList = ConfigureUtils.getIndependentWindowSizeList("default");
+
+//        Double budgetDefault = budgetChangeList.get(2);
+//        Integer windowSizeDefault = windowSizeChangeList.get(2);
+        Double budgetDefault = ConfigureUtils.getIndependentPrivacyBudgetList("default").get(2);
+        Integer windowSizeDefault = ConfigureUtils.getIndependentWindowSizeList("default").get(2);
+
+        List<Integer> positionSizeChangeList = ConfigureUtils.getIndependentPositionSizeList("default");
+
+        Runnable tempRunnable;
+        Thread tempThread;
+
+        NumberTxtFilter numberTxtFilter = new NumberTxtFilter();
+
+//        File dirFile = new File(basicPath, "runInput");
+//        File dirFile = new File(basicPath, Constant.dimAblationDirNameFunction.apply(positionSize));
+//        File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
+//        int totalFileSize = timeStampDataFiles.length;
+        int totalFileSize = Objects.requireNonNull(new File(basicPath, Constant.dimAblationDirNameFunction.apply(positionSizeChangeList.get(0))).listFiles(numberTxtFilter)).length;
+
+//        Integer segmentUnitSize = 4;
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("SegmentUnitSize", "default", "default");
+        Integer segmentUnitSize = independentData.getValue();
+
+        int startIndex, endIndex;
+        Integer segmentID = 0;
+        int segmentSize = (int) Math.ceil(totalFileSize * 1.0 / segmentUnitSize);
+        int totalSubThreadSize = segmentSize * positionSizeChangeList.size();
+        CountDownLatch latch = new CountDownLatch(totalSubThreadSize);
+        for (int segmentIndex = 0; segmentIndex < totalFileSize; segmentIndex+=segmentUnitSize, ++segmentID) {
+            startIndex = segmentIndex;
+            endIndex = Math.min(startIndex + segmentUnitSize - 1, totalFileSize - 1);
+
+
+
+
+            CountDownLatch innerLatch = new CountDownLatch(positionSizeChangeList.size());
+
+            for (Integer positionSize : positionSizeChangeList) {
+                File dirFile = new File(basicPath, Constant.dimAblationDirNameFunction.apply(positionSize));
+                File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
+                tempRunnable =  new FixedSegmentBasicParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempThread = new Thread(tempRunnable);
+                tempThread.start();
+                System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
+
+            }
+
 
             try {
                 innerLatch.await();

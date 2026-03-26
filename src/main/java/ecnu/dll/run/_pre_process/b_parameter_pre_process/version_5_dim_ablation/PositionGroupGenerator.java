@@ -5,6 +5,7 @@ import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.io.read.BasicRead;
 import cn.edu.dll.io.write.BasicWrite;
 import ecnu.dll._config.ConfigureUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_5_dim_ablation.utils.PositionGroupUtils;
 import ecnu.dll.utils.filters.NumberTxtFilter;
 
@@ -16,8 +17,8 @@ public class PositionGroupGenerator {
     public static void generatePositionToGroup(String basicPath, String positionFileName) {
         String currentOutputPositionPath;
         String currentOutputRunInputPath;
-        List<Integer> positionSizeList = ConfigureUtils.getDefaultPositionSizeList();
-        String positionFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", positionFileName);
+        List<Integer> positionSizeList = ConfigureUtils.getIndependentPositionSizeList("default");
+        String positionFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.BasicInfo, positionFileName);
         BasicWrite basicWrite = new BasicWrite();
         BasicRead basicRead = new BasicRead();
         basicRead.startReading(positionFilePath);
@@ -30,14 +31,14 @@ public class PositionGroupGenerator {
             currentMap = PositionGroupUtils.toGroup(totalPositionSet, positionSize);
             positionSizeMapToGroupMap.put(positionSize, currentMap);
             groupPositionList = new ArrayList<>(new HashSet<>(currentMap.values()));
-            currentOutputPositionPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "basic_info", "ablation_info", "groupPosition_"+positionSize+".txt");
+            currentOutputPositionPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.AblationInfo, Constant.groupPositionNameFunction.apply(positionSize));
             basicWrite.startWriting(currentOutputPositionPath);
             basicWrite.writeStringListWithoutSize(groupPositionList);
         }
 
 
 
-        File runInputFileDir = new File(StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "runInput"));
+        File runInputFileDir = new File(StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.RunInput));
         File[] originalDataFile = runInputFileDir.listFiles(new NumberTxtFilter());
 
         String splitTag = ",";
@@ -49,7 +50,7 @@ public class PositionGroupGenerator {
             basicRead.startReading(file.getAbsolutePath());
             currentOriginalDataList = basicRead.readAllWithoutLineNumberRecordInFile();
             for (Integer positionSize : positionSizeList) {
-                currentOutputRunInputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "runInput_dim_ablation", "positionSize_"+positionSize, file.getName());
+                currentOutputRunInputPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.dimAblationDirNameFunction.apply(positionSize), file.getName());
                 Map<String, String> currentGroupMap = positionSizeMapToGroupMap.get(positionSize);
                 outputGroupDataList = new ArrayList<>();
 

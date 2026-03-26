@@ -144,17 +144,7 @@ public class ConfigureUtils {
         }
         return result;
     }
-    public static List<Integer> getDefaultPositionSizeList() {
-        List<Object> objectList;
-        List<Integer> resultList;
-        try {
-            objectList = Constant.xmlConfigure.getIndependentData("PositionSize", "default", "default").getTag();
-            resultList = objectList.stream().map(o -> (Integer) o).collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return resultList;
-    }
+
 
     public static String getDatasetBasicPath() {
         Document document = Constant.xmlConfigure.getDocument();
@@ -211,6 +201,7 @@ public class ConfigureUtils {
         return Integer.valueOf(latitudeElement.getTextTrim());
     }
 
+//    @Deprecated /** 用 Constant.xmlConfigure.getIndependentData 方法，能自动识别配置文件的数据类型，更强大 */
     public static List<Double> getIndependentPrivacyBudgetList(String varianceName) {
         Document document = Constant.xmlConfigure.getDocument();;
         Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='PrivacyBudget']/variance[@name='" + varianceName + "']").get(0);
@@ -223,6 +214,7 @@ public class ConfigureUtils {
         return result;
     }
 
+//    @Deprecated /** 用 Constant.xmlConfigure.getIndependentData 方法，能自动识别配置文件的数据类型，更强大 */
     public static List<Integer> getIndependentWindowSizeList(String varianceName) {
         Document document = Constant.xmlConfigure.getDocument();;
         Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='WindowSize']/variance[@name='" + varianceName + "']").get(0);
@@ -234,7 +226,7 @@ public class ConfigureUtils {
         }
         return result;
     }
-
+//    @Deprecated /** 用 Constant.xmlConfigure.getIndependentData 方法，能自动识别配置文件的数据类型，更强大*/
     public static List<Double> getIndependentUserRatioList(String varianceName) {
         Document document = Constant.xmlConfigure.getDocument();;
         Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='TwoFixedUserRatio']/variance[@name='" + varianceName + "']").get(0);
@@ -246,6 +238,30 @@ public class ConfigureUtils {
         }
         return result;
     }
+
+//    @Deprecated /** 用 Constant.xmlConfigure.getIndependentData 方法，能自动识别配置文件的数据类型，更强大 */
+    public static List<Integer> getIndependentPositionSizeList(String varianceName) {
+        Document document = Constant.xmlConfigure.getDocument();;
+        Element element = (Element) document.selectNodes("//independentVariables/attribute[@name='PositionSize']/variance[@name='" + varianceName + "']").get(0);
+        String textTrim = element.getTextTrim();
+        String[] strArr = textTrim.split(",");
+        List<Integer> result = new ArrayList<>(strArr.length);
+        for (String str : strArr) {
+            result.add(Integer.valueOf(str));
+        }
+        return result;
+    }
+//    public static List<Integer> getDefaultPositionSizeList() {
+//        List<Object> objectList;
+//        List<Integer> resultList;
+//        try {
+//            objectList = Constant.xmlConfigure.getIndependentData("PositionSize", "default", "default").getTag();
+//            resultList = objectList.stream().map(o -> (Integer) o).collect(Collectors.toList());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        return resultList;
+//    }
 
     public static String getFileHandleInfo(String datasetName, String subTagName) {
         Document document = Constant.xmlConfigure.getDocument();

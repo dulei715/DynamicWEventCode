@@ -182,31 +182,4 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
         this.innerLatch.countDown();
         this.latch.countDown();
     }
-
-    public static void main(String[] args) {
-//        String basicPath = Constant.checkInFilePath;
-//        String dataTypeFileName = "country.txt";
-//        Integer singleBatchSize = 2;
-//        Double privacyBudget = 0.5;
-//        Integer windowSize = 10;
-//        Runnable runnable = new FixedSegmentParameterRun(basicPath, dataTypeFileName, singleBatchSize, privacyBudget, windowSize);
-//        Thread thread = new Thread(runnable);
-//        thread.start();
-    }
-
-    public static void main1(String[] args) {
-        System.out.println("Start Writing...");
-        String basicPath = Constant.checkInFilePath;
-        Double privacyBudget = 0.5;
-        Integer windowSize = 10;
-        Integer batchID = 1;
-        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize);
-        File basicOutputFile = new File(basicOutputPathDir);
-        if (!basicOutputFile.exists()) {
-            basicOutputFile.mkdirs();
-        }
-        ExperimentResultWrite experimentResultWrite = new ExperimentResultWrite();
-        String outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, basicOutputPathDir, "batch_"+batchID+".txt");
-        experimentResultWrite.startWriting(outputFilePath);
-    }
 }
