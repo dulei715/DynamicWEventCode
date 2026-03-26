@@ -30,6 +30,13 @@ public class SinDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingLDPBUDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runSinContainingDatasetAblation() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        String basicPath = Constant.sinFilePath;
+        String dataTypeFileName = "status.txt";
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.ablateDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
 
 //    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 //        CatchSignal catchSignal = new CatchSignal();

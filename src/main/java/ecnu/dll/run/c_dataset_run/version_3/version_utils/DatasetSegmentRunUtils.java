@@ -316,8 +316,6 @@ public class DatasetSegmentRunUtils {
             endIndex = Math.min(startIndex + segmentUnitSize - 1, totalFileSize - 1);
 
 
-
-
             CountDownLatch innerLatch = new CountDownLatch(positionSizeChangeList.size());
 
             for (Integer positionSize : positionSizeChangeList) {

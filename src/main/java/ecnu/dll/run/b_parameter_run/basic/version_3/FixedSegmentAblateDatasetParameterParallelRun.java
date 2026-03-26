@@ -37,6 +37,7 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
     private Integer batchID = 0;
     private Double privacyBudget;
     private Integer windowSize;
+    private Integer positionSize;
     private File[] timeStampDataFiles;
     private int startFileIndex;
     private int endFileIndex;
@@ -51,12 +52,13 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
     private CountDownLatch innerLatch;
 
 
-    public FixedSegmentAblateDatasetParameterParallelRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
+    public FixedSegmentAblateDatasetParameterParallelRun(String basicPath, String dataTypeFileName, Integer singleBatchSize, Double privacyBudget, Integer windowSize, Integer positionSize, File[] timeStampDataFiles, int startFileIndex, int endFileIndex, Integer segmentID, CountDownLatch latch, CountDownLatch innerLatch) {
         this.basicPath = basicPath;
         this.dataTypeFileName = dataTypeFileName;
         this.singleBatchSize = singleBatchSize;
         this.privacyBudget = privacyBudget;
         this.windowSize = windowSize;
+        this.positionSize = positionSize;
         this.timeStampDataFiles = timeStampDataFiles;
         this.startFileIndex = startFileIndex;
         this.endFileIndex = endFileIndex;
@@ -95,7 +97,7 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
     }
 
 
-    public List<ExperimentResult> runSegmentBatch() {
+    public List<ExperimentResult> runSegmentBatchWithPrivacyBudgetWindowSizePositionSizeDeclare() {
 
         List<StreamDataElement<Boolean>> dataList;
         File file;
@@ -109,7 +111,7 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
         List<List<Double>> remainBackwardPrivacyBudgetListBatchList = new ArrayList<>(), forwardPrivacyBudgetListBatchList = new ArrayList<>();
         List<List<Integer>> backwardWindowSizeListBatchList = new ArrayList<>(), forwardWindowSizeListBatchList = new ArrayList<>();
 
-        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, "group_output", "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.OutputDatasetAblationDirName, "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize+"_d_"+positionSize, "segment_"+segmentID);
         File basicOutputFile = new File(basicOutputPathDir);
         if (!basicOutputFile.exists()) {
             basicOutputFile.mkdirs();
@@ -178,7 +180,7 @@ public class FixedSegmentAblateDatasetParameterParallelRun implements Runnable {
 
     @Override
     public void run() {
-        runSegmentBatch();
+        runSegmentBatchWithPrivacyBudgetWindowSizePositionSizeDeclare();
         this.innerLatch.countDown();
         this.latch.countDown();
     }

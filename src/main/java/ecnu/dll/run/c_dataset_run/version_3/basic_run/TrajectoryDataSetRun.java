@@ -45,7 +45,7 @@ public class TrajectoryDataSetRun {
         String dataTypeFileName = "cell.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
-        // todo ...
+        DatasetSegmentRunUtils.ablateDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
 
 //    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {

@@ -95,7 +95,7 @@ public class FixedSegmentBasicParameterParallelRun implements Runnable {
     }
 
 
-    public List<ExperimentResult> runSegmentBatch() {
+    public List<ExperimentResult> runSegmentBatchWithPrivacyBudgetAndWindowSizeDeclare() {
 
 //        File dirFile = new File(basicPath, "runInput");
 //        File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
@@ -180,7 +180,7 @@ public class FixedSegmentBasicParameterParallelRun implements Runnable {
 
     @Override
     public void run() {
-        runSegmentBatch();
+        runSegmentBatchWithPrivacyBudgetAndWindowSizeDeclare();
         this.innerLatch.countDown();
         this.latch.countDown();
     }

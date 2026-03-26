@@ -6,6 +6,7 @@ import ecnu.dll.run.c_dataset_run.utils.PostProcessUtils;
 
 import java.io.File;
 
+@Deprecated
 public class PostProcessRun {
     public static void combineGroupResult(String datasetPath) {
 //        CatchSignal catchSignal = new CatchSignal();
@@ -33,8 +34,8 @@ public class PostProcessRun {
         PostProcessUtils.combineAndExtractCombineResult(inputDirPath, outputPath);
     }
 
-    public static void main(String[] args) {
-//        combineGroupResult(args[0]);
-        extractData(args[0], args[1]);
-    }
+//    public static void main(String[] args) {
+////        combineGroupResult(args[0]);
+//        extractData(args[0], args[1]);
+//    }
 }

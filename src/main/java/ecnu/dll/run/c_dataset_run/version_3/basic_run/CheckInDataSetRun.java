@@ -35,6 +35,14 @@ public class CheckInDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingLDPBUDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runCheckInContainingDatasetAblation() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        String basicPath = Constant.checkInFilePath;
+        String dataTypeFileName = "country.txt";
+//        Integer singleBatchSize = 2;
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.ablateDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
 
 //    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 //        CatchSignal catchSignal = new CatchSignal();

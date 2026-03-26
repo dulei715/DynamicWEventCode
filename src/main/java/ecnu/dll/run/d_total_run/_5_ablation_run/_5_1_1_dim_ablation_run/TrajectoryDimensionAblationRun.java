@@ -5,6 +5,7 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_5_dim_ablation.PositionGroupGenerator;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_5_dim_ablation.parameter_pre_run.GenerateGroupParameterForDataSet;
+import ecnu.dll.run.c_dataset_run.version_3.basic_run.TrajectoryDataSetRun;
 
 public class TrajectoryDimensionAblationRun {
     public static void main(String[] args) throws Exception {
@@ -13,7 +14,6 @@ public class TrajectoryDimensionAblationRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.trajectoriesFilePath;
-        String finalResultDirName = "1.trajectory_dim_ablation_result";
         String positionFileName = "cell.txt";
 
 
@@ -26,7 +26,7 @@ public class TrajectoryDimensionAblationRun {
         PositionGroupGenerator.generatePositionToGroup(datasetPath, positionFileName);
 
         // 2. 执行
-//        TrajectoryDataSetRun.runTrajectoryContainingSimpleLDP();
+        TrajectoryDataSetRun.runTrajectoryContainingDatasetAblation();
 
     }
 }
