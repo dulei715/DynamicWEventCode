@@ -34,6 +34,8 @@ public class DatasetParameterUtils {
         List<StreamDataElement<Boolean>> resultList = new ArrayList<>();
         StreamDataElement<Boolean> tempElement;
         for (String str : strDataList) {
+            //todo: for test
+//            System.out.println(str);
             bean = InputDataStruct.toBean(basicRead.split(str));
             location = bean.getLocation();
             tempMap = new TreeMap<>();

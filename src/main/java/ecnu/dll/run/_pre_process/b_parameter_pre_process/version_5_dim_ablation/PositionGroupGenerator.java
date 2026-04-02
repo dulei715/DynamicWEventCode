@@ -34,6 +34,7 @@ public class PositionGroupGenerator {
             currentOutputPositionPath = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.AblationInfo, Constant.groupPositionNameFunction.apply(positionSize));
             basicWrite.startWriting(currentOutputPositionPath);
             basicWrite.writeStringListWithoutSize(groupPositionList);
+            basicWrite.endWriting();
         }
 
 
@@ -62,10 +63,11 @@ public class PositionGroupGenerator {
                 }
                 basicWrite.startWriting(currentOutputRunInputPath);
                 basicWrite.writeStringListWithoutSize(outputGroupDataList);
+                basicWrite.endWriting();
             }
 
+            basicRead.endReading();
         }
-        basicWrite.endWriting();
-        basicRead.endReading();
+        System.out.println("Finish generating dimension ablation data, the total dimension is " + positionSizeList.size() + ", each dimension contains " + originalDataFile.length + "files!");
     }
 }

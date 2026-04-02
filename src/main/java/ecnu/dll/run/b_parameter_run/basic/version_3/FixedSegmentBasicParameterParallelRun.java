@@ -120,6 +120,8 @@ public class FixedSegmentBasicParameterParallelRun implements Runnable {
         String outputFilePath;
         for (int i = startFileIndex; i <= endFileIndex; i++) {
             file = timeStampDataFiles[i];
+            //todo: for test
+//            System.out.println("file: " + file.getAbsolutePath());
             dataList = DatasetParameterUtils.getData(file.getAbsolutePath(), dataType);
             batchDataList.add(dataList);
 

@@ -3,10 +3,7 @@ package ecnu.dll.run.c_dataset_run.version_3.version_utils;
 import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterParallelRun;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentBasicParameterSerialRun;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentContainingLDPBUParameterParallelRun;
-import ecnu.dll.run.b_parameter_run.basic.version_3.FixedSegmentInternalParameterParallelRun;
+import ecnu.dll.run.b_parameter_run.basic.version_3.*;
 import ecnu.dll.utils.filters.NumberTxtFilter;
 
 import java.io.File;
@@ -321,7 +318,7 @@ public class DatasetSegmentRunUtils {
             for (Integer positionSize : positionSizeChangeList) {
                 File dirFile = new File(basicPath, Constant.dimAblationDirNameFunction.apply(positionSize));
                 File[] timeStampDataFiles = dirFile.listFiles(new NumberTxtFilter());
-                tempRunnable =  new FixedSegmentBasicParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSizeDefault, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
+                tempRunnable =  new FixedSegmentAblateDatasetParameterParallelRun(basicPath, dataTypeFileName, singleBatchSize, budgetDefault, windowSizeDefault, positionSize, timeStampDataFiles, startIndex, endIndex, segmentID, latch, innerLatch);
                 tempThread = new Thread(tempRunnable);
                 tempThread.start();
                 System.out.println("Start thread " + tempThread.getName() + " with id " + tempThread.getId() + " in segment " + segmentID);
