@@ -18,48 +18,43 @@
 ## Repeat run for real data sets 
 
 * Run for *Taxi*:
-	* run script `trajectory_containing_ldp_repeat_run.sh`
+	* run script `trajectory_repeat_run.sh`
 	* run script `trajectory_internal_repeat_run.sh`
-	* run script `trajectory_serial_repeat_run.sh`
 * Run for *Foursquare*: 
-	* run script `check_in_containing_ldp_repeat_run.sh`
+	* run script `check_in_repeat_run.sh`
 	* run script `check_in_internal_repeat_run.sh`
-	* run script `check_in_serial_repeat_run.sh`
 
-## Repeat initialize and run for synthetic data sets (VLDB 2025 version 1.0)
+## Repeat initialize and run for synthetic data sets 
 
 * Run for *TLns*:
-	* run script `tlns_containing_ldp_repeat_run.sh`
+	* run script `tlns_repeat_run.sh`
 	* run script `tlns_internal_repeat_run.sh`
-	* run script `tlns_serial_repeat_run.sh`
 * Run for *Sin*: 
-	* run script `sin_containing_ldp_repeat_run.sh`
+	* run script `sin_repeat_run.sh`
 	* run script `sin_internal_repeat_run.sh`
-	* run script `sin_serial_repeat_run.sh`
 * Run for *Log*: 
-	* run script `log_containing_ldp_repeat_run.sh`
+	* run script `log_repeat_run.sh`
 	* run script `log_internal_repeat_run.sh`
-	* run script `log_serial_repeat_run.sh`
 
 
-## Combine
+## Combine 
 * Run for *Taxi*:
-	* run script `combine_trajectory_containing_ldp_for_all_rounds.sh`
+	* run script `combine_trajectory_for_all_rounds.sh`
 	* run script `combine_trajectory_internal_for_all_rounds.sh`
 * Run for *Foursquare*: 
-	* run script `combine_check_in_containing_ldp_for_all_rounds.sh`
+	* run script `combine_check_in_for_all_rounds.sh`
 	* run script `combine_check_in_internal_for_all_rounds.sh`
 * Run for *TLns*:
-	* run script `combine_tlns_containing_ldp_for_all_rounds.sh`
+	* run script `combine_tlns_for_all_rounds.sh`
 	* run script `combine_tlns_internal_for_all_rounds.sh`
 * Run for *Sin*: 
-	* run script `combine_sin_containing_ldp_for_all_rounds.sh`
+	* run script `combine_sin_for_all_rounds.sh`
 	* run script `combine_sin_internal_for_all_rounds.sh`
 * Run for *Log*: 
-	* run script `combine_log_containing_ldp_for_all_rounds.sh`
+	* run script `combine_log_for_all_rounds.sh`
 	* run script `combine_log_internal_for_all_rounds.sh`
 	
-The final results are record in `${basic_path}/4.result_containing_ldp`, `${basic_path}/2.result_internal` and `${basic_path}/3.result_time_cost`
+The final results are record in `${basic_path}/1.result` and `${basic_path}/2.result_internal`
 	
 
 # Draw Results
@@ -68,11 +63,8 @@ The final results are record in `${basic_path}/4.result_containing_ldp`, `${basi
 2. Run function `init_params()`.
 3. Create directory `${output_basic_path}/fig/experiment_result` to record the experiment results where `${output_basic_path}` is  any fixed path setting by yourself.
 ## Plot Results
-* Run function `draw_bar()` to get the bar of all figures for internal parts.
+* Run function `draw_bar()` to get the bar of all figures.
+* Run function `drawBudgetChange(${basic_path}/1.result,${output_basic_path})`.
+* Run function `drawWindowSizeChange(${basic_path}/1.result,${output_basic_path})`.
 * Run function `drawRatioChangeWithTwoWSize(${basic_path}/1.result_internal,${output_basic_path})`.
 * Run function `drawRatioChangeWithTwoBudget(${basic_path}/1.result_internal,${output_basic_path})`.
-* Run function `draw_bar2()` to get the bar of all figures.
-* Run function `plotBudgetChangeForError(${basic_path}/1.result,${output_basic_path})`.
-* Run function `plotWindowSizeChangeForError(${basic_path}/1.result,${output_basic_path})`.
-* Run function `plotBudgetChangeForTime(${basic_path}/1.result,${output_basic_path})`.
-* Run function `plotWindowSizeChangeForTime(${basic_path}/1.result,${output_basic_path})`.

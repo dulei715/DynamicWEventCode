@@ -1,4 +1,4 @@
-function draw_bar()
+function draw_bar2()
 fig = figure;
 hold on;
 

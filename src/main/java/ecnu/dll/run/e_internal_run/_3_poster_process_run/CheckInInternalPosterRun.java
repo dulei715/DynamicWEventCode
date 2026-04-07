@@ -18,7 +18,7 @@ public class CheckInInternalPosterRun {
 
         String rawDirName = "group_output_internal";
         String extractDirName = "extract_internal_result";
-        String basicOutputFileString = "../1.result_internal";
+        String basicOutputFileString = "../2.result_internal";
         String basicOutputPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, basicOutputFileString);
         String roundFormat = "round_%d_internal";
 

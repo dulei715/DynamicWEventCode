@@ -8,13 +8,13 @@ import ecnu.dll._config.Constant;
 import ecnu.dll.utils.run.CombineForEachRound;
 import ecnu.dll.utils.run.RepeatUtils;
 
-public class TrajectoryDimensionAblationPosterRun {
+public class CheckInDimensionAblationPosterRun {
     public static void main(String[] args) {
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        String datasetPath = Constant.trajectoriesFilePath;
-        String finalResultDirName = "1.trajectory_dimension_ablation_result";
+        String datasetPath = Constant.checkInFilePath;
+        String finalResultDirName = "2.check_in_dimension_ablation_result";
 
         String basicOutputFileString = "../5.result_dimension_ablation";
         String roundPattern = "round_%d_dimension_ablation";
@@ -25,7 +25,7 @@ public class TrajectoryDimensionAblationPosterRun {
 //        int roundSize = 10;
 //        int roundSize = 2;
 //        int roundSize = 4;
-        String configDatasetFileHandleName = "trajectories";
+        String configDatasetFileHandleName = "checkIn";
         int roundSize = Integer.parseInt(ConfigureUtils.getFileHandleInfo(configDatasetFileHandleName, "combineRound"));
 
 
