@@ -34,5 +34,5 @@ plt.subplots_adjust(left=0.01, right=0.99, bottom=0.01, top=0.99)
 basic_path = "/Users/mac/MainFiles/5.GitTrans/3.github_file/PaperTrans/paper3_3_dynamic-Extended-W-event-DP/figures/backward_forward_bound"
 filename = "bar.pdf"
 full_path = os.path.join(basic_path, filename)
-plt.savefig(full_path, bbox_inches="tight")
+# plt.savefig(full_path, bbox_inches="tight")
 plt.show()
