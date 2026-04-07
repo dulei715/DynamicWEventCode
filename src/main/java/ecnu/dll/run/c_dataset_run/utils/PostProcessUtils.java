@@ -18,42 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostProcessUtils {
-//    public static void combineResultBefore(String dirPath) {
-//        File dirFile = new File(dirPath);
-//        File[] files = dirFile.listFiles(new TxtFilter());
-//        List<List<ResultBeanBefore>> dataList = new ArrayList<>();
-//        List<ResultBeanBefore> tempList;
-//        BeanInterface<ResultBeanBefore> beanBeanInterface = new ResultBeanBefore();
-//        String title = CSVReadEnhanced.readDataTitle(files[0].getAbsolutePath());
-//        List<String> dataStringList;
-//        for (File file : files) {
-//            dataStringList = CSVReadEnhanced.readDataLinesWithoutTitle(file.getAbsolutePath());
-//            tempList = new ArrayList<>();
-//            for (String str : dataStringList) {
-//                tempList.add(ResultBeanBefore.toBean(str));
-//            }
-//            dataList.add(tempList);
-//        }
-//        List<ResultBeanBefore> resultList = new ArrayList<>();
-//        ResultBeanBefore resultBean, tempBean;
-//        int innerSize = dataList.get(0).size();
-//        for (int i = 0; i < innerSize; i++) {
-//            resultBean = ResultBeanBefore.getInitializedBean(dataList.get(0).get(i));
-//            for (List<ResultBeanBefore> innerList : dataList) {
-//                tempBean = innerList.get(i);
-//                resultBean.setbRE(resultBean.getbRE() + tempBean.getbRE());
-//            }
-//            resultList.add(resultBean);
-//        }
-//        String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, dirPath, "combine", "combine.txt");
-//        BasicWrite basicWrite = new BasicWrite(",");
-//        basicWrite.startWriting(outputPath);
-//        basicWrite.writeOneLine(title);
-//        for (ResultBeanBefore bean : resultList) {
-//            basicWrite.writeOneLine(bean.toCSVString());
-//        }
-//        basicWrite.endWriting();
-//    }
     public static void combineResult(String dirPath) {
         File dirFile = new File(dirPath);
         File[] files = dirFile.listFiles(new TxtFilter());
@@ -142,6 +106,10 @@ public class PostProcessUtils {
         ResultBean resultBean, tempBean;
         int innerSize = dataList.get(0).size();
         resultList = new ArrayList<>();
+        // 从输出文件路径中提取 positionSize（仅当路径包含 _d_ 标识时）
+        Integer positionSize = extractPositionSizeFromPath(tempOutputFile.getParentFile().getParent());
+        boolean isDimensionAblation = positionSize != null && positionSize > 0;
+
         for (int i = 0; i < innerSize; i++) {
             resultBean = ResultBean.getInitializedBean(dataList.get(0).get(i));
             for (List<ResultBean> innerList : dataList) {
@@ -160,8 +128,16 @@ public class PostProcessUtils {
         String outputPath = tempOutputFile.getAbsolutePath();
         CSVWrite csvWrite = new CSVWrite();
         csvWrite.startWriting(outputPath);
-        csvWrite.writeOneLine(title);
-        csvWrite.writeBeanList(resultList);
+        // 根据是否为维度消融实验决定是否添加 PositionSize 列
+        if (isDimensionAblation) {
+            csvWrite.writeOneLine(title + ",PositionSize");
+            for (ResultBean bean : resultList) {
+                csvWrite.writeOneLine(bean.toFormatString() + "," + positionSize);
+            }
+        } else {
+            csvWrite.writeOneLine(title);
+            csvWrite.writeBeanList(resultList);
+        }
         csvWrite.endWriting();
     }
 
@@ -192,6 +168,30 @@ public class PostProcessUtils {
         }
 
     }
+
+    /**
+     * 从路径中提取 positionSize
+     * 例如：p_0-6_w_120_d_50 -> 50
+     * 如果不是维度消融实验，返回 null
+     */
+    private static Integer extractPositionSizeFromPath(String path) {
+        if (path == null) {
+            return null;
+        }
+        // 尝试匹配 _d_XX 模式（维度消融实验的标识）
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*[_]d[_](\\d+).*");
+        java.util.regex.Matcher matcher = pattern.matcher(path);
+        if (matcher.matches()) {
+            try {
+                return Integer.valueOf(matcher.group(1));
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null; // 如果没有匹配到 _d_ 模式，说明不是维度消融实验
+    }
+
+
 
 
     public static void main1(String[] args) {

@@ -16,7 +16,7 @@ public class TrajectoryDimensionAblationPosterRun {
         String datasetPath = Constant.trajectoriesFilePath;
         String finalResultDirName = "1.trajectory_dimension_ablation_result";
 
-        String basicOutputFileString = "../4.result_dimension_ablation";
+        String basicOutputFileString = "../5.result_dimension_ablation";
         String roundPattern = "round_%d_dimension_ablation";
         String outputDir = "group_output_dimension_ablation";
         String extractDir = "extract_dimension_ablation_result";
