@@ -23,5 +23,5 @@ for dir_name = dataset_dirs
     i = i + 1;
     abs_dir = strcat(input_basicPath, dir_name);
     outputFileName = fullfile(char(output_basicPath), 'figures', 'experiment_result_add', char(strcat(output_dataset_names(i),"_budget_change_", metric_name,"_containing_ldp.eps")));
-    plotBudgetChangeInfluenceGivenMetricForSingleDatset(abs_dir, default_window_size, metric_col_index, metric_name, metric_whether_log, outputFileName);
+    plotBudgetChangeInfluenceGivenMetricForSingleDatset(abs_dir, default_window_size, metric_col_index, metric_name, metric_whether_log, shrink_ratio, outputFileName);
 end

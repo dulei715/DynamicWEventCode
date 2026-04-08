@@ -156,6 +156,6 @@ filename = "data.pdf"
 # basic_path = "/Users/mac/MainFiles/5.GitTrans/3.github_file/PaperTrans/paper3_3_dynamic-Extended-W-event-DP/figures/backward_forward_bound"
 basic_path = "E:/MainFiles/5.GitTrans/3.github_file/PaperTrans/paper3_3_dynamic-Extended-W-event-DP/figures/backward_forward_bound"
 full_path = os.path.join(basic_path, filename)
-plt.savefig(full_path, bbox_inches="tight")
+# plt.savefig(full_path, bbox_inches="tight")
 
 plt.show()

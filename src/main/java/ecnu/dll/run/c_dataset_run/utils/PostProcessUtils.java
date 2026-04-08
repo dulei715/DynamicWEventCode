@@ -11,6 +11,7 @@ import cn.edu.dll.signal.CatchSignal;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
+import ecnu.dll.utils.run.ParameterUtils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -107,7 +108,7 @@ public class PostProcessUtils {
         int innerSize = dataList.get(0).size();
         resultList = new ArrayList<>();
         // 从输出文件路径中提取 positionSize（仅当路径包含 _d_ 标识时）
-        Integer positionSize = extractPositionSizeFromPath(tempOutputFile.getParentFile().getParent());
+        Integer positionSize = ParameterUtils.extractBudgetWindowSizeDimensionParametersAccordingFileDirName(tempOutputFile.getParentFile().getName()).getTag();
         boolean isDimensionAblation = positionSize != null && positionSize > 0;
 
         for (int i = 0; i < innerSize; i++) {
@@ -169,27 +170,7 @@ public class PostProcessUtils {
 
     }
 
-    /**
-     * 从路径中提取 positionSize
-     * 例如：p_0-6_w_120_d_50 -> 50
-     * 如果不是维度消融实验，返回 null
-     */
-    private static Integer extractPositionSizeFromPath(String path) {
-        if (path == null) {
-            return null;
-        }
-        // 尝试匹配 _d_XX 模式（维度消融实验的标识）
-        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*[_]d[_](\\d+).*");
-        java.util.regex.Matcher matcher = pattern.matcher(path);
-        if (matcher.matches()) {
-            try {
-                return Integer.valueOf(matcher.group(1));
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        }
-        return null; // 如果没有匹配到 _d_ 模式，说明不是维度消融实验
-    }
+
 
 
 

@@ -140,6 +140,10 @@ def plot_budget_change_for_time(input_basic_path, output_basic_path):
     shrink_ratio = 0.001
     metric_whether_log = False
 
+    # 创建输出目录
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig')
+    os.makedirs(output_dir, exist_ok=True)
+
     for i, dir_name in enumerate(dataset_dirs):
         abs_dir = os.path.join(input_basic_path, dir_name)
         output_file_name = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig',
@@ -164,6 +168,10 @@ def plot_window_size_change_for_time(input_basic_path, output_basic_path):
     metric_file_name = "running_time"
     shrink_ratio = 0.001
     metric_whether_log = False
+
+    # 创建输出目录
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig')
+    os.makedirs(output_dir, exist_ok=True)
 
     for i, dir_name in enumerate(dataset_dirs):
         abs_dir = os.path.join(input_basic_path, dir_name)
@@ -190,6 +198,10 @@ def plot_budget_change_for_average_time(input_basic_path, output_basic_path):
     shrink_ratio = 0.001
     metric_whether_log = False
 
+    # 创建输出目录
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig')
+    os.makedirs(output_dir, exist_ok=True)
+
     for i, dir_name in enumerate(dataset_dirs):
         abs_dir = os.path.join(input_basic_path, dir_name)
         output_file_name = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig',
@@ -214,6 +226,10 @@ def plot_window_size_change_for_average_time(input_basic_path, output_basic_path
     metric_file_name = "running_time"
     shrink_ratio = 0.001
     metric_whether_log = False
+
+    # 创建输出目录
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add', 'time_cost_fig')
+    os.makedirs(output_dir, exist_ok=True)
 
     for i, dir_name in enumerate(dataset_dirs):
         abs_dir = os.path.join(input_basic_path, dir_name)
@@ -283,8 +299,8 @@ if __name__ == '__main__':
     # plot_budget_change_for_error(input_basic_error_path, output_basic_path)
     # plot_window_size_change_for_error(input_basic_error_path, output_basic_path)
     # plot_budget_change_for_time(input_basic_time_path, output_basic_path)
-    # plot_window_size_change_for_time(input_basic_time_path, output_basic_path)
-    plot_budget_change_for_average_time(input_basic_time_path, output_basic_path)
+    # plot_window_size_change_for_time(input_basic_time_path, output_basic_path) # except dynamic
+    # plot_budget_change_for_average_time(input_basic_time_path, output_basic_path) # except dynamic
     # plot_window_size_change_for_average_time(input_basic_time_path, output_basic_path)
     # draw_ratio_change_with_two_budget(input_basic_user_ratio, output_basic_path)
     # draw_ratio_change_with_two_w_size(input_basic_user_ratio, output_basic_path)

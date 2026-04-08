@@ -7,6 +7,7 @@ import cn.edu.dll.io.print.MyPrint;
 import cn.edu.dll.io.write.CSVWrite;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 import cn.edu.dll.struct.pair.BasicPair;
+import cn.edu.dll.struct.pair.PureTriple;
 import ecnu.dll._config.ConfigureUtils;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
@@ -159,18 +160,18 @@ public class RepeatUtils {
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
         BeanInterface<ResultBean> modelBean = new ResultBean();
-        BasicPair<Double, Integer> paramsPair;
+        PureTriple<Double, Integer, Integer> paramsTriple;
         String inputFilePath, outputFilePath, title;
         CSVWrite csvWrite = new CSVWrite();
         File parentFile;
         FileFilter directoryFileFilter = new DirectoryFileFilter();
         for (String parameterFileDir : parameterSet) {
-            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
+            paramsTriple = ParameterUtils.extractBudgetWindowSizeDimensionParametersAccordingFileDirName(parameterFileDir);
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
             combineBeanList = new ArrayList<>();
             // 使用维度消融专用的机制列表（7种）
             for (String beanName : nameStringArrayOnlyForDimensionAblation) {
-                tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
+                tempBean = ResultBean.getInitializedBean(beanName, paramsTriple.getKey(), paramsTriple.getValue());
                 combineBeanList.add(tempBean);
             }
             for (File inputMethodDir : inputMethodDirFileList) {
@@ -183,10 +184,24 @@ public class RepeatUtils {
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
+
             outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, parentFile.getAbsolutePath(), "result.txt");
             csvWrite.startWriting(outputFilePath);
-            csvWrite.writeOneLine(title);
-            csvWrite.writeBeanList(combineBeanList);
+
+            // 从参数目录名中提取 positionSize（格式：p_x-w_y-d_z）
+            Integer positionSize = paramsTriple.getTag();
+            boolean hasPositionSize = positionSize != null && title.contains("PositionSize");
+
+            if (hasPositionSize) {
+                csvWrite.writeOneLine(title);
+                for (ResultBean bean : combineBeanList) {
+                    csvWrite.writeOneLine(bean.toFormatString() + "," + positionSize);
+                }
+            } else {
+                csvWrite.writeOneLine(title);
+                csvWrite.writeBeanList(combineBeanList);
+            }
+
             csvWrite.endWriting();
         }
     }

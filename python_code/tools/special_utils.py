@@ -15,6 +15,29 @@ def extract_budget_and_window_size_from_dir_name(pattern):
     return epsilon, window_size
 
 
+def extract_budget_and_window_size_and_dimension_size_from_dir_name(pattern):
+    # 匹配格式: p_X-Y_w_Z_d_W 或 p_X-Y_w_Z_p_W
+    match = re.match(r"p_(\d+)(?:-(\d+))?_w_(\d+)_(?:d|p)_(\d+)", pattern)
+    if not match:
+        raise ValueError(f"模式不匹配：{pattern}")
+
+    # 提取 epsilon
+    integer_part = match.group(1)
+    decimal_part = match.group(2)
+    if decimal_part is not None:
+        epsilon = float(f"{integer_part}.{decimal_part}")
+    else:
+        epsilon = int(integer_part)
+
+    # 提取 window_size
+    window_size = int(match.group(3))
+
+    # 提取 dimension_size
+    dimension_size = int(match.group(4))
+
+    return epsilon, window_size, dimension_size
+
+
 def extract_ratio_and_others_from_dir_name(pattern):
     # 正则表达式匹配 u_*, p_*, w_*
     pattern_regex = r"^u_(\d+)-(\d+)(?:_p_(\d+)-(\d+)|_w_(\d+))?$"
