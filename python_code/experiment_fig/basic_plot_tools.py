@@ -644,7 +644,7 @@ def plot_window_size_change_influence_given_metric_for_single_dataset(basic_path
     ax.plot(x, y_pdbd, 'cs:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBD')
     ax.plot(x, y_pdba, 'ro:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBA')
 
-    ax.set_xlabel(r"$\mathcal{E}$", fontsize=figure_FontSize_X)
+    ax.set_xlabel(r"$w$", fontsize=figure_FontSize_X)
     ylabel = f"ln({metric_name})" if metric_whether_log else metric_name
     y_all = np.concatenate([y_bd, y_ba, y_pbd, y_pba, y_pdbd, y_pdba, y_plbu])
     ax.set_ylim(top=np.max(y_all) * 1.07)  # 提高 7% 上限，避免遮挡
