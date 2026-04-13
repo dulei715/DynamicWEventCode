@@ -1,5 +1,7 @@
 package ecnu.dll.schemes.compared_scheme.w_event_dp;
 
-public class SPAS {
+import ecnu.dll.schemes._basic_struct.Mechanism;
+
+public class SPAS extends Mechanism {
 
 }
