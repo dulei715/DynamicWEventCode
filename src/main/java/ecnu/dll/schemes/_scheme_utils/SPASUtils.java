@@ -28,20 +28,35 @@ public class SPASUtils {
         return resultList;
     }
 
-    private static double[] toArray(Map<String, Integer> countDataMap, List<String> keyList) {
-        int resultSize = keyList.size();
-        double[] result = new double[resultSize];
-        for (int i = 0; i < resultSize; i++) {
-            result[i] = countDataMap.getOrDefault(keyList.get(i), 0);
+    public static Integer[] toArray(Map<String, Integer> countDataMap) {
+        Integer[] result = new Integer[countDataMap.size()];
+        int i = 0;
+        for (Integer value : countDataMap.values()) {
+            result[i++] = value;
         }
         return result;
     }
 
-    public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Integer>> countDataList, List<String> attributeList) {
+
+    public static Double[] toArray(Map<String, Double> countDataMap, List<String> keyList) {
+        int resultSize = keyList.size();
+        Double[] result = new Double[resultSize];
+        for (int i = 0; i < resultSize; i++) {
+            result[i] = countDataMap.getOrDefault(keyList.get(i), 0D);
+        }
+        return result;
+    }
+
+
+    public static Double getDH(Integer[] dataA, Double[] dataB) {
+        return BasicCalculation.get1Norm(dataA, dataB) / dataA.length;
+    }
+
+    public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Double>> countDataList, List<String> attributeList) {
         int slidingWindowSize = countDataList.size();
         double differSquareSum = 0, differSum = 0, tempDiffer;
-        double[] beforeCountArray = toArray(countDataList.get(0), attributeList);
-        double[] newCountArray;
+        Double[] beforeCountArray = toArray(countDataList.get(0), attributeList);
+        Double[] newCountArray;
         for (int i = 1; i < slidingWindowSize; i++) {
             newCountArray = toArray(countDataList.get(i), attributeList);
             tempDiffer = BasicCalculation.get1Norm(newCountArray, beforeCountArray);

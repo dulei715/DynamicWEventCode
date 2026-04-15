@@ -171,6 +171,8 @@ public class Constant {
     public static Function<Integer, String> dimAblationDirNameFunction = positionSize -> StringUtil.join(ConstantValues.FILE_SPLIT, "runInput_dim_ablation", "positionSize_" + positionSize);
 
 
+    // for SPAS
+    public static final Double SampleEpsilonRatio = 0.25;
 
     public static void main(String[] args) {
 //        System.out.println(configPath);
