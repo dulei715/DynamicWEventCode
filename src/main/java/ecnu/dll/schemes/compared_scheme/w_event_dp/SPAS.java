@@ -47,7 +47,9 @@ public class SPAS extends Mechanism {
         Integer[] rawStatisticArray = SPASUtils.toArray(statisticMap);
         Double currentDH = SPASUtils.getDH(rawStatisticArray, this.lastNoisyStatisticArray);
         Double currentEpsilonP = this.epsilonP / this.currentReleaseCount;
-        if (currentDH + LaplaceUtils.getLaplaceNoise())
+        if (currentDH + LaplaceUtils.getLaplaceNoise()) {
+
+        }
 //        SPASUtils.calculateAdjacentDistanceVariance(statisticMap, this.dimensionSize);
     }
 
