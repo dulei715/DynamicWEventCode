@@ -29,5 +29,23 @@ public class SchemeUtils {
         return average + LaplaceUtils.getLaplaceNoise(1.0/size, epsilon);
     }
 
+    public static TreeMap<String, Double> getNoiseCount(TreeMap<String, Integer> data, Double privacyBudget) {
+        return getLaplaceNoiseCount(data, 1.0, privacyBudget);
+    }
+
+    public static TreeMap<String, Double> getLaplaceNoiseCount(TreeMap<String, Integer> data, Double sensitivity, Double privacyBudget) {
+        String tempTypeName;
+        Integer tempCount;
+        Double tempNoiseCount;
+        TreeMap<String, Double> result = new TreeMap<String, Double>();
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
+            tempTypeName = entry.getKey();
+            tempCount = entry.getValue();
+            tempNoiseCount = tempCount + LaplaceUtils.getLaplaceNoise(sensitivity, privacyBudget);
+            result.put(tempTypeName, tempNoiseCount);
+        }
+        return result;
+    }
+
 
 }

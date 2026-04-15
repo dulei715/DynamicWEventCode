@@ -144,7 +144,7 @@ public abstract class DynamicPersonalizedWindowSizeMechanism extends Mechanism {
         if (dissimilarity > Math.sqrt(minimalEpsilonAndError[1])) {
             sampleIndexList = PersonalizedDPTools.sampleIndex(this.publicationPrivacyBudgetList, minimalEpsilonAndError[0]);
             sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
-            releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
+            releaseDataMap = SchemeUtils.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
             return true;
         }
@@ -161,7 +161,7 @@ public abstract class DynamicPersonalizedWindowSizeMechanism extends Mechanism {
         if (dissimilarity > Math.sqrt(minimalEpsilonAndError[1])) {
             sampleIndexList = PersonalizedDPTools.sampleIndex(this.publicationPrivacyBudgetList, minimalEpsilonAndError[0]);
             sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
-            releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
+            releaseDataMap = SchemeUtils.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
             return true;
         }

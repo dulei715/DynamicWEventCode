@@ -4,6 +4,7 @@ import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class SPASUtils {
@@ -28,10 +29,12 @@ public class SPASUtils {
         return resultList;
     }
 
-    public static Integer[] toArray(Map<String, Integer> countDataMap) {
-        Integer[] result = new Integer[countDataMap.size()];
+    public static <T> T[] toArray(Map<String, T> countDataMap, Class<T[]> clazz) {
+        @SuppressWarnings("unchecked")
+        T[] result = (T[]) Array.newInstance(clazz.getComponentType(), countDataMap.size());
+
         int i = 0;
-        for (Integer value : countDataMap.values()) {
+        for (T value : countDataMap.values()) {
             result[i++] = value;
         }
         return result;

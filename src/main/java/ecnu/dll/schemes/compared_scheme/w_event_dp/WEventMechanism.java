@@ -55,7 +55,7 @@ public abstract class WEventMechanism extends Mechanism {
         Double publicationLambda = 1.0 / this.publicationPrivacyBudget;
         if (dissimilarity > publicationLambda) {
             TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList);
-            TreeMap<String, Double> releaseDataMap = PersonalizedDPTools.getNoiseCount(sampleCountMap, this.publicationPrivacyBudget);
+            TreeMap<String, Double> releaseDataMap = SchemeUtils.getNoiseCount(sampleCountMap, this.publicationPrivacyBudget);
             this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
             return true;
         }
