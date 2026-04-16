@@ -1,7 +1,5 @@
 package ecnu.dll.schemes.compared_scheme.w_event_dp;
 
-import cn.edu.dll.basic.BasicArrayUtil;
-import cn.edu.dll.collection.SetUtils;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 import cn.edu.dll.map.MapUtils;
 import ecnu.dll._config.Constant;
@@ -9,9 +7,9 @@ import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.SPASUtils;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
-import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.HistoricalStructure;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.EpsilonHistoricalStructure;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.GeneralizedFixedHistoryStructure;
 import ecnu.dll.struts.stream_data.StreamDataElement;
-import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 import java.util.Set;
@@ -23,12 +21,13 @@ public class SPAS extends Mechanism {
     protected Integer windowSize;
     protected Double epsilonS, epsilonP, epsilonS1, epsilonS2;
     protected Integer currentReleaseCount, dimensionSize;
-    protected StreamNoiseCountData lastReleaseNoiseCountMap;
+//    protected StreamNoiseCountData lastReleaseNoiseCountMap;
+    protected GeneralizedFixedHistoryStructure<TreeMap<String, Double>> releaseNoisyHistory;
 
     protected Double deltaS, deltaP;
     protected Double noiseRho;
 
-    protected HistoricalStructure epsilonPUsedHistory;
+    protected EpsilonHistoricalStructure epsilonPUsedHistory;
 //    protected Double[] lastNoisyStatisticArray;
     protected TreeMap<String, Double> lastNoisyStatisticMap;
 
@@ -45,6 +44,7 @@ public class SPAS extends Mechanism {
 
         this.epsilonS1 = this.epsilonS2 = this.epsilonS / 2;
         this.noiseRho = LaplaceUtils.getLaplaceNoise(this.deltaS, this.epsilonS1);
+        this.releaseNoisyHistory = new GeneralizedFixedHistoryStructure<>((int)Math.ceil(windowSize * Constant.paramLRatio)+1);
     }
 
     public boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> nextDataElementList) {
@@ -61,9 +61,15 @@ public class SPAS extends Mechanism {
             laplaceNoiseCount = SchemeUtils.getLaplaceNoiseCount(statisticMap, this.deltaP, currentEpsilonP);
         } else {
             currentEpsilonP = 0D;
+            laplaceNoiseCount = this.lastNoisyStatisticMap;
         }
 
-//        SPASUtils.calculateAdjacentDistanceVariance(statisticMap, this.dimensionSize);
+        SPASUtils.calculateAdjacentDistanceVariance();
+        SPASUtils.calculateCStar(this.epsilonP, this.deltaP, historyDifferenceVariance);
+
+        this.epsilonPUsedHistory.add(currentEpsilonP);
+        this.lastNoisyStatisticMap = laplaceNoiseCount;
+
     }
 
 }

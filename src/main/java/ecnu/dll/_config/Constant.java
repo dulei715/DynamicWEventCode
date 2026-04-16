@@ -173,6 +173,7 @@ public class Constant {
 
     // for SPAS
     public static final Double SampleEpsilonRatio = 0.25;
+    public static final Double paramLRatio = 1.0;
 
     public static void main(String[] args) {
 //        System.out.println(configPath);

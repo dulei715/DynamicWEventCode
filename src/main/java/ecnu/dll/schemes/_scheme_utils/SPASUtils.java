@@ -3,6 +3,7 @@ package ecnu.dll.schemes._scheme_utils;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.GeneralizedFixedHistoryStructure;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -68,6 +69,10 @@ public class SPASUtils {
             beforeCountArray = newCountArray;
         }
         return differSquareSum / (slidingWindowSize - 1) - Math.pow(differSum / (slidingWindowSize - 1), 2);
+    }
+
+    public static Double calculateAdjacentDistanceVariance(GeneralizedFixedHistoryStructure<TreeMap<String, Double>> historyData) {
+
     }
 
     public static Double calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance) {

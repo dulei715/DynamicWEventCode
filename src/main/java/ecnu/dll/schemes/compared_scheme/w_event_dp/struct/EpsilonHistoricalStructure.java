@@ -1,18 +1,14 @@
 package ecnu.dll.schemes.compared_scheme.w_event_dp.struct;
 
-import java.util.ArrayDeque;
-
-public class HistoricalStructure {
-    protected Integer size;
-    protected ArrayDeque<Double> historicalDataQueue;
+public class EpsilonHistoricalStructure extends GeneralizedFixedHistoryStructure<Double> {
     protected Double sum;
 
-    public HistoricalStructure(Integer size) {
-        this.size = size;
-        this.historicalDataQueue = new ArrayDeque<>(size);
+    public EpsilonHistoricalStructure(Integer size) {
+        super(size);
         this.sum = 0D;
     }
 
+    @Override
     public void add(Double data) {
         if (this.historicalDataQueue.size() >= this.size) {
             Double outElement = this.historicalDataQueue.poll();
