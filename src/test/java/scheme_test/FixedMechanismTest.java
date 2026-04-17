@@ -3,6 +3,7 @@ package scheme_test;
 import cn.edu.dll.io.print.MyPrint;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
+import ecnu.dll.schemes.compared_scheme.w_event_dp.SPAS;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetAbsorption;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.impl.PersonalizedBudgetDistribution;
 import ecnu.dll.struts.stream_data.StreamDataElement;
@@ -85,6 +86,45 @@ public class FixedMechanismTest {
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
             MyPrint.showMap(pba.getReleaseNoiseCountMap().getDataMap());
+//            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
+//            MyPrint.showList(budgetList);
+//            MyPrint.showList(windowSizeList);
+            MyPrint.showSplitLine("*", 50);
+            MyPrint.showMap(realMapResult);
+            MyPrint.showSplitLine("*", 150);
+
+        }
+
+
+    }
+
+
+    @Test
+    public void SPASTest() {
+
+        int userSize = 100;
+        int typeSize = 5;
+        int windowSizeUpperBound = 6;
+
+        int timeUpperBound = 100;
+
+        List<StreamDataElement<Boolean>> dataElementList;
+
+        Integer windowSize = 120;
+        Double privacyBudget = 0.5;
+
+        dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+        SPAS spas = new SPAS(dataElementList.get(0).getKeyList(), windowSize, privacyBudget);
+        TreeMap<String, Integer> realMapResult;
+
+        for (int i = 0; i < timeUpperBound; i++) {
+            System.out.println(i);
+            dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
+            realMapResult = BooleanStreamDataElementUtils.getCountByGivenElementType(true, dataElementList);
+            boolean isPublication = spas.updateNextPublicationResult(dataElementList);
+//            String.format("status: %s; dis: %f; err: %f", isPublication, )
+            System.out.println(isPublication);
+            MyPrint.showMap(spas.getReleaseNoiseCountMap().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);

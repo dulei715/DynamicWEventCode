@@ -2,7 +2,7 @@ package ecnu.dll.schemes.compared_scheme.w_event_dp.struct;
 
 import java.util.ArrayDeque;
 
-public class GeneralizedFixedHistoryStructure<T> {
+public abstract class GeneralizedFixedHistoryStructure<T> {
     protected Integer size;
     protected ArrayDeque<T> historicalDataQueue;
     public GeneralizedFixedHistoryStructure(Integer size) {

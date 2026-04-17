@@ -4,6 +4,7 @@ import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
 import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.GeneralizedFixedHistoryStructure;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -16,7 +17,7 @@ public class SPASUtils {
         double rho = LaplaceUtils.getLaplaceNoise(sensitivity, epsilonA);
         int dataSize = dHiList.size();
         double weight = 0, tempNosie, tempWeighted;
-        List<Boolean> resultList = new ArrayList(dataSize);
+        List<Boolean> resultList = new ArrayList<>(dataSize);
         for (int i = 0; i < dataSize; i++) {
             tempWeighted = privacyBudgetWeightList.get(i);
             tempNosie = LaplaceUtils.getLaplaceNoise(2.0/tempWeighted*sensitivity, epsilonB);
@@ -30,7 +31,7 @@ public class SPASUtils {
         return resultList;
     }
 
-    public static <T> T[] toArray(Map<String, T> countDataMap, Class<T[]> clazz) {
+    public static <T> T[] toArray(TreeMap<String, T> countDataMap, Class<T[]> clazz) {
         @SuppressWarnings("unchecked")
         T[] result = (T[]) Array.newInstance(clazz.getComponentType(), countDataMap.size());
 
@@ -51,10 +52,20 @@ public class SPASUtils {
         return result;
     }
 
+    public static Double[] toArray(StreamNoiseCountData lastReleaseNoiseCountData) {
+        TreeMap<String, Double> countDataMap = lastReleaseNoiseCountData.getDataMap();
+        List<String> keyList = new ArrayList<>(countDataMap.keySet());
+        return toArray(countDataMap, keyList);
+    }
+
 
     public static Double getDH(Integer[] dataA, Double[] dataB) {
         return BasicCalculation.get1Norm(dataA, dataB) / dataA.length;
     }
+
+//    public static Double getDH() {
+//
+//    }
 
     public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Double>> countDataList, List<String> attributeList) {
         int slidingWindowSize = countDataList.size();
@@ -71,11 +82,16 @@ public class SPASUtils {
         return differSquareSum / (slidingWindowSize - 1) - Math.pow(differSum / (slidingWindowSize - 1), 2);
     }
 
-    public static Double calculateAdjacentDistanceVariance(GeneralizedFixedHistoryStructure<TreeMap<String, Double>> historyData) {
-
+    public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Double>> countDataList) {
+        Set<String> keySet = countDataList.get(0).keySet();
+        return calculateAdjacentDistanceVariance(countDataList, new ArrayList<>(keySet));
     }
 
-    public static Double calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance) {
-        return Math.ceil(epsilonP / (6 * deltaP) * Math.sqrt(3 * adjacentDistanceVariance));
+//    public static Double calculateAdjacentDistanceVariance(GeneralizedFixedHistoryStructure<TreeMap<String, Double>> historyData) {
+//
+//    }
+
+    public static Integer calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance) {
+        return (int)Math.ceil(epsilonP / (6 * deltaP) * Math.sqrt(3 * adjacentDistanceVariance));
     }
 }
