@@ -30,7 +30,7 @@ public class _4_LDPPersonalizedEventMechanismRun {
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeBatchSize; i++) {
             scheme.updateNextPublicationResult(batchDataList.get(i));
-            publicationList.add(scheme.getReleaseNoiseCountMap());
+            publicationList.add(scheme.getReleaseNoiseCountData());
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;

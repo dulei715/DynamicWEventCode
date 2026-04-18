@@ -57,7 +57,7 @@ public class DynamicMechanismTest {
             tempForwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
             boolean isPublication = pdbd.updateNextPublicationResult(dataElementList, tempBackwardBudgetList, tempBackwardWindowSizeList, tempForwardBudgetList, tempForwardWindowSizeList);
             System.out.println(isPublication);
-            MyPrint.showMap(pdbd.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(pdbd.getReleaseNoiseCountData().getDataMap());
             MyPrint.showSplitLine("*", 50);
             MyPrint.showMap(tempRealMapResult);
             MyPrint.showSplitLine("*", 150);
@@ -92,7 +92,7 @@ public class DynamicMechanismTest {
             tempForwardWindowSizeList = TestTools.generateWindowSizeList(this.random, userSize, windowSizeUpperBound);
             boolean isPublication = pdba.updateNextPublicationResult(dataElementList, tempBackwardBudgetList, tempBackwardWindowSizeList, tempForwardBudgetList, tempForwardWindowSizeList);
             System.out.println(isPublication);
-            MyPrint.showMap(pdba.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(pdba.getReleaseNoiseCountData().getDataMap());
             MyPrint.showSplitLine("*", 50);
             MyPrint.showMap(tempRealMapResult);
             MyPrint.showSplitLine("*", 150);

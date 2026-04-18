@@ -45,7 +45,7 @@ public class FixedMechanismTest {
             boolean isPublication = pbd.updateNextPublicationResult(dataElementList);
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
-            MyPrint.showMap(pbd.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(pbd.getReleaseNoiseCountData().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);
@@ -85,7 +85,7 @@ public class FixedMechanismTest {
             boolean isPublication = pba.updateNextPublicationResult(dataElementList);
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
-            MyPrint.showMap(pba.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(pba.getReleaseNoiseCountData().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);
@@ -110,7 +110,7 @@ public class FixedMechanismTest {
 
         List<StreamDataElement<Boolean>> dataElementList;
 
-        Integer windowSize = 120;
+        Integer windowSize = 30;
         Double privacyBudget = 0.5;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
@@ -124,7 +124,7 @@ public class FixedMechanismTest {
             boolean isPublication = spas.updateNextPublicationResult(dataElementList);
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
-            MyPrint.showMap(spas.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(spas.getReleaseNoiseCountData().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);

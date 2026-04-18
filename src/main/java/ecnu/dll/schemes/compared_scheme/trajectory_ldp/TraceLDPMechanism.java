@@ -12,7 +12,7 @@ public abstract class TraceLDPMechanism extends Mechanism {
 
     public abstract Double getPrivacyBudget();
     public abstract Integer getWindowSize();
-    public abstract StreamNoiseCountData getReleaseNoiseCountMap();
+    public abstract StreamNoiseCountData getReleaseNoiseCountData();
     public abstract void updateNextPublicationResult(List<StreamDataElement<Boolean>> batchData);
     public abstract String getSimpleName();
 }

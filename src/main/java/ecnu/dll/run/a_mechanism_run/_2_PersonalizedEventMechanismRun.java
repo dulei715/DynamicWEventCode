@@ -35,7 +35,7 @@ public class _2_PersonalizedEventMechanismRun {
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeUpperBound; i++) {
             scheme.updateNextPublicationResult(dataList.get(i));
-            publicationList.add(scheme.getReleaseNoiseCountMap());
+            publicationList.add(scheme.getReleaseNoiseCountData());
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;
@@ -70,7 +70,7 @@ public class _2_PersonalizedEventMechanismRun {
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeBatchSize; i++) {
             scheme.updateNextPublicationResult(batchDataList.get(i));
-            publicationList.add(scheme.getReleaseNoiseCountMap());
+            publicationList.add(scheme.getReleaseNoiseCountData());
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;

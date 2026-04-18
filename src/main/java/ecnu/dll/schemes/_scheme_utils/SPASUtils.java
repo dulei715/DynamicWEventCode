@@ -91,7 +91,9 @@ public class SPASUtils {
 //
 //    }
 
-    public static Integer calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance) {
-        return (int)Math.ceil(epsilonP / (6 * deltaP) * Math.sqrt(3 * adjacentDistanceVariance));
+    // minimalValue是对论文中的改进，防止出现0的情况
+    public static Integer calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance, Integer minimalValue) {
+        int result =  (int)Math.ceil(epsilonP / (6 * deltaP) * Math.sqrt(3 * adjacentDistanceVariance));
+        return result >= minimalValue ? result : minimalValue;
     }
 }

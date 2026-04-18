@@ -66,7 +66,7 @@ public class PersonalizedLDPBudgetUniform extends PersonalizedLDPEventMechanism 
 
 
 
-    public StreamNoiseCountData getReleaseNoiseCountMap() {
+    public StreamNoiseCountData getReleaseNoiseCountData() {
         return this.lastReleaseNoiseCountMap;
     }
 

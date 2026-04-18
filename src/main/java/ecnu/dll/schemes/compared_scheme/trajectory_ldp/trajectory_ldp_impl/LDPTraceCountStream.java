@@ -36,7 +36,7 @@ public class LDPTraceCountStream extends TraceLDPMechanism {
     }
 
     @Override
-    public StreamNoiseCountData getReleaseNoiseCountMap() {
+    public StreamNoiseCountData getReleaseNoiseCountData() {
         return null;
     }
 

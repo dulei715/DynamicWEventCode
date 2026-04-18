@@ -4,6 +4,7 @@ import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.struts.stream_data.StreamCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
+import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 
 import java.util.List;
 import java.util.TreeMap;
@@ -25,5 +26,15 @@ public class NonPrivacyMechanism extends Mechanism {
         TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList);
         this.lastReleaseCountMap = new StreamCountData(this.currentTime, sampleCountMap);
         return true;
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "NonPrivacy";
+    }
+
+    @Override
+    public StreamNoiseCountData getReleaseNoiseCountData() {
+        return this.lastReleaseCountMap.convertToNoise();
     }
 }

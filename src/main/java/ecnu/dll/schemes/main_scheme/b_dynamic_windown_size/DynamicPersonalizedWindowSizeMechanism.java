@@ -205,7 +205,7 @@ public abstract class DynamicPersonalizedWindowSizeMechanism extends Mechanism {
 
 
 
-    public StreamNoiseCountData getReleaseNoiseCountMap() {
+    public StreamNoiseCountData getReleaseNoiseCountData() {
         return this.lastReleaseNoiseCountMap;
     }
 

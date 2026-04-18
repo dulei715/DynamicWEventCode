@@ -1,6 +1,7 @@
 package ecnu.dll.struts.stream_data;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class StreamCountData {
@@ -18,6 +19,14 @@ public class StreamCountData {
         for (String keyName : dataType) {
             this.dataMap.put(keyName, 0);
         }
+    }
+
+    public StreamNoiseCountData convertToNoise() {
+        TreeMap<String, Double> resultMap = new TreeMap<>();
+        for (Map.Entry<String, Integer> entry : dataMap.entrySet()) {
+            resultMap.put(entry.getKey(), entry.getValue()*1.0);
+        }
+        return new StreamNoiseCountData(this.timeSlot, resultMap);
     }
 
 

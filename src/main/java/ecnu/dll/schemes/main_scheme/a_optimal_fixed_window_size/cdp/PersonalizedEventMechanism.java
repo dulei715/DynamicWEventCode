@@ -45,7 +45,7 @@ public abstract class PersonalizedEventMechanism extends Mechanism {
         return windowSizeList;
     }
 
-    public StreamNoiseCountData getReleaseNoiseCountMap() {
+    public StreamNoiseCountData getReleaseNoiseCountData() {
         return this.lastReleaseNoiseCountMap;
     }
 

@@ -37,7 +37,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeUpperBound; t++) {
             scheme.updateNextPublicationResultWithDifferenceBackwardBudgetList(dataList.get(t), remainBackwardPrivacyBudgetListList.get(t), forwardPrivacyBudgetListList.get(t), forwardWindowSizeListList.get(t));
-            publicationList.add(scheme.getReleaseNoiseCountMap());
+            publicationList.add(scheme.getReleaseNoiseCountData());
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;
@@ -76,7 +76,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeBatchSize; t++) {
             scheme.updateNextPublicationResultWithDifferenceBackwardBudgetList(batchDataList.get(t), remainBackwardPrivacyBudgetListBatchList.get(t), forwardPrivacyBudgetListBatchList.get(t), forwardWindowSizeListBatchList.get(t));
-            publicationList.add(scheme.getReleaseNoiseCountMap());
+            publicationList.add(scheme.getReleaseNoiseCountData());
         }
         endTime = System.currentTimeMillis();
         timeCost = endTime - startTime;

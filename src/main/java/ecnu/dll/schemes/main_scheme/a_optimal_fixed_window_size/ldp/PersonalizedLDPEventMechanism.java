@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class PersonalizedLDPEventMechanism extends Mechanism {
     public abstract List<Double> getPrivacyBudgetList();
     public abstract List<Integer> getWindowSizeList();
-    public abstract StreamNoiseCountData getReleaseNoiseCountMap();
+    public abstract StreamNoiseCountData getReleaseNoiseCountData();
     public abstract boolean updateNextPublicationResult(List<StreamDataElement<Boolean>> batchData);
     public abstract String getSimpleName();
 }

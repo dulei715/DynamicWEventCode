@@ -46,7 +46,7 @@ public class BasicMechanismTest {
             boolean isPublication = pbd.updateNextPublicationResult(dataElementList);
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
-            MyPrint.showMap(pbd.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(pbd.getReleaseNoiseCountData().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);
@@ -81,7 +81,7 @@ public class BasicMechanismTest {
             boolean isPublication = budgetAbsorption.updateNextPublicationResult(dataElementList);
 //            String.format("status: %s; dis: %f; err: %f", isPublication, )
             System.out.println(isPublication);
-            MyPrint.showMap(budgetAbsorption.getReleaseNoiseCountMap().getDataMap());
+            MyPrint.showMap(budgetAbsorption.getReleaseNoiseCountData().getDataMap());
 //            MyPrint.showList(dataElementList, ConstantValues.LINE_SPLIT);
 //            MyPrint.showList(budgetList);
 //            MyPrint.showList(windowSizeList);
