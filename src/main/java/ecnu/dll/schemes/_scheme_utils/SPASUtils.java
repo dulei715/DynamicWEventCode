@@ -68,21 +68,39 @@ public class SPASUtils {
 //    }
 
     public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Double>> countDataList, List<String> attributeList) {
+
+        if (countDataList == null || countDataList.size() < 2) {
+            return 0D;
+        }
         int slidingWindowSize = countDataList.size();
         double differSquareSum = 0, differSum = 0, tempDiffer;
         Double[] beforeCountArray = toArray(countDataList.get(0), attributeList);
         Double[] newCountArray;
         for (int i = 1; i < slidingWindowSize; i++) {
             newCountArray = toArray(countDataList.get(i), attributeList);
+            // 这里感觉论文的设计有点问题（我没更改），按理说应该除以维度的，保证量纲一致
             tempDiffer = BasicCalculation.get1Norm(newCountArray, beforeCountArray);
             differSum += tempDiffer;
             differSquareSum += tempDiffer * tempDiffer;
             beforeCountArray = newCountArray;
         }
-        return differSquareSum / (slidingWindowSize - 1) - Math.pow(differSum / (slidingWindowSize - 1), 2);
+        double variance = differSquareSum / (slidingWindowSize - 1) - Math.pow(differSum / (slidingWindowSize - 1), 2);
+        // todo: for test
+//        if (variance < 0) {
+//            System.err.println("[DEBUG] Variance calculation issue:");
+//            System.err.println("  slidingWindowSize: " + slidingWindowSize);
+//            System.err.println("  differSquareSum: " + differSquareSum);
+//            System.err.println("  differSum: " + differSum);
+//            System.err.println("  raw variance: " + variance);
+//        }
+        return variance;
     }
 
     public static Double calculateAdjacentDistanceVariance(List<TreeMap<String, Double>> countDataList) {
+//        //todo: test
+        if (countDataList == null || countDataList.size() < 2) {
+            return 0D;
+        }
         Set<String> keySet = countDataList.get(0).keySet();
         return calculateAdjacentDistanceVariance(countDataList, new ArrayList<>(keySet));
     }
@@ -92,8 +110,29 @@ public class SPASUtils {
 //    }
 
     // minimalValue是对论文中的改进，防止出现0的情况
-    public static Integer calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance, Integer minimalValue) {
+    public static Integer calculateCStar(Double epsilonP, Double deltaP, Double adjacentDistanceVariance, Integer minimalValue, Integer maxWindowSize) {
+        if (adjacentDistanceVariance == null
+                || !Double.isFinite(adjacentDistanceVariance)
+                || adjacentDistanceVariance <= 0) {
+            return minimalValue;
+        }
+
         int result =  (int)Math.ceil(epsilonP / (6 * deltaP) * Math.sqrt(3 * adjacentDistanceVariance));
-        return result >= minimalValue ? result : minimalValue;
+        // todo: for test
+//        if (result > Integer.MAX_VALUE || result < 0) {
+//            System.err.println("[DEBUG] CStar calculation overflow/negative:");
+//            System.err.println("  epsilonP: " + epsilonP);
+//            System.err.println("  deltaP: " + deltaP);
+//            System.err.println("  adjacentDistanceVariance: " + adjacentDistanceVariance);
+//            System.err.println("  result: " + result);
+//            System.err.println("  Integer.MAX_VALUE: " + Integer.MAX_VALUE);
+//        }
+        if (result < minimalValue) {
+            result = minimalValue;
+        }
+        if (result > maxWindowSize) {
+            result = maxWindowSize;
+        }
+        return result;
     }
 }

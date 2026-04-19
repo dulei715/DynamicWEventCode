@@ -30,13 +30,20 @@ public class TLNSDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingLDPBUDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
-    public static void runTLNSContainingDatasetAblation() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public static void runTLNSContainingSPAS() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         String basicPath = Constant.tlnsFilePath;
         String dataTypeFileName = "status.txt";
         PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
         Integer singleBatchSize = independentData.getValue();
-        DatasetSegmentRunUtils.ablateDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+        DatasetSegmentRunUtils.containingSPASDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+//    public static void runTLNSContainingDatasetAblation() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+//        String basicPath = Constant.tlnsFilePath;
+//        String dataTypeFileName = "status.txt";
+//        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+//        Integer singleBatchSize = independentData.getValue();
+//        DatasetSegmentRunUtils.ablateDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+//    }
 
 //    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 //        CatchSignal catchSignal = new CatchSignal();

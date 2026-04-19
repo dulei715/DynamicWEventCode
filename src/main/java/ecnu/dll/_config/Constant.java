@@ -133,6 +133,7 @@ public class Constant {
     public static final String PersonalizedBudgetDistributionSchemeName = "PersonalizedBudgetDistributionScheme";
     public static final String PersonalizedBudgetAbsorptionSchemeName = "PersonalizedBudgetAbsorptionScheme";
     public static final String PersonalizedLDPBudgetUniformSchemeName = "PersonalizedBudgetLDPScheme";
+    public static final String SPASSchemeName = "SPASScheme";
     public static final String DynamicPersonalizedBudgetDistributionSchemeName = "DynamicPersonalizedBudgetDistributionScheme";
     public static final String DynamicPersonalizedBudgetAbsorptionSchemeName = "DynamicPersonalizedBudgetAbsorptionScheme";
 

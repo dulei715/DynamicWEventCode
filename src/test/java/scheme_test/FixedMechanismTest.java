@@ -104,17 +104,16 @@ public class FixedMechanismTest {
 
         int userSize = 100;
         int typeSize = 5;
-        int windowSizeUpperBound = 6;
 
         int timeUpperBound = 100;
 
         List<StreamDataElement<Boolean>> dataElementList;
 
-        Integer windowSize = 30;
+        Integer windowSize = 25;
         Double privacyBudget = 0.5;
 
         dataElementList = TestTools.generateStreamDataElementList(this.random, userSize, typeSize);
-        SPAS spas = new SPAS(dataElementList.get(0).getKeyList(), windowSize, privacyBudget);
+        SPAS spas = new SPAS(dataElementList.get(0).getKeyList(), privacyBudget, windowSize);
         TreeMap<String, Integer> realMapResult;
 
         for (int i = 0; i < timeUpperBound; i++) {
