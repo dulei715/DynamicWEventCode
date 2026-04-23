@@ -34,6 +34,12 @@ public class RepeatUtils {
             , "PDBD", "PDBA"
     };
 
+    private static final String[] nameStringArrayOnlyForSPAS = new String[]{
+            "NP", "BD", "BA", "PBD", "PBA"
+            , "PDBD", "PDBA"
+            , "SPAS"
+    };
+
     /**
      * 将每轮最终结果合并取平均值
      * @param outputMethodDirFile
@@ -206,6 +212,43 @@ public class RepeatUtils {
         }
     }
 
+    private static void combineContainingSPASProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
+        List<ResultBean> combineBeanList = null, updateBeanList;
+        ResultBean tempBean;
+        BeanInterface<ResultBean> modelBean = new ResultBean();
+        BasicPair<Double, Integer> paramsPair;
+        String inputFilePath, outputFilePath, title;
+        CSVWrite csvWrite = new CSVWrite();
+        File parentFile;
+        FileFilter directoryFileFilter = new DirectoryFileFilter();
+        for (String parameterFileDir : parameterSet) {
+            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
+            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
+//            System.out.println(title);
+            combineBeanList = new ArrayList<>();
+            for (String beanName : nameStringArrayOnlyForSPAS) {
+                tempBean = ResultBean.getInitializedBean(beanName, paramsPair.getKey(), paramsPair.getValue());
+                combineBeanList.add(tempBean);
+            }
+            for (File inputMethodDir : inputMethodDirFileList) {
+                inputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, inputMethodDir, parameterFileDir, "result.txt");
+                updateBeanList = CSVReadEnhanced.readDataToBeanList(inputFilePath, modelBean);
+                update(combineBeanList, updateBeanList);
+            }
+            average(combineBeanList, inputMethodDirFileList.size());
+            parentFile = new File(outputMethodDirFile, parameterFileDir);
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
+            outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, parentFile.getAbsolutePath(), "result.txt");
+            csvWrite.startWriting(outputFilePath);
+            csvWrite.writeOneLine(title);
+            csvWrite.writeBeanList(combineBeanList);
+            csvWrite.endWriting();
+        }
+
+    }
+
 
 
     private static void update(List<ResultBean> combineBeanList, List<ResultBean> updateBeanList) {
@@ -334,6 +377,18 @@ public class RepeatUtils {
         Set<String> outputParamsFileNameSet = new HashSet<>();
         outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList, roundSize);
         combineDimensionAblationProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
+    }
+
+    public static void combineMultipleContainingSPASRound(String inputDir, String outputDir, int roundSize) {
+        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
+        File inputDirFile = new File(inputDir);
+        File outputDirFile = new File(outputDir);
+        File outputMethodDirFile;
+        List<File> datasetRoundList = new ArrayList<>();
+        Set<String> outputParamsFileNameSet = new HashSet<>();
+        outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList, roundSize);
+
+        combineContainingSPASProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
     }
 
     public static void main(String[] args) {

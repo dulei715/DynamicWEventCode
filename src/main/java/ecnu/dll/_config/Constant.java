@@ -3,6 +3,8 @@ package ecnu.dll._config;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.configure.XMLConfigure;
 import cn.edu.dll.constant_values.ConstantValues;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.Well19937c;
 
 import java.io.File;
 import java.util.Arrays;
@@ -167,6 +169,7 @@ public class Constant {
 
     public static String OutputContainingLDPDirName = "group_output_containing_ldp";
     public static String OutputDatasetAblationDirName = "group_output_dimension_ablation";
+    public static String OutputContainingSPASDirName = "group_output_containing_spas";
 
     public static Function<Integer, String> groupPositionNameFunction = positionSize -> "groupPosition_"+positionSize+".txt";
     public static Function<Integer, String> dimAblationDirNameFunction = positionSize -> StringUtil.join(ConstantValues.FILE_SPLIT, "runInput_dim_ablation", "positionSize_" + positionSize);
@@ -177,6 +180,10 @@ public class Constant {
     public static final Double paramLRatio = 2.0;
     public static final Integer WarmUpM = 20;
     public static final Integer MinimumCValue = 1;
+
+    // for random
+    public static final Long DefaultSeed = 1L;
+//    public static final RandomGenerator randomGenerator = new Well19937c(DefaultSeed);
 
 
 

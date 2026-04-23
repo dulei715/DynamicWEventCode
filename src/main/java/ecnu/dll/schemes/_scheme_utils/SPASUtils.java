@@ -3,6 +3,7 @@ package ecnu.dll.schemes._scheme_utils;
 import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
+import ecnu.dll._config.Constant;
 import ecnu.dll.schemes.compared_scheme.w_event_dp.struct.GeneralizedFixedHistoryStructure;
 import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 

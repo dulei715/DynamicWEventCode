@@ -2,6 +2,7 @@ package ecnu.dll.schemes.basic_scheme.personalized_dp;
 
 import cn.edu.dll.basic.RandomUtil;
 import cn.edu.dll.differential_privacy.noise.LaplaceUtils;
+import ecnu.dll._config.Constant;
 
 import java.util.*;
 @Deprecated

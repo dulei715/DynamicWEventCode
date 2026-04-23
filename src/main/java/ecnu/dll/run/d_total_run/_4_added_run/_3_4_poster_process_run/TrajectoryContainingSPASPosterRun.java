@@ -16,7 +16,7 @@ public class TrajectoryContainingSPASPosterRun {
         String datasetPath = Constant.trajectoriesFilePath;
         String finalResultDirName = "1.trajectory_containing_spas_result";
 
-        String basicOutputFileString = "../4.result_containing_spas";
+        String basicOutputFileString = "../6.result_containing_spas";
         String roundPattern = "round_%d_containing_spas";
         String outputDir = "group_output_containing_spas";
         String extractDir = "extract_containing_spas_result";
@@ -41,6 +41,6 @@ public class TrajectoryContainingSPASPosterRun {
         // 3. 后处理
         CombineForEachRound.combineAllRound(datasetPath, finalResultDirName, roundSize, roundPattern, outputDir, extractDir);
         // 4. 合并每轮
-        RepeatUtils.combineMultipleMainRound(datasetPath, basicOutputPath, roundSize);
+        RepeatUtils.combineMultipleContainingSPASRound(datasetPath, basicOutputPath, roundSize);
     }
 }

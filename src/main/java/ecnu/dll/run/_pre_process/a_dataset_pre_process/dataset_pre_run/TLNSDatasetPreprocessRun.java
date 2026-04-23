@@ -10,13 +10,13 @@ public class TLNSDatasetPreprocessRun {
     private static void generateProbabilityParameters() {
         // 生成20000个user，1个位置，10000个timestamp
         // 保证所有user的统计满足某个函数的分布
-        Double p0 = 0.5;
+        Double p0 = 0.05;
         Double gaussAverage = 0D;
         Double gaussStandardVariance = 0.0025;
         String datasetName = "tlns";
-        TLNSFunction TLNSFunction = new TLNSFunction(p0, gaussAverage, gaussStandardVariance);
-        int timeStampSize = Integer.valueOf(ConfigureUtils.getFileHandleInfo(datasetName, "timeStampSize"));
-        SyntheticGenerationUtils.generateProbability(TLNSFunction, timeStampSize, true);
+        TLNSFunction tlnsFunction = new TLNSFunction(p0, gaussAverage, gaussStandardVariance);
+        int timeStampSize = Integer.parseInt(ConfigureUtils.getFileHandleInfo(datasetName, "timeStampSize"));
+        SyntheticGenerationUtils.generateProbability(tlnsFunction, timeStampSize, true);
 
     }
 
