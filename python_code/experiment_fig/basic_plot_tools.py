@@ -475,7 +475,7 @@ def plot_basic_window_size_time_cost_average(basic_path, default_budget, metric_
     plt.close()
 
 
-def plot_budget_change_influence_given_metric_for_single_dataset(basic_path, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
+def plot_budget_change_influence_given_metric_for_single_dataset(basic_path, default_window_size, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
 
     dir_names = cutils.list_dir_name(basic_path)
 
@@ -922,6 +922,199 @@ def plot_dimension_change_influence_given_metric_for_single_dataset(basic_path, 
 
     # 图例
     legend_names = ["BD", "BA", "PBD", "PBA", "PDBD", "PDBA"]
+    # ax.legend(legend_names, loc='best', fontsize=14, frameon=False)
+
+    plt.tight_layout()
+
+    plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
+
+    plt.show()
+
+    plt.close()
+
+def plot_budget_change_influence_given_metric_for_single_dataset_containing_spas(basic_path, default_window_size, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
+
+    dir_names = cutils.list_dir_name(basic_path)
+
+    x = []
+    y_bd = []
+    y_ba = []
+    y_spas = []
+    y_pbd = []
+    y_pba = []
+    y_pdbd = []
+    y_pdba = []
+
+    for temp_name in dir_names:
+        temp_budget, temp_window_size = sutils.extract_budget_and_window_size_from_dir_name(temp_name)
+        if temp_window_size != default_window_size:
+            continue
+
+        data_path = os.path.join(basic_path, temp_name, 'result.txt')
+        try:
+            temp_table = pd.read_csv(data_path, sep=',')
+        except Exception as e:
+            print(f"读取失败: {data_path} -> {e}")
+            continue
+
+        x.append(temp_budget)
+        getter = np.log if metric_whether_log else lambda v: v
+        col = metric_col_index - 1  # Python 索引从0开始
+
+        try:
+            y_bd.append(getter(temp_table.iloc[1, col]) * shrink_ratio)
+            y_ba.append(getter(temp_table.iloc[2, col]) * shrink_ratio)
+            y_pbd.append(getter(temp_table.iloc[3, col]) * shrink_ratio)
+            y_pba.append(getter(temp_table.iloc[4, col]) * shrink_ratio)
+            y_pdbd.append(getter(temp_table.iloc[5, col]) * shrink_ratio)
+            y_pdba.append(getter(temp_table.iloc[6, col]) * shrink_ratio)
+            y_spas.append(getter(temp_table.iloc[7, col]) * shrink_ratio)
+        except Exception as e:
+            print(f"表格读取异常（{data_path}）：{e}")
+
+    # 排序
+    x = np.array(x)
+    sorted_indices = np.argsort(x)
+    x = x[sorted_indices]
+    y_bd = np.array(y_bd)[sorted_indices]
+    y_ba = np.array(y_ba)[sorted_indices]
+    y_pbd = np.array(y_pbd)[sorted_indices]
+    y_pba = np.array(y_pba)[sorted_indices]
+    y_pdbd = np.array(y_pdbd)[sorted_indices]
+    y_pdba = np.array(y_pdba)[sorted_indices]
+    y_spas = np.array(y_spas)[sorted_indices]
+
+    # 图像配置
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['mathtext.fontset'] = 'cm'
+    plt.rcParams['font.size'] = font_size
+    # figure_MarkerSize = 24
+    # figure_FontSize_X = 28
+    # figure_FontSize_Y = 28
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # linewidth = 3
+    # markeredgewidth = 3
+
+    ax.plot(x, y_bd, 'ks-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BD')
+    ax.plot(x, y_ba, 'mo-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BA')
+    ax.plot(x, y_spas, color='limegreen', linestyle='-.', marker='D', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='SPAS')
+    ax.plot(x, y_pbd, 'bs--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBD')
+    ax.plot(x, y_pba, 'go--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBA')
+    ax.plot(x, y_pdbd, 'cs:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBD')
+    ax.plot(x, y_pdba, 'ro:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBA')
+
+    ax.set_xlabel(r"$\mathcal{E}$", fontsize=figure_FontSize_X)
+    ylabel = f"ln({metric_name})" if metric_whether_log else metric_name
+    y_all = np.concatenate([y_bd, y_ba, y_pbd, y_pba, y_pdbd, y_pdba, y_spas])
+    ax.set_ylim(top=np.max(y_all) * 1.07)  # 提高 7% 上限，避免遮挡
+    ax.set_ylabel(ylabel, fontsize=figure_FontSize_Y)
+
+    ax.set_xticks(x)
+    padding = (x[-1] - x[0]) * 0.05  # 动态计算边缘留白 5%
+    ax.set_xlim(x[0] - padding, x[-1] + padding)
+
+    ax.tick_params(axis='both', labelsize=figure_FontSize_X)
+
+    # 图例
+    legend_names = ["BD", "BA", "SPAS", "PBD", "PBA", "PDBD", "PDBA"]
+    # ax.legend(legend_names, loc='best', fontsize=14, frameon=False)
+
+    plt.tight_layout()
+
+    plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
+
+    plt.show()
+
+    plt.close()
+def plot_window_size_change_influence_given_metric_for_single_dataset_containing_spas(basic_path, default_budget, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
+
+    dir_names = cutils.list_dir_name(basic_path)
+
+    x = []
+    y_bd = []
+    y_ba = []
+    y_spas = []
+    y_pbd = []
+    y_pba = []
+    y_pdbd = []
+    y_pdba = []
+
+    for temp_name in dir_names:
+        temp_budget, temp_window_size = sutils.extract_budget_and_window_size_from_dir_name(temp_name)
+        if temp_budget != default_budget:
+            continue
+
+        data_path = os.path.join(basic_path, temp_name, 'result.txt')
+        try:
+            temp_table = pd.read_csv(data_path, sep=',')
+        except Exception as e:
+            print(f"读取失败: {data_path} -> {e}")
+            continue
+
+        x.append(temp_window_size)
+        getter = np.log if metric_whether_log else lambda v: v
+        col = metric_col_index - 1  # Python 索引从0开始
+
+        try:
+            y_bd.append(getter(temp_table.iloc[1, col]) * shrink_ratio)
+            y_ba.append(getter(temp_table.iloc[2, col]) * shrink_ratio)
+            y_pbd.append(getter(temp_table.iloc[3, col]) * shrink_ratio)
+            y_pba.append(getter(temp_table.iloc[4, col]) * shrink_ratio)
+            y_pdbd.append(getter(temp_table.iloc[5, col]) * shrink_ratio)
+            y_pdba.append(getter(temp_table.iloc[6, col]) * shrink_ratio)
+            y_spas.append(getter(temp_table.iloc[7, col]) * shrink_ratio)
+        except Exception as e:
+            print(f"表格读取异常（{data_path}）：{e}")
+
+    # 排序
+    x = np.array(x)
+    sorted_indices = np.argsort(x)
+    x = x[sorted_indices]
+    y_bd = np.array(y_bd)[sorted_indices]
+    y_ba = np.array(y_ba)[sorted_indices]
+    y_pbd = np.array(y_pbd)[sorted_indices]
+    y_pba = np.array(y_pba)[sorted_indices]
+    y_pdbd = np.array(y_pdbd)[sorted_indices]
+    y_pdba = np.array(y_pdba)[sorted_indices]
+    y_spas = np.array(y_spas)[sorted_indices]
+
+    # 图像配置
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['mathtext.fontset'] = 'cm'
+    plt.rcParams['font.size'] = font_size
+    # figure_MarkerSize = 24
+    # figure_FontSize_X = 28
+    # figure_FontSize_Y = 28
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # linewidth = 3
+    # markeredgewidth = 3
+
+    ax.plot(x, y_bd, 'ks-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BD')
+    ax.plot(x, y_ba, 'mo-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BA')
+    ax.plot(x, y_spas, color='limegreen', linestyle='-.', marker='D', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='SPAS')
+    ax.plot(x, y_pbd, 'bs--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBD')
+    ax.plot(x, y_pba, 'go--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBA')
+    ax.plot(x, y_pdbd, 'cs:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBD')
+    ax.plot(x, y_pdba, 'ro:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBA')
+
+    ax.set_xlabel(r"$w$", fontsize=figure_FontSize_X)
+    ylabel = f"ln({metric_name})" if metric_whether_log else metric_name
+    y_all = np.concatenate([y_bd, y_ba, y_pbd, y_pba, y_pdbd, y_pdba, y_spas])
+    ax.set_ylim(top=np.max(y_all) * 1.07)  # 提高 7% 上限，避免遮挡
+    ax.set_ylabel(ylabel, fontsize=figure_FontSize_Y)
+
+    ax.set_xticks(x)
+    padding = (x[-1] - x[0]) * 0.05  # 动态计算边缘留白 5%
+    ax.set_xlim(x[0] - padding, x[-1] + padding)
+
+    ax.tick_params(axis='both', labelsize=figure_FontSize_X)
+
+    # 图例
+    legend_names = ["BD", "BA", "SPAS", "PBD", "PBA", "PDBD", "PDBA"]
     # ax.legend(legend_names, loc='best', fontsize=14, frameon=False)
 
     plt.tight_layout()
