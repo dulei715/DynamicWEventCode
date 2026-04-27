@@ -108,8 +108,19 @@ public class PostProcessUtils {
         int innerSize = dataList.get(0).size();
         resultList = new ArrayList<>();
         // 从输出文件路径中提取 positionSize（仅当路径包含 _d_ 标识时）
-        Integer positionSize = ParameterUtils.extractBudgetWindowSizeDimensionParametersAccordingFileDirName(tempOutputFile.getParentFile().getName()).getTag();
-        boolean isDimensionAblation = positionSize != null && positionSize > 0;
+//        Integer positionSize = ParameterUtils.extractBudgetWindowSizeDimensionParametersAccordingFileDirName(tempOutputFile.getParentFile().getName()).getTag();
+//        boolean isDimensionAblation = positionSize != null && positionSize > 0;
+        String parentDirName = tempOutputFile.getParentFile().getName();
+        Integer positionSize = null;
+        boolean isDimensionAblation = false;
+
+        if (parentDirName.startsWith("u_")) {
+            positionSize = ParameterUtils.extractUserRatioAndOtherParametersAccordingFileDirName(parentDirName).getTag();
+            isDimensionAblation = positionSize != null && positionSize > 0;
+        } else if (parentDirName.startsWith("p_")) {
+            positionSize = ParameterUtils.extractBudgetWindowSizeDimensionParametersAccordingFileDirName(parentDirName).getTag();
+            isDimensionAblation = positionSize != null && positionSize > 0;
+        }
 
         for (int i = 0; i < innerSize; i++) {
             resultBean = ResultBean.getInitializedBean(dataList.get(0).get(i));

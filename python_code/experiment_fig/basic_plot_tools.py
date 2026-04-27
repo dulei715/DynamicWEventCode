@@ -694,8 +694,8 @@ def draw_ratio_change_with_two_budget_for_single_dataset_except_dynamic(basic_pa
             print(f"无法读取文件: {data_path}, 错误: {e}")
             continue
 
-        # 假设 MRE 是第 8 列（从 1 开始），Python 索引从 0 开始
-        col = 7
+        # 修正后 MRE 是第 9 列（从 1 开始），Python 索引从 0 开始
+        col = 8
         data[i - 1, 1] = np.log(temp_table.iloc[1, col])  # BD
         data[i - 1, 2] = np.log(temp_table.iloc[2, col])  # BA
         data[i - 1, 3] = np.log(temp_table.iloc[3, col])  # PBD
@@ -779,8 +779,8 @@ def draw_ratio_change_with_two_w_size_for_single_dataset_except_dynamic(basic_pa
             print(f"无法读取文件: {data_path}, 错误: {e}")
             continue
 
-        # 假设 MRE 是第 8 列（从 1 开始），Python 索引从 0 开始
-        col = 7
+        # 修正后 MRE 是第 9 列（从 1 开始），Python 索引从 0 开始
+        col = 8
         data[i - 1, 1] = np.log(temp_table.iloc[1, col])  # BD
         data[i - 1, 2] = np.log(temp_table.iloc[2, col])  # BA
         data[i - 1, 3] = np.log(temp_table.iloc[3, col])  # PBD

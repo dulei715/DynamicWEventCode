@@ -40,6 +40,10 @@ public class RepeatUtils {
             , "SPAS"
     };
 
+    private static final String[] nameStringArrayForInternal = new String[]{
+            "NP", "BD", "BA", "PBD", "PBA"
+    };
+
     /**
      * 将每轮最终结果合并取平均值
      * @param outputMethodDirFile
@@ -94,11 +98,9 @@ public class RepeatUtils {
         Double[] twoFixedPrivacyBudget = ConfigureUtils.getTwoFixedPrivacyBudget();
         Integer[] twoFixedWindowSize = ConfigureUtils.getTwoFixedWindowSize();
         for (String parameterFileDir : parameterSet) {
-//            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
             title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
-//            System.out.println(title);
             combineBeanList = new ArrayList<>();
-            for (String beanName : nameStringArray) {
+            for (String beanName : nameStringArrayForInternal) {
                 tempBean = ResultBean.getInitializedBean(beanName, twoFixedPrivacyBudget[1], twoFixedWindowSize[1]);
                 combineBeanList.add(tempBean);
             }

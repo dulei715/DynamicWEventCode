@@ -1,5 +1,7 @@
 package important_test;
 
+import cn.edu.dll.basic.BasicCalculation;
+import cn.edu.dll.basic.NumberUtil;
 import cn.edu.dll.basic.StringUtil;
 import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
@@ -10,12 +12,14 @@ import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.Constant;
 import ecnu.dll.dataset.utils.CSVReadEnhanced;
 import ecnu.dll.run.c_dataset_run.utils.ResultBean;
+import ecnu.dll.utils.io.ListReadUtils;
 import ecnu.dll.utils.run.ParameterUtils;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class ResultTest {
@@ -198,6 +202,97 @@ public class ResultTest {
         double sum2 = ListUtils.sum(result[2]);
         MyPrint.showList(result[2]);
         System.out.println(sum2 / result[2].size());
+    }
+
+    public static List<String> getFirstLastTwoRoundValue(List<String> dataListWithFirstTitle, String elementSplit) {
+        List<String> result = new ArrayList<>();
+        int size = dataListWithFirstTitle.size();
+        String[] tempArray = dataListWithFirstTitle.get(0).split(elementSplit);
+
+        result.add(StringUtil.join(elementSplit, tempArray[0], tempArray[tempArray.length - 2], tempArray[tempArray.length - 1]));
+        Double mre, mjsd;
+        for (int i = 1; i < size; i++) {
+            tempArray = dataListWithFirstTitle.get(i).split(elementSplit);
+            mre = Double.parseDouble(tempArray[tempArray.length - 2]);
+            mjsd = Double.parseDouble(tempArray[tempArray.length - 1]);
+            result.add(StringUtil.join(elementSplit, tempArray[0], NumberUtil.roundFormat(mre, 2), NumberUtil.roundFormat(mjsd, 2)));
+        }
+        return result;
+    }
+
+    @Test
+    public void showContainingLDPBudgetChangeResult() {
+//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+//        String datasetOrderName = "2.check_in_containing_ldp_result";
+        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "4.sin_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
+        Integer defaultWindowSize = 120;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Double, File> budgetFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempWindowSize.equals(defaultWindowSize)) {
+                budgetFileMap.put(tempBudget, innerDir);
+            }
+        }
+//        MyPrint.showMap(budgetFileMap);
+        for (Map.Entry<Double, File> entry : budgetFileMap.entrySet()) {
+            System.out.println("Epsilon: " + entry.getKey());
+            String filePath = entry.getValue().getAbsolutePath().concat(File.separator).concat("result.txt");
+            List<String> data = ListReadUtils.readAllDataList(filePath, ",");
+            data = getFirstLastTwoRoundValue(data, ",");
+            MyPrint.showList(data, System.lineSeparator());
+            MyPrint.showSplitLine("*", 150);
+        }
+    }
+
+    @Test
+    public void showContainingLDPWindowSizeChangeResult() {
+//        String datasetOrderName = "1.trajectory_containing_ldp_result";
+//        String datasetOrderName = "2.check_in_containing_ldp_result";
+        String datasetOrderName = "3.tlns_containing_ldp_result";
+//        String datasetOrderName = "4.sin_containing_ldp_result";
+//        String datasetOrderName = "5.log_containing_ldp_result";
+        Double defaultEpsilon = 0.6;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Integer, File> windowSizeFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempBudget.equals(defaultEpsilon)) {
+//                dirFileList.add(innerDir);
+                windowSizeFileMap.put(tempWindowSize, innerDir);
+            }
+        }
+//        MyPrint.showMap(budgetFileMap);
+        for (Map.Entry<Integer, File> entry : windowSizeFileMap.entrySet()) {
+            System.out.println("Window_Size: " + entry.getKey());
+            String filePath = entry.getValue().getAbsolutePath().concat(File.separator).concat("result.txt");
+            List<String> data = ListReadUtils.readAllDataList(filePath, ",");
+            data = getFirstLastTwoRoundValue(data, ",");
+            MyPrint.showList(data, System.lineSeparator());
+            MyPrint.showSplitLine("*", 150);
+        }
     }
 
     @Test
