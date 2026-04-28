@@ -172,6 +172,7 @@ public class Constant {
     public static String OutputContainingLDPDirName = "group_output_containing_ldp";
     public static String OutputDatasetAblationDirName = "group_output_dimension_ablation";
     public static String OutputContainingSPASDirName = "group_output_containing_spas";
+    public static String OutputContainingTotalDirName = "group_output_containing_total";
 
     public static Function<Integer, String> groupPositionNameFunction = positionSize -> "groupPosition_"+positionSize+".txt";
     public static Function<Integer, String> dimAblationDirNameFunction = positionSize -> StringUtil.join(ConstantValues.FILE_SPLIT, "runInput_dim_ablation", "positionSize_" + positionSize);

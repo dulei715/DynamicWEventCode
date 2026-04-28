@@ -121,7 +121,7 @@ public class FixedSegmentTotalParameterParallelRun implements Runnable {
         List<List<Double>> remainBackwardPrivacyBudgetListBatchList = new ArrayList<>(), forwardPrivacyBudgetListBatchList = new ArrayList<>();
         List<List<Integer>> backwardWindowSizeListBatchList = new ArrayList<>(), forwardWindowSizeListBatchList = new ArrayList<>();
 
-        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.OutputContainingLDPDirName, "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
+        String basicOutputPathDir = StringUtil.join(ConstantValues.FILE_SPLIT, basicPath, Constant.OutputContainingTotalDirName, "p_"+String.valueOf(privacyBudget).replace(".","-")+"_w_"+windowSize, "segment_"+segmentID);
         File basicOutputFile = new File(basicOutputPathDir);
         if (!basicOutputFile.exists()) {
             basicOutputFile.mkdirs();

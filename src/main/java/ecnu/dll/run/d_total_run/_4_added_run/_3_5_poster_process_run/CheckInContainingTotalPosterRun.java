@@ -14,7 +14,7 @@ public class CheckInContainingTotalPosterRun {
         catchSignal.startCatch();
 
         String datasetPath = Constant.checkInFilePath;
-        String finalResultDirName = "2.check_in_containing_spas_result";
+        String finalResultDirName = "2.check_in_containing_total_result";
 
         String basicOutputFileString = "../7.result_containing_total";
         String roundPattern = "round_%d_containing_total";
