@@ -50,15 +50,17 @@ public class PostProcessUtils {
                 resultPartBean.setbRE(resultPartBean.getbRE() + tempBean.getbRE());
                 resultPartBean.setTimeCost(resultPartBean.getTimeCost() + tempBean.getTimeCost());
                 resultPartBean.setbJSD(resultPartBean.getbJSD() + tempBean.getbJSD());
+                resultPartBean.setbWD(resultPartBean.getbWD() + tempBean.getbWD());
             }
             resultPartBean.setmRE(resultPartBean.getbRE() / resultPartBean.getBatchSize());
             resultPartBean.setmJSD(resultPartBean.getbJSD() / resultPartBean.getBatchSize());
+            resultPartBean.setmWD(resultPartBean.getbWD() / resultPartBean.getBatchSize());
             resultList.add(resultPartBean);
         }
         String outputPath = StringUtil.join(ConstantValues.FILE_SPLIT, dirPath, "combine", "combine.txt");
         BasicWrite basicWrite = new BasicWrite(",");
         basicWrite.startWriting(outputPath);
-        basicWrite.writeOneLine(title + ",MRE" + ",MJSD");
+        basicWrite.writeOneLine(title + ",MRE" + ",MJSD" + ",MWD");
         for (ResultPartBean bean : resultList) {
             basicWrite.writeOneLine(bean.toCSVString());
         }
@@ -132,9 +134,12 @@ public class PostProcessUtils {
                 resultBean.setMre(resultBean.getMre() + tempBean.getMre()*tempBean.getBatchSize());
                 resultBean.setBjsd(resultBean.getBjsd() + tempBean.getBjsd());
                 resultBean.setMjsd(resultBean.getMjsd() + tempBean.getMjsd() * tempBean.getBatchSize());
+                resultBean.setBwd(resultBean.getBwd() + tempBean.getBwd());
+                resultBean.setMwd(resultBean.getMwd() + tempBean.getMwd() * tempBean.getBatchSize());
             }
             resultBean.setMre(resultBean.getMre() / resultBean.getBatchSize());
             resultBean.setMjsd(resultBean.getMjsd() / resultBean.getBatchSize());
+            resultBean.setMwd(resultBean.getMwd() / resultBean.getBatchSize());
             resultList.add(resultBean);
         }
         String outputPath = tempOutputFile.getAbsolutePath();

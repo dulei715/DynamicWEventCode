@@ -95,6 +95,8 @@ public class Constant {
     public static final String BRE = "BRE"; // BatchRelativeError, 是一个batch中的所有相对误差的总和
     public static final String MJSD = "MJSD";// MeanJSDivergence (AJSD), 是所有时刻JS散度的均值
     public static final String BJSD = "BJSD"; // BatchJSDivergence, 是一个batch中的所有JS散度的总和
+    public static final String MWD = "MWD"; // MeanWassersteinDistance, 是所有时刻Wasserstein距离的均值
+    public static final String BWD = "BWD"; // BatchWassersteinDistance, 是一个batch中的所有Wasserstein距离的总和
 
     public static final String  nonPrivacyName = "NP";
     public static final String  budgetDistributionName = "BD";

@@ -262,8 +262,10 @@ public class RepeatUtils {
             combineBean.setTimeCost(combineBean.getTimeCost() + updateBean.getTimeCost());
             combineBean.setBre(combineBean.getBre() + updateBean.getBre());
             combineBean.setBjsd(combineBean.getBjsd() + updateBean.getBjsd());
+            combineBean.setBwd(combineBean.getBwd() + updateBean.getBwd());
             combineBean.setMre(combineBean.getMre()+ updateBean.getMre());
             combineBean.setMjsd(combineBean.getMjsd() + updateBean.getMjsd());
+            combineBean.setMwd(combineBean.getMwd() + updateBean.getMwd());
         }
     }
 
@@ -273,8 +275,10 @@ public class RepeatUtils {
             bean.setTimeCost(bean.getTimeCost()/size);
             bean.setBre(bean.getBre()/size);
             bean.setBjsd(bean.getBjsd()/size);
+            bean.setBwd(bean.getBwd()/size);
             bean.setMre(bean.getMre()/size);
             bean.setMjsd(bean.getMjsd()/size);
+            bean.setMwd(bean.getMwd()/size);
         }
     }
 

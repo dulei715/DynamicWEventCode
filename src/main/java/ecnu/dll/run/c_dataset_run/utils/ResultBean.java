@@ -13,6 +13,8 @@ public class ResultBean implements BeanInterface<ResultBean> {
     protected Double mre;
     protected Double bjsd;
     protected Double mjsd;
+    protected Double bwd;
+    protected Double mwd;
 
     @Override
     public ResultBean toBean(String[] data) {
@@ -23,13 +25,21 @@ public class ResultBean implements BeanInterface<ResultBean> {
         Double privacyBudget = Double.valueOf(data[4]);
         Integer windowSize = Integer.valueOf(data[5]);
         Double bre = Double.valueOf(data[6]);
-        Double mre = Double.valueOf(data[7]);
-        if (data.length > 8) {
-            Double bjsd = Double.valueOf(data[8]);
-            Double mjsd = Double.valueOf(data[9]);
-            return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre, bjsd, mjsd);
+        Double mre = 0D, bjsd = 0D, mjsd = 0D, bwd = 0D, mwd = 0D;
+        if (data.length <= 8) {
+            mre = Double.valueOf(data[7]);
+        } else if (data.length <= 10) {
+            bjsd = Double.valueOf(data[7]);
+            mre = Double.valueOf(data[8]);
+            mjsd = Double.valueOf(data[9]);
+        } else if (data.length <= 12) {
+            bjsd = Double.valueOf(data[7]);
+            bwd = Double.valueOf(data[8]);
+            mre = Double.valueOf(data[9]);
+            mjsd = Double.valueOf(data[10]);
+            mwd = Double.valueOf(data[11]);
         }
-        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, mre, 0D, 0D);
+        return new ResultBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bre, bjsd, bwd, mre, mjsd, mwd);
     }
 
 
@@ -37,7 +47,7 @@ public class ResultBean implements BeanInterface<ResultBean> {
     public ResultBean() {
     }
 
-    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double bjsd, Double mre, Double mjsd) {
+    public ResultBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bre, Double bjsd, Double bwd, Double mre, Double mjsd, Double mwd) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
@@ -46,16 +56,18 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.windowSize = windowSize;
         this.bre = bre;
         this.bjsd = bjsd;
+        this.bwd = bwd;
         this.mre = mre;
         this.mjsd = mjsd;
+        this.mwd = mwd;
     }
 
     public static ResultBean getInitializedBean(ResultBean modelBean) {
-        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D, 0D, 0D);
+        return new ResultBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D, 0D, 0D, 0D, 0D);
     }
 
     public static ResultBean getInitializedBean(String modelBeanName, Double privacyBudget, Integer windowSize) {
-        return new ResultBean(modelBeanName, -1, 0, 0L, privacyBudget, windowSize, 0D, 0D, 0D, 0D);
+        return new ResultBean(modelBeanName, -1, 0, 0L, privacyBudget, windowSize, 0D, 0D, 0D, 0D, 0D, 0D);
     }
 
     public String getName() {
@@ -138,6 +150,22 @@ public class ResultBean implements BeanInterface<ResultBean> {
         this.mjsd = mjsd;
     }
 
+    public Double getBwd() {
+        return bwd;
+    }
+
+    public void setBwd(Double bwd) {
+        this.bwd = bwd;
+    }
+
+    public Double getMwd() {
+        return mwd;
+    }
+
+    public void setMwd(Double mwd) {
+        this.mwd = mwd;
+    }
+
     @Override
     public String toString() {
         return "ResultBean{" +
@@ -149,8 +177,10 @@ public class ResultBean implements BeanInterface<ResultBean> {
                 ", windowSize=" + windowSize +
                 ", bre=" + bre +
                 ", bjsd=" + bjsd +
+                ", bwd=" + bwd +
                 ", mre=" + mre +
                 ", mjsd=" + mjsd +
+                ", mwd=" + mwd +
                 '}';
     }
 
@@ -164,9 +194,11 @@ public class ResultBean implements BeanInterface<ResultBean> {
         stringBuilder.append(this.privacyBudget).append(",");
         stringBuilder.append(this.windowSize).append(",");
         stringBuilder.append(this.bre).append(",");
-        stringBuilder.append(this.mre).append(",");
         stringBuilder.append(this.bjsd).append(",");
-        stringBuilder.append(this.mjsd);
+        stringBuilder.append(this.bwd).append(",");
+        stringBuilder.append(this.mre).append(",");
+        stringBuilder.append(this.mjsd).append( ",");
+        stringBuilder.append(this.mwd);
         return stringBuilder.toString();
     }
 }

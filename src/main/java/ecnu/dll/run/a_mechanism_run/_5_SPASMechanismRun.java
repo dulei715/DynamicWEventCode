@@ -28,6 +28,7 @@ public class _5_SPASMechanismRun {
         long startTime, endTime, timeCost;
         double batchTotalVarianceStatistic = 0;
         double batchTotalDivergence = 0;
+        double batchWassersteinDistance = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeBatchSize);
         startTime = System.currentTimeMillis();
         for (int i = 0; i < timeBatchSize; i++) {
@@ -48,9 +49,11 @@ public class _5_SPASMechanismRun {
             publicationData = publicationList.get(i);
             batchTotalVarianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
             batchTotalDivergence += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            batchWassersteinDistance += StatisticTool.getWassersteinDistance(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
         experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
         experimentResult.addPair(Constant.BJSD, String.valueOf(batchTotalDivergence));
+        experimentResult.addPair(Constant.BWD, String.valueOf(batchWassersteinDistance));
         return experimentResult;
     }
 

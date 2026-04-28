@@ -11,16 +11,18 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
     protected Integer windowSize;
     protected Double bRE;
     protected Double bJSD;
+    protected Double bWD;
 
     protected Double mRE = 0D;
     protected Double mJSD = 0D;
+    protected Double mWD = 0D;
 
 
 
 
 
 
-    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE, Double bJSD) {
+    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE, Double bJSD, Double bWD) {
         this.name = name;
         this.batchID = batchID;
         this.batchSize = batchSize;
@@ -29,6 +31,10 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         this.windowSize = windowSize;
         this.bRE = bRE;
         this.bJSD = bJSD;
+        this.bWD = bWD;
+    }
+    public ResultPartBean(String name, Integer batchID, Integer batchSize, Long timeCost, Double privacyBudget, Integer windowSize, Double bRE, Double bJSD) {
+        this(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD, 0D);
     }
 
     public String toCSVString() {
@@ -41,8 +47,10 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         stringBuilder.append(this.windowSize).append(",");
         stringBuilder.append(this.bRE).append(",");
         stringBuilder.append(this.bJSD).append(",");
+        stringBuilder.append(this.bWD).append(",");
         stringBuilder.append(this.mRE).append(",");
-        stringBuilder.append(this.mJSD);
+        stringBuilder.append(this.mJSD).append( ",");
+        stringBuilder.append(this.mWD);
         return stringBuilder.toString();
     }
 
@@ -50,7 +58,7 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
     }
 
     public static ResultPartBean getInitializedBean(ResultPartBean modelBean) {
-        return new ResultPartBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D);
+        return new ResultPartBean(modelBean.getName(), -1, 0, 0L, modelBean.getPrivacyBudget(), modelBean.getWindowSize(), 0D, 0D, 0D);
     }
 
     public String getName() {
@@ -133,6 +141,22 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         this.mJSD = mJSD;
     }
 
+    public Double getbWD() {
+        return bWD;
+    }
+
+    public void setbWD(Double bWD) {
+        this.bWD = bWD;
+    }
+
+    public Double getmWD() {
+        return mWD;
+    }
+
+    public void setmWD(Double mWD) {
+        this.mWD = mWD;
+    }
+
     public static ResultPartBean toBean(String line) {
         String[] data = line.split(",");
         String name = data[0];
@@ -144,10 +168,14 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         Integer windowSize = (int)Math.round(tempDouble);
         Double bRE = Double.valueOf(data[6]);
         Double bJSD = 0D;
+        Double bWD = 0D;
         if (data.length > 7) {
             bJSD = Double.valueOf(data[7]);
+            if (data.length > 8) {
+                bWD = Double.valueOf(data[8]);
+            }
         }
-        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD);
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD, bWD);
     }
 
     @Override
@@ -160,10 +188,14 @@ public class ResultPartBean implements BeanInterface<ResultPartBean> {
         Integer windowSize = Integer.valueOf(data[5]);
         Double bRE = Double.valueOf(data[6]);
         Double bJSD = 0D;
+        Double bWD = 0D;
         if (data.length > 7) {
             bJSD = Double.valueOf(data[7]);
+            if (data.length > 8) {
+                bWD = Double.valueOf(data[8]);
+            }
         }
-        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD);
+        return new ResultPartBean(name, batchID, batchSize, timeCost, privacyBudget, windowSize, bRE, bJSD, bWD);
     }
 
     @Override

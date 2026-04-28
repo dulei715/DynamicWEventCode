@@ -33,6 +33,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         long startTime, endTime, timeCost;
         double varianceStatistic = 0;
         double batchTotalDivergence = 0;
+
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeUpperBound);
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeUpperBound; t++) {
@@ -72,6 +73,7 @@ public class _3_PersonalizedDynamicEventMechanismRun {
         long startTime, endTime, timeCost;
         double batchTotalVarianceStatistic = 0;
         double batchTotalDivergence = 0;
+        double batchTotalWassersteinDistance = 0;
         List<StreamNoiseCountData> publicationList = new ArrayList<>(timeBatchSize);
         startTime = System.currentTimeMillis();
         for (int t = 0; t < timeBatchSize; t++) {
@@ -92,10 +94,12 @@ public class _3_PersonalizedDynamicEventMechanismRun {
             publicationData = publicationList.get(i);
             batchTotalVarianceStatistic += StatisticTool.getVariance(rawPublicationData.getDataMap(), publicationData.getDataMap());
             batchTotalDivergence += StatisticTool.getJSDivergence(rawPublicationData.getDataMap(), publicationData.getDataMap());
+            batchTotalWassersteinDistance += StatisticTool.getWassersteinDistance(rawPublicationData.getDataMap(), publicationData.getDataMap());
         }
 //        batchTotalVarianceStatistic /= timeUpperBound;
         experimentResult.addPair(Constant.BRE, String.valueOf(batchTotalVarianceStatistic));
         experimentResult.addPair(Constant.BJSD, String.valueOf(batchTotalDivergence));
+        experimentResult.addPair(Constant.BWD, String.valueOf(batchTotalWassersteinDistance));
         return experimentResult;
     }
 }
