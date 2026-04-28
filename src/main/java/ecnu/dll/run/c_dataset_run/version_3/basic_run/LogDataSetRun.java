@@ -37,6 +37,13 @@ public class LogDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingSPASDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runLogContainingTotal() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        String basicPath = Constant.logFilePath;
+        String dataTypeFileName = "status.txt";
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.containingTotalDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
 //    public static void runLogContainingDatasetAblation() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 //        String basicPath = Constant.logFilePath;
 //        String dataTypeFileName = "status.txt";

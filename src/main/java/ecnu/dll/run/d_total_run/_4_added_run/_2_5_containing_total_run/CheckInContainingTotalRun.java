@@ -1,28 +1,27 @@
-package ecnu.dll.run.d_total_run._4_added_run._2_4_containing_spasTrajectoryContainingLDPRun_run;
+package ecnu.dll.run.d_total_run._4_added_run._2_5_containing_total_run;
 
 import cn.edu.dll.signal.CatchSignal;
 import ecnu.dll._config.Constant;
 import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_generator.UserGroupGenerator;
-import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_pre_run.GenerateGroupParametersForTrajectory;
-import ecnu.dll.run.c_dataset_run.version_3.basic_run.TrajectoryDataSetRun;
+import ecnu.dll.run._pre_process.b_parameter_pre_process.version_3_group.parameter_pre_run.GenerateGroupParametersForCheckIn;
+import ecnu.dll.run.c_dataset_run.version_3.basic_run.CheckInDataSetRun;
 
-public class TrajectoryContainingSPASRun {
+public class CheckInContainingTotalRun {
     public static void main(String[] args) throws Exception {
-
         CatchSignal catchSignal = new CatchSignal();
         catchSignal.startCatch();
 
-        String datasetPath = Constant.trajectoriesFilePath;
-        String finalResultDirName = "1.trajectory_containing_spas_result";
+        String datasetPath = Constant.checkInFilePath;
+        String finalResultDirName = "2.checkIn_containing_total_result";
 
 
         // 1. parameter 生成
-        UserGroupGenerator.generateUserIDType(Constant.trajectoriesFilePath);
-        UserGroupGenerator.generateUserToType(Constant.trajectoriesFilePath);
-        GenerateGroupParametersForTrajectory.generateParameters();
+        UserGroupGenerator.generateUserIDType(datasetPath);
+        UserGroupGenerator.generateUserToType(datasetPath);
+        GenerateGroupParametersForCheckIn.generateParameters();
 
         // 2. 执行
-        TrajectoryDataSetRun.runTrajectoryContainingSPAS();
+        CheckInDataSetRun.runCheckInContainingTotal();
 
 //        // 3. 后处理
 //        String rawDataDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, "group_output");
@@ -30,5 +29,6 @@ public class TrajectoryContainingSPASRun {
 //        String finalResultDir = StringUtil.join(ConstantValues.FILE_SPLIT, datasetPath, finalResultDirName);
 //        PostProcessUtils.combineAndExtractCombineResult(rawDataDir, extractResultDir);
 //        PostProcessUtils.furtherCombine(extractResultDir, finalResultDir);
+
     }
 }
