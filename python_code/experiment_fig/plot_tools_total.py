@@ -18,7 +18,7 @@ def plot_budget_change_for_error(input_basic_path, output_basic_path):
     shrink_ratio = 1
 
     # 创建输出目录 figures/experiment_result_add（如果不存在）
-    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add')
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add4')
     os.makedirs(output_dir, exist_ok=True)
 
     # 第一轮：AMRE
@@ -32,7 +32,7 @@ def plot_budget_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_budget_change_{metric_name}_containing_total"
         )
-        bp.plot_budget_change_influence_given_metric_for_single_dataset(
+        bp.plot_budget_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_window_size,
             metric_col_index,
@@ -53,7 +53,7 @@ def plot_budget_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_budget_change_{metric_name}_containing_total"
         )
-        bp.plot_budget_change_influence_given_metric_for_single_dataset(
+        bp.plot_budget_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_window_size,
             metric_col_index,
@@ -73,7 +73,7 @@ def plot_budget_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_budget_change_{metric_name}_containing_total"
         )
-        bp.plot_budget_change_influence_given_metric_for_single_dataset(
+        bp.plot_budget_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_window_size,
             metric_col_index,
@@ -99,7 +99,7 @@ def plot_window_size_change_for_error(input_basic_path, output_basic_path):
     shrink_ratio = 1
 
     # 创建输出目录 figures/experiment_result_add（如果不存在）
-    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add')
+    output_dir = os.path.join(output_basic_path, 'figures', 'experiment_result_add4')
     os.makedirs(output_dir, exist_ok=True)
 
     # 第一轮：AMRE
@@ -113,7 +113,7 @@ def plot_window_size_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_window_size_change_{metric_name}_containing_total"
         )
-        bp.plot_window_size_change_influence_given_metric_for_single_dataset(
+        bp.plot_window_size_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_budget,
             metric_col_index,
@@ -134,7 +134,7 @@ def plot_window_size_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_window_size_change_{metric_name}_containing_total"
         )
-        bp.plot_window_size_change_influence_given_metric_for_single_dataset(
+        bp.plot_window_size_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_budget,
             metric_col_index,
@@ -153,7 +153,7 @@ def plot_window_size_change_for_error(input_basic_path, output_basic_path):
             output_dir,
             f"{output_dataset_names[i]}_window_size_change_{metric_name}_containing_total"
         )
-        bp.plot_window_size_change_influence_given_metric_for_single_dataset(
+        bp.plot_window_size_change_influence_given_metric_for_single_dataset_containing_all(
             abs_dir,
             default_budget,
             metric_col_index,
@@ -333,12 +333,12 @@ def draw_ratio_change_with_two_w_size(input_basic_path, output_basic_path):
         bp.draw_ratio_change_with_two_w_size_for_single_dataset_except_dynamic(abs_dir, output_file_name)
 
 if __name__ == '__main__':
-    input_basic_user_ratio = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/2.result_internal"
-    input_basic_time_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/3.result_time_cost"
-    input_basic_error_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/4.result_containing_total"
+    # input_basic_user_ratio = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/2.result_internal"
+    # input_basic_time_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/3.result_time_cost"
+    input_basic_error_path = "/Users/mac/MainFiles/1.Research/dataset/3-3_dynamic_stream_pdp/7.result_containing_total"
     output_basic_path = "/Users/mac/MainFiles/5.GitTrans/3.github_file/PaperTrans/paper3_3_dynamic-Extended-W-event-DP/experiment_result_by_python"
 
-    plot_budget_change_for_error(input_basic_error_path, output_basic_path)
+    # plot_budget_change_for_error(input_basic_error_path, output_basic_path)
     plot_window_size_change_for_error(input_basic_error_path, output_basic_path)
     # plot_budget_change_for_time(input_basic_time_path, output_basic_path)
     # plot_window_size_change_for_time(input_basic_time_path, output_basic_path) # except dynamic

@@ -296,11 +296,11 @@ if __name__ == '__main__':
     input_basic_error_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/4.result_containing_ldp"
     output_basic_path = "/Users/mac/MainFiles/5.GitTrans/3.github_file/PaperTrans/paper3_3_dynamic-Extended-W-event-DP/experiment_result_by_python"
 
-    plot_budget_change_for_error(input_basic_error_path, output_basic_path)
-    plot_window_size_change_for_error(input_basic_error_path, output_basic_path)
-    # plot_budget_change_for_time(input_basic_time_path, output_basic_path)
+    # plot_budget_change_for_error(input_basic_error_path, output_basic_path)
+    # plot_window_size_change_for_error(input_basic_error_path, output_basic_path)
+    # plot_budget_change_for_time(input_basic_time_path, output_basic_path) #except dynamic
     # plot_window_size_change_for_time(input_basic_time_path, output_basic_path) # except dynamic
-    # plot_budget_change_for_average_time(input_basic_time_path, output_basic_path) # except dynamic
-    # plot_window_size_change_for_average_time(input_basic_time_path, output_basic_path)
+    plot_budget_change_for_average_time(input_basic_time_path, output_basic_path)
+    plot_window_size_change_for_average_time(input_basic_time_path, output_basic_path)
     # draw_ratio_change_with_two_budget(input_basic_user_ratio, output_basic_path)
     # draw_ratio_change_with_two_w_size(input_basic_user_ratio, output_basic_path)
