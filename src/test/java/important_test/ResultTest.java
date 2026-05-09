@@ -390,4 +390,100 @@ public class ResultTest {
         System.out.println(sum2 / result[2].size());
     }
 
+    @Test
+    public void testContainingTotalBudgetChangeImprove() {
+//        String datasetOrderName = "1.trajectory_containing_total_result";
+//        String datasetOrderName = "2.check_in_containing_total_result";
+//        String datasetOrderName = "3.tlns_containing_total_result";
+//        String datasetOrderName = "4.sin_containing_total_result";
+        String datasetOrderName = "5.log_containing_total_result";
+//        String originalMethodName = "BD";
+//        String improveMethodName = "PBD";
+//        String furtherImproveMethodName = "PDBD";
+        String originalMethodName = "BA";
+        String improveMethodName = "PBA";
+        String furtherImproveMethodName = "PDBA";
+        Integer defaultWindowSize = 120;
+        boolean whetherLog = false;
+//        boolean whetherLog = true;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "..", "3-3_dynamic_stream_pdp", "7.result_containing_total", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Double, File> budgetFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempWindowSize.equals(defaultWindowSize)) {
+                budgetFileMap.put(tempBudget, innerDir);
+            }
+        }
+        dirFileList = new ArrayList<>();
+        dirFileList.addAll(budgetFileMap.values());
+        File[] dirFileArray = dirFileList.toArray(new File[0]);
+        List[] result = getAverageImprovementForBudgetChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
+        MyPrint.showList(result[0]);
+        MyPrint.showList(result[1]);
+        double sum = ListUtils.sum(result[1]);
+        System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
+    }
+
+    @Test
+    public void testContainingTotalWindowSizeImprove() {
+//        String datasetOrderName = "1.trajectory_containing_total_result";
+//        String datasetOrderName = "2.check_in_containing_total_result";
+//        String datasetOrderName = "3.tlns_containing_total_result";
+//        String datasetOrderName = "4.sin_containing_total_result";
+        String datasetOrderName = "5.log_containing_total_result";
+//        String originalMethodName = "BD";
+//        String improveMethodName = "PBD";
+//        String furtherImproveMethodName = "PDBD";
+        String originalMethodName = "BA";
+        String improveMethodName = "PBA";
+        String furtherImproveMethodName = "PDBA";
+        Double defaultEpsilon = 0.6;
+        boolean whetherLog = false;
+//        boolean whetherLog = true;
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "..", "3-3_dynamic_stream_pdp", "7.result_containing_total", datasetOrderName);
+        File file = new File(datasetPath);
+        File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
+        List<File> dirFileList;
+        TreeMap<Integer, File> windowSizeFileMap = new TreeMap<>();
+        String innerDirName;
+        BasicPair<Double, Integer> tempPair;
+        Double tempBudget;
+        Integer tempWindowSize;
+        for (File innerDir : totalDirFileArray) {
+            innerDirName = innerDir.getName();
+            tempPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(innerDirName);
+            tempBudget = tempPair.getKey();
+            tempWindowSize = tempPair.getValue();
+            if (tempBudget.equals(defaultEpsilon)) {
+//                dirFileList.add(innerDir);
+                windowSizeFileMap.put(tempWindowSize, innerDir);
+            }
+        }
+        dirFileList = new ArrayList<>();
+        dirFileList.addAll(windowSizeFileMap.values());
+        File[] dirFileArray = dirFileList.toArray(new File[0]);
+        List[] result = getAverageImprovementForWindowSizeChange(dirFileArray, furtherImproveMethodName, improveMethodName, originalMethodName, whetherLog);
+        MyPrint.showList(result[0]);
+        MyPrint.showList(result[1]);
+        double sum = ListUtils.sum(result[1]);
+        System.out.println(sum / result[1].size());
+        double sum2 = ListUtils.sum(result[2]);
+        MyPrint.showList(result[2]);
+        System.out.println(sum2 / result[2].size());
+    }
+
+
 }
