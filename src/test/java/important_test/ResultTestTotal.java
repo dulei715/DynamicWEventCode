@@ -1,14 +1,10 @@
 package important_test;
 
-import cn.edu.dll.basic.BasicArrayUtil;
 import cn.edu.dll.basic.BasicCalculation;
-import cn.edu.dll.basic.MatrixArray;
 import cn.edu.dll.basic.StringUtil;
-import cn.edu.dll.collection.ListUtils;
 import cn.edu.dll.constant_values.ConstantValues;
 import cn.edu.dll.filter.file_filter.DirectoryFileFilter;
 import cn.edu.dll.io.print.MyPrint;
-import cn.edu.dll.math.MathUtils;
 import cn.edu.dll.struct.bean_structs.BeanInterface;
 import cn.edu.dll.struct.pair.BasicPair;
 import ecnu.dll._config.Constant;
@@ -21,7 +17,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.*;
 
-public class ResultTestBasic {
+public class ResultTestTotal {
 
     public static List<ResultBean> searchBeanByName(List<ResultBean> data, String name) {
         List<ResultBean> resultList = new ArrayList<>();
@@ -152,32 +148,49 @@ public class ResultTestBasic {
 
 
     public static final String[] MechanismNameArray = new String[] {
-            "BD", "BA", "PLBU", "PBD", "PBA", "PDBD", "PDBA"
+            "BD", "BA", "PLBU", "SPAS", "PBD", "PBA", "PDBD", "PDBA"
     };
     public static final Map<String, Integer> PositionMap = new HashMap<String, Integer>();
+    public static final Map<String, String> DatasetMap = new HashMap<String, String>();
     static {
         PositionMap.put("BD", 0);
         PositionMap.put("BA", 1);
         PositionMap.put("PLBU", 2);
-        PositionMap.put("PBD", 3);
-        PositionMap.put("PBA", 4);
-        PositionMap.put("PDBD", 5);
-        PositionMap.put("PDBA", 6);
+        PositionMap.put("SPAS", 3);
+        PositionMap.put("PBD", 4);
+        PositionMap.put("PBA", 5);
+        PositionMap.put("PDBD", 6);
+        PositionMap.put("PDBA", 7);
+
+        DatasetMap.put("trajectory", "\\trajectoryDatasetName{}");
+        DatasetMap.put("check", "\\checkInDatasetName{}");
+        DatasetMap.put("tlns", "\\tlnsDatasetName{}");
+        DatasetMap.put("sin", "\\sinDatasetName{}");
+        DatasetMap.put("log", "\\logDatasetName{}");
     }
 
 
 
+
+
+
     @Test
-    public void showContainingLDPBudgetResult() {
-//        String datasetOrderName = "1.trajectory_containing_ldp_result";
-//        String datasetOrderName = "2.check_in_containing_ldp_result";
-//        String datasetOrderName = "3.tlns_containing_ldp_result";
-//        String datasetOrderName = "4.sin_containing_ldp_result";
-        String datasetOrderName = "5.log_containing_ldp_result";
+    public void showContainingTotalBudgetResult() {
+//        String datasetOrderName = "1.trajectory_containing_total_result";
+//        String datasetOrderName = "2.check_in_containing_total_result";
+//        String datasetOrderName = "3.tlns_containing_total_result";
+//        String datasetOrderName = "4.sin_containing_total_result";
+        String datasetOrderName = "5.log_containing_total_result";
+
+        boolean marked = false;
+//        boolean marked = true;
+
+        String datasetName = DatasetMap.get(datasetOrderName.split("\\.")[1].split("_")[0]);
+
         Integer defaultWindowSize = 120;
         boolean whetherLog = false;
 //        boolean whetherLog = true;
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "..", "3-3_dynamic_stream_pdp", "7.result_containing_total", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
         List<File> dirFileList;
@@ -236,19 +249,30 @@ public class ResultTestBasic {
             System.out.print(MechanismNameArray[i] + ": ");
             MyPrint.showList(resulList.get(i), "\t");
         }
+
+        MyPrint.showSplitLine("*", 150);
+
+        String latexTableCode = PaperUtils.getLatexTableCode(datasetName, MechanismNameArray, resulList, marked);
+        System.out.println(latexTableCode);
     }
 
     @Test
-    public void showContainingLDPWindowSizeResult() {
-//        String datasetOrderName = "1.trajectory_containing_ldp_result";
-//        String datasetOrderName = "2.check_in_containing_ldp_result";
-//        String datasetOrderName = "3.tlns_containing_ldp_result";
-//        String datasetOrderName = "4.sin_containing_ldp_result";
-        String datasetOrderName = "5.log_containing_ldp_result";
+    public void showContainingTotalWindowSizeResult() {
+//        String datasetOrderName = "1.trajectory_containing_total_result";
+//        String datasetOrderName = "2.check_in_containing_total_result";
+//        String datasetOrderName = "3.tlns_containing_total_result";
+//        String datasetOrderName = "4.sin_containing_total_result";
+        String datasetOrderName = "5.log_containing_total_result";
+
+        boolean marked = false;
+//        boolean marked = true;
+
+        String datasetName = DatasetMap.get(datasetOrderName.split("\\.")[1].split("_")[0]);
+
         Double defaultBudget = 0.6;
         boolean whetherLog = false;
 //        boolean whetherLog = true;
-        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "4.result_containing_ldp", datasetOrderName);
+        String datasetPath = StringUtil.join(ConstantValues.FILE_SPLIT, Constant.basicDatasetPath, "..", "..", "3-3_dynamic_stream_pdp", "7.result_containing_total", datasetOrderName);
         File file = new File(datasetPath);
         File[] totalDirFileArray = file.listFiles(new DirectoryFileFilter());
         List<File> dirFileList;
@@ -307,8 +331,11 @@ public class ResultTestBasic {
             System.out.print(MechanismNameArray[i] + ": ");
             MyPrint.showList(resulList.get(i), "\t");
         }
+
+        MyPrint.showSplitLine("*", 150);
+
+        String latexTableCode = PaperUtils.getLatexTableCode(datasetName, MechanismNameArray, resulList, marked);
+        System.out.println(latexTableCode);
     }
-
-
 
 }
