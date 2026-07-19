@@ -110,4 +110,23 @@ public class MechanismErrorUtils {
         }
         return new Double[]{optimalEpsilon, minimalError};
     }
+
+    public static Double[] getMinimalEpsilonAndErrorDetails(TreeMap<Double, Integer> epsilonCountMap) {
+        Set<Double> epsilonSet = epsilonCountMap.keySet();
+        Double minimalError = Double.MAX_VALUE, chosenSamplingError = null, chosenDPError = null;
+        Double optimalEpsilon = null;
+        Double tempError, tempSampleError, tempDPError;
+        for (Double epsilon : epsilonSet) {
+            tempSampleError = getSampleError(epsilonCountMap, epsilon);
+            tempDPError = getDPError(epsilon);
+            tempError = tempSampleError + tempDPError;
+            if (tempError < minimalError) {
+                minimalError = tempError;
+                optimalEpsilon = epsilon;
+                chosenSamplingError = tempSampleError;
+                chosenDPError = tempDPError;
+            }
+        }
+        return new Double[]{optimalEpsilon, minimalError, chosenSamplingError, chosenDPError};
+    }
 }

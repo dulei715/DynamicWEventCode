@@ -16,6 +16,11 @@ public class SchemeUtils {
         return MechanismErrorUtils.getMinimalEpsilonAndError((TreeMap<Double, Integer>) countMap);
     }
 
+    public static Double[] selectOptimalBudgetWithDetails(List<Double> privacyBudgetList) {
+        Map<Double, Integer> countMap = StatisticTool.countHistogramNumber(privacyBudgetList);
+        return MechanismErrorUtils.getMinimalEpsilonAndErrorDetails((TreeMap<Double, Integer>) countMap);
+    }
+
     public static Double getDissimilarity(TreeMap<String, Integer> currentCountMap, StreamNoiseCountData lastTimeNoiseCountData, Double epsilon) {
         int size = currentCountMap.size();
         TreeMap<String, Double> lastTimeNoiseMap = lastTimeNoiseCountData.getDataMap();

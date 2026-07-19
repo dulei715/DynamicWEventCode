@@ -4,6 +4,7 @@ import ecnu.dll.schemes._basic_struct.Mechanism;
 import ecnu.dll.schemes._scheme_utils.BooleanStreamDataElementUtils;
 import ecnu.dll.schemes._scheme_utils.PersonalizedDPTools;
 import ecnu.dll.schemes._scheme_utils.SchemeUtils;
+import ecnu.dll.struts.MechanismPartBDetailStruct;
 import ecnu.dll.struts.stream_data.StreamNoiseCountData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
@@ -70,6 +71,20 @@ public abstract class PersonalizedEventMechanism extends Mechanism {
         return dissimilarity;
     }
 
+    /**
+     * 返回[dissimilarity, optimalError, chosenSamplingError, chosenDPError]
+     * @param nextDataElementList
+     * @return
+     */
+    protected Double[] mechanismPartADetails(List<StreamDataElement<Boolean>> nextDataElementList) {
+        setCalculationPrivacyBudgetList();
+        Double[] minimalEpsilonAndError = SchemeUtils.selectOptimalBudgetWithDetails(this.calculationPrivacyBudgetList);
+        List<Integer> sampleIndexList = PersonalizedDPTools.sampleIndex(this.calculationPrivacyBudgetList, minimalEpsilonAndError[0]);
+        TreeMap<String, Integer> sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
+        Double dissimilarity = SchemeUtils.getDissimilarity(sampleCountMap, this.lastReleaseNoiseCountMap, minimalEpsilonAndError[0]);
+        return new Double[]{dissimilarity, minimalEpsilonAndError[1], minimalEpsilonAndError[2], minimalEpsilonAndError[3]};
+    }
+
     protected boolean mechanismPartB(List<StreamDataElement<Boolean>> nextDataElementList, Double dissimilarity) {
         TreeMap<String, Integer> sampleCountMap;
         Double[] minimalEpsilonAndError;
@@ -90,6 +105,31 @@ public abstract class PersonalizedEventMechanism extends Mechanism {
         }
 
         return false;
+    }
+
+    protected MechanismPartBDetailStruct mechanismPartBDetails(List<StreamDataElement<Boolean>> nextDataElementList, Double dissimilarity) {
+        TreeMap<String, Integer> sampleCountMap;
+        Double[] minimalEpsilonAndError;
+        List<Integer> sampleIndexList;
+        boolean status;
+        setPublicationPrivacyBudgetList();
+        minimalEpsilonAndError = SchemeUtils.selectOptimalBudgetWithDetails(this.publicationPrivacyBudgetList);
+
+        TreeMap<String, Double> releaseDataMap;
+
+//        System.out.printf("dis: %f; err: %f\n", dissimilarity, Math.sqrt(minimalEpsilonAndError[1]));
+
+        if (dissimilarity > Math.sqrt(minimalEpsilonAndError[1])) {
+            sampleIndexList = PersonalizedDPTools.sampleIndex(this.publicationPrivacyBudgetList, minimalEpsilonAndError[0]);
+            sampleCountMap = BooleanStreamDataElementUtils.getCountByGivenElementType(true, nextDataElementList, sampleIndexList);
+            releaseDataMap = SchemeUtils.getNoiseCount(sampleCountMap, minimalEpsilonAndError[0]);
+            this.lastReleaseNoiseCountMap = new StreamNoiseCountData(this.currentTime, releaseDataMap);
+            status = true;
+        } else {
+            status = false;
+        }
+
+        return new MechanismPartBDetailStruct(status, minimalEpsilonAndError);
     }
 
     public abstract String getSimpleName();
