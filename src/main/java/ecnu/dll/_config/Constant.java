@@ -98,6 +98,23 @@ public class Constant {
     public static final String MWD = "MWD"; // MeanWassersteinDistance, 是所有时刻Wasserstein距离的均值
     public static final String BWD = "BWD"; // BatchWassersteinDistance, 是一个batch中的所有Wasserstein距离的总和
 
+    public static final String PartA_BDPVar = "PartA_BDPVar";
+    public static final String PartB_BDPVar = "PartB_BDPVar";
+
+    public static final String PartA_BSampleVar = "PartA_BSampleVar";
+    public static final String PartB_BSampleVar = "PartB_BSampleVar";
+
+    public static final String PartA_BCountVar = "PartA_BCountVar";
+    public static final String PartB_BCountVar = "PartB_BCountVar";
+
+    public static final String PartA_BiasSquare = "PartA_BiasSquare";
+    public static final String PartB_BiasSquare = "PartB_BiasSquare";
+
+    public static final String NonNullCount = "NonNullCount";
+    public static final String PartA_Scale = "PartA_Scale";
+    public static final String PartB_Scale = "PartB_Scale";
+
+
     public static final String  nonPrivacyName = "NP";
     public static final String  budgetDistributionName = "BD";
     public static final String  budgetAbsorptionName = "BA";
@@ -173,6 +190,7 @@ public class Constant {
     public static String OutputDatasetAblationDirName = "group_output_dimension_ablation";
     public static String OutputContainingSPASDirName = "group_output_containing_spas";
     public static String OutputContainingTotalDirName = "group_output_containing_total";
+    public static String OutputContainingErrorDetails = "group_output_containing_error_details";
 
     public static Function<Integer, String> groupPositionNameFunction = positionSize -> "groupPosition_"+positionSize+".txt";
     public static Function<Integer, String> dimAblationDirNameFunction = positionSize -> StringUtil.join(ConstantValues.FILE_SPLIT, "runInput_dim_ablation", "positionSize_" + positionSize);

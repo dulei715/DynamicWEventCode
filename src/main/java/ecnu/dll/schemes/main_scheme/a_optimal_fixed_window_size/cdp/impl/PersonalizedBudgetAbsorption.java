@@ -5,6 +5,10 @@ import ecnu.dll.schemes._scheme_utils.nullified.MaximalNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.MinimalNullifiedBound;
 import ecnu.dll.schemes._scheme_utils.nullified.NullifiedBound;
 import ecnu.dll.schemes.main_scheme.a_optimal_fixed_window_size.cdp.PersonalizedEventMechanism;
+import ecnu.dll.struts.personalized_struct.PersonalizedMechanismDetailStruct;
+import ecnu.dll.struts.personalized_struct.PersonalizedMechanismErrorDetailStruct;
+import ecnu.dll.struts.personalized_struct.PersonalizedMechanismPartADetailStruct;
+import ecnu.dll.struts.personalized_struct.PersonalizedMechanismPartBDetailStruct;
 import ecnu.dll.struts.stream_data.StreamBudgetData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
@@ -85,6 +89,33 @@ public class PersonalizedBudgetAbsorption extends PersonalizedEventMechanism {
         }
         setPublicationPrivacyBudgetList();
         return mechanismPartB(nextDataElementList, dissimilarity);
+    }
+
+    @Override
+    public PersonalizedMechanismDetailStruct updateNextPublicationResultDetails(List<StreamDataElement<Boolean>> nextDataElementList) {
+        ++this.currentTime;
+        Double dissimilarity;
+        PersonalizedMechanismPartADetailStruct personalizedMechanismPartADetailStruct;
+        PersonalizedMechanismPartBDetailStruct personalizedMechanismPartBDetailStruct;
+
+        personalizedMechanismPartADetailStruct = mechanismPartADetails(nextDataElementList);
+        dissimilarity = personalizedMechanismPartADetailStruct.getDissimilarity();
+        this.nullifiedTimeStampList = new ArrayList<>();
+        List<Double> lastTimePublicationBudgetList = this.lastTimePublicationBudgetData.getBudgetList();
+        for (int i = 0; i < lastTimePublicationBudgetList.size(); i++) {
+            this.nullifiedTimeStampList.add(lastTimePublicationBudgetList.get(i) / (this.privacyBudgetList.get(i) / (2*this.windowSizeList.get(i))) - 1);
+        }
+//        double averageNullifiedTimeStamp = ListUtils.sum(this.nullifiedTimeStampList) / this.nullifiedTimeStampList.size();
+//        double nullifiedTimeStampBound = ListUtils.getMinimalValue(this.nullifiedTimeStampList);
+        double nullifiedTimeStampBound = nullifiedBound.getNullifiedBound(this.nullifiedTimeStampList);
+        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= nullifiedTimeStampBound) {
+            personalizedMechanismPartBDetailStruct = new PersonalizedMechanismPartBDetailStruct(false, false, null, 0D, new PersonalizedMechanismErrorDetailStruct(0D, 0D, 0D, 0D));
+            return new PersonalizedMechanismDetailStruct(personalizedMechanismPartADetailStruct, personalizedMechanismPartBDetailStruct);
+        }
+        setPublicationPrivacyBudgetList();
+        // 这里mechanismPartBDetailStruct里面的nonnull状态父类已经默认设置为true了
+        personalizedMechanismPartBDetailStruct = mechanismPartBDetails(nextDataElementList, dissimilarity);
+        return new PersonalizedMechanismDetailStruct(personalizedMechanismPartADetailStruct, personalizedMechanismPartBDetailStruct);
     }
 
     @Override

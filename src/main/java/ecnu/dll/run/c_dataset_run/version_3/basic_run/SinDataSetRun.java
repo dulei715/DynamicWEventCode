@@ -37,6 +37,13 @@ public class SinDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingSPASDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runSinContainingErrorDetails() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        String basicPath = Constant.sinFilePath;
+        String dataTypeFileName = "status.txt";
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.containingErrorDetailsDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
     public static void runSinContainingTotal() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         String basicPath = Constant.sinFilePath;
         String dataTypeFileName = "status.txt";

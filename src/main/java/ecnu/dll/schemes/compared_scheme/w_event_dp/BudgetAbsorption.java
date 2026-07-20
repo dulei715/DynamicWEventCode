@@ -1,5 +1,7 @@
 package ecnu.dll.schemes.compared_scheme.w_event_dp;
 
+import ecnu.dll.struts.non_personalized_struct.MechanismDetailStruct;
+import ecnu.dll.struts.non_personalized_struct.MechanismPartBDetails;
 import ecnu.dll.struts.stream_data.StreamBudgetData;
 import ecnu.dll.struts.stream_data.StreamDataElement;
 
@@ -34,6 +36,26 @@ public class BudgetAbsorption extends WEventMechanism {
         }
         setPublicationPrivacyBudget();
         return mechanismPartB(nextDataElementList, dissimilarity);
+    }
+
+    @Override
+    public MechanismDetailStruct updateNextPublicationResultDetails(List<StreamDataElement<Boolean>> nextDataElementList) {
+        ++this.currentTime;
+        Double[] partADetails;
+        Double dissimilarity, partAScale;
+        partADetails = mechanismPartADetails(nextDataElementList);
+        dissimilarity = partADetails[0];
+        partAScale = partADetails[1];
+        MechanismPartBDetails mechanismPartBDetails;
+        Double lastTimePublicationBudget = this.lastTimePublicationBudgetData.getBudgetList().get(0);
+        this.nullifiedTimeStamp = lastTimePublicationBudget / (this.privacyBudget / (2*this.windowSize)) - 1;
+        if (this.currentTime - this.lastTimePublicationBudgetData.getTimeSlot() <= this.nullifiedTimeStamp) {
+            mechanismPartBDetails = new MechanismPartBDetails(false, false, 0D);
+            return new MechanismDetailStruct(partAScale, mechanismPartBDetails);
+        }
+        setPublicationPrivacyBudget();
+        mechanismPartBDetails = mechanismPartBDetails(nextDataElementList, dissimilarity);
+        return new MechanismDetailStruct(partAScale, mechanismPartBDetails);
     }
 
     @Override

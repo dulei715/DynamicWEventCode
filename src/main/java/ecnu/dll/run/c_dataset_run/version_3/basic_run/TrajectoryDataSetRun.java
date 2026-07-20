@@ -48,6 +48,14 @@ public class TrajectoryDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingSPASDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runTrajectoryContainingErrorDetails() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+
+        String basicPath = Constant.trajectoriesFilePath;
+        String dataTypeFileName = "cell.txt";
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.containingErrorDetailsDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
 
     public static void runTrajectoryContainingTotal() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 

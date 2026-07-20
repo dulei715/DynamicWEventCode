@@ -16,6 +16,7 @@ import ecnu.dll.utils.filters.RoundDirectoryFilter;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class RepeatUtils {
@@ -38,6 +39,9 @@ public class RepeatUtils {
             "NP", "BD", "BA", "PBD", "PBA"
             , "PDBD", "PDBA"
             , "SPAS"
+    };
+    private static final String[] nameStringArrayOnlyForErrorDetails = new String[]{
+            "NP", "BA", "PBA"
     };
 
     private static final String[] nameStringArrayForInternal = new String[]{
@@ -256,6 +260,48 @@ public class RepeatUtils {
         }
 
     }
+    private static void combineContainingErrorDetailsProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
+        List<ResultBean> combineBeanList = null, updateBeanList;
+        ResultBean tempBean;
+        BeanInterface<ResultBean> modelBean = new ResultBean();
+        BasicPair<Double, Integer> paramsPair;
+        String inputFilePath, outputFilePath, title;
+        CSVWrite csvWrite = new CSVWrite();
+        File parentFile;
+        FileFilter directoryFileFilter = new DirectoryFileFilter();
+        Method formatStringMethod = null;
+        try {
+            formatStringMethod = ResultBean.class.getMethod("toFormatErrorDetailsString");
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        for (String parameterFileDir : parameterSet) {
+            paramsPair = ParameterUtils.extractBudgetWindowSizeParametersAccordingFileDirName(parameterFileDir);
+            title = CSVReadEnhanced.readDataTitle(inputMethodDirFileList.get(0).listFiles(directoryFileFilter)[0].getAbsolutePath()+ConstantValues.FILE_SPLIT+"result.txt");
+//            System.out.println(title);
+            combineBeanList = new ArrayList<>();
+            for (String beanName : nameStringArrayOnlyForErrorDetails) {
+                tempBean = ResultBean.getInitializedBeanContainingErrorDetails(beanName, paramsPair.getKey(), paramsPair.getValue());
+                combineBeanList.add(tempBean);
+            }
+            for (File inputMethodDir : inputMethodDirFileList) {
+                inputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, inputMethodDir, parameterFileDir, "result.txt");
+                updateBeanList = CSVReadEnhanced.readDataToBeanList(inputFilePath, modelBean);
+                updateErrorDetails(combineBeanList, updateBeanList);
+            }
+            averageErrorDetails(combineBeanList, inputMethodDirFileList.size());
+            parentFile = new File(outputMethodDirFile, parameterFileDir);
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
+            }
+            outputFilePath = StringUtil.join(ConstantValues.FILE_SPLIT, parentFile.getAbsolutePath(), "result.txt");
+            csvWrite.startWriting(outputFilePath);
+            csvWrite.writeOneLine(title);
+            csvWrite.writeBeanListWithMethod(combineBeanList, formatStringMethod);
+            csvWrite.endWriting();
+        }
+
+    }
     private static void combineContainingTotalProcess(File outputMethodDirFile, List<File> inputMethodDirFileList, Set<String> parameterSet) {
         List<ResultBean> combineBeanList = null, updateBeanList;
         ResultBean tempBean;
@@ -310,6 +356,41 @@ public class RepeatUtils {
             combineBean.setMwd(combineBean.getMwd() + updateBean.getMwd());
         }
     }
+    private static void updateErrorDetails(List<ResultBean> combineBeanList, List<ResultBean> updateBeanList) {
+        ResultBean combineBean, updateBean;
+        for (int i = 0; i < combineBeanList.size(); i++) {
+            combineBean = combineBeanList.get(i);
+            updateBean = updateBeanList.get(i);
+            combineBean.setBatchSize(combineBean.getBatchSize() + updateBean.getBatchSize());
+            combineBean.setTimeCost(combineBean.getTimeCost() + updateBean.getTimeCost());
+            combineBean.setBre(combineBean.getBre() + updateBean.getBre());
+            combineBean.setBjsd(combineBean.getBjsd() + updateBean.getBjsd());
+            combineBean.setBwd(combineBean.getBwd() + updateBean.getBwd());
+            combineBean.setPartA_BDPVar(combineBean.getPartA_BDPVar() + updateBean.getPartA_BDPVar());
+            combineBean.setPartB_BDPVar(combineBean.getPartB_BDPVar() + updateBean.getPartB_BDPVar());
+            combineBean.setPartA_BSampleVar(combineBean.getPartA_BSampleVar() + updateBean.getPartA_BSampleVar());
+            combineBean.setPartB_BSampleVar(combineBean.getPartB_BSampleVar() + updateBean.getPartB_BSampleVar());
+            combineBean.setPartA_BCountVar(combineBean.getPartA_BCountVar() + updateBean.getPartA_BCountVar());
+            combineBean.setPartB_BCountVar(combineBean.getPartB_BCountVar() + updateBean.getPartB_BCountVar());
+            combineBean.setPartA_BiasSquare(combineBean.getPartA_BiasSquare() + updateBean.getPartA_BiasSquare());
+            combineBean.setPartB_BiasSquare(combineBean.getPartB_BiasSquare() + updateBean.getPartB_BiasSquare());
+            combineBean.setNonNullCount(combineBean.getNonNullCount() + updateBean.getNonNullCount());
+
+            combineBean.setMre(combineBean.getMre()+ updateBean.getMre());
+            combineBean.setMjsd(combineBean.getMjsd() + updateBean.getMjsd());
+            combineBean.setMwd(combineBean.getMwd() + updateBean.getMwd());
+            combineBean.setPartA_MDPVar(combineBean.getPartA_MDPVar() + updateBean.getPartA_MDPVar());
+            combineBean.setPartB_MDPVar(combineBean.getPartB_MDPVar() + updateBean.getPartB_MDPVar());
+            combineBean.setPartA_MSampleVar(combineBean.getPartA_MSampleVar() + updateBean.getPartA_MSampleVar());
+            combineBean.setPartB_MSampleVar(combineBean.getPartB_MSampleVar() + updateBean.getPartB_MSampleVar());
+            combineBean.setPartA_MCountVar(combineBean.getPartA_MCountVar() + updateBean.getPartA_MCountVar());
+            combineBean.setPartB_MCountVar(combineBean.getPartB_MCountVar() + updateBean.getPartB_MCountVar());
+            combineBean.setPartA_MBiasSquare(combineBean.getPartA_MBiasSquare() + updateBean.getPartA_MBiasSquare());
+            combineBean.setPartB_MBiasSquare(combineBean.getPartB_MBiasSquare() + updateBean.getPartB_MBiasSquare());
+            combineBean.setNonNullMCount(combineBean.getNonNullMCount() + updateBean.getNonNullMCount());
+
+        }
+    }
 
     private static void average(List<ResultBean> combineBeanList, int size) {
         for (ResultBean bean : combineBeanList) {
@@ -321,6 +402,39 @@ public class RepeatUtils {
             bean.setMre(bean.getMre()/size);
             bean.setMjsd(bean.getMjsd()/size);
             bean.setMwd(bean.getMwd()/size);
+        }
+    }
+    private static void averageErrorDetails(List<ResultBean> combineBeanList, int size) {
+        for (ResultBean bean : combineBeanList) {
+            bean.setBatchSize(bean.getBatchSize()/size);
+            bean.setTimeCost(bean.getTimeCost()/size);
+            bean.setBre(bean.getBre()/size);
+            bean.setBjsd(bean.getBjsd()/size);
+            bean.setBwd(bean.getBwd()/size);
+
+            bean.setPartA_BDPVar(bean.getPartA_BDPVar()/size);
+            bean.setPartB_BDPVar(bean.getPartB_BDPVar()/size);
+            bean.setPartA_BSampleVar(bean.getPartA_BSampleVar()/size);
+            bean.setPartB_BSampleVar(bean.getPartB_BSampleVar()/size);
+            bean.setPartA_BCountVar(bean.getPartA_BCountVar()/size);
+            bean.setPartB_BCountVar(bean.getPartB_BCountVar()/size);
+            bean.setPartA_BiasSquare(bean.getPartA_BiasSquare()/size);
+            bean.setPartB_BiasSquare(bean.getPartB_BiasSquare()/size);
+            bean.setNonNullCount(bean.getNonNullCount()/size);
+
+            bean.setMre(bean.getMre()/size);
+            bean.setMjsd(bean.getMjsd()/size);
+            bean.setMwd(bean.getMwd()/size);
+
+            bean.setPartA_MDPVar(bean.getPartA_MDPVar()/size);
+            bean.setPartB_MDPVar(bean.getPartB_MDPVar()/size);
+            bean.setPartA_MSampleVar(bean.getPartA_MSampleVar()/size);
+            bean.setPartB_MSampleVar(bean.getPartB_MSampleVar()/size);
+            bean.setPartA_MCountVar(bean.getPartA_MCountVar()/size);
+            bean.setPartB_MCountVar(bean.getPartB_MCountVar()/size);
+            bean.setPartA_MBiasSquare(bean.getPartA_MBiasSquare()/size);
+            bean.setPartB_MBiasSquare(bean.getPartB_MBiasSquare()/size);
+            bean.setNonNullMCount(bean.getNonNullMCount()/size);
         }
     }
 
@@ -437,6 +551,17 @@ public class RepeatUtils {
         outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList, roundSize);
 
         combineContainingSPASProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
+    }
+    public static void combineMultipleContainingErrorsRound(String inputDir, String outputDir, int roundSize) {
+        FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();
+        File inputDirFile = new File(inputDir);
+        File outputDirFile = new File(outputDir);
+        File outputMethodDirFile;
+        List<File> datasetRoundList = new ArrayList<>();
+        Set<String> outputParamsFileNameSet = new HashSet<>();
+        outputMethodDirFile = fillRoundAndParameterInfoAndGetOutputMethodDirFile(outputDir, inputDirFile, roundDirectoryFileFilter, outputDirFile, outputParamsFileNameSet, datasetRoundList, roundSize);
+
+        combineContainingErrorDetailsProcess(outputMethodDirFile, datasetRoundList, outputParamsFileNameSet);
     }
     public static void combineMultipleContainingTotalRound(String inputDir, String outputDir, int roundSize) {
         FileFilter roundDirectoryFileFilter = new RoundDirectoryFilter();

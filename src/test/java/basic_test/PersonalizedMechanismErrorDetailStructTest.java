@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.TreeMap;
 
-public class MechanismErrorTest {
+public class PersonalizedMechanismErrorDetailStructTest {
 
     @Test
     public void fun1() {

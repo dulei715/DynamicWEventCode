@@ -58,5 +58,42 @@ public class _0_NonPrivacyMechanismRun {
         experimentResult.addPair(Constant.BWD, String.valueOf(0));
         return new PurePair<>(experimentResult, publicationList);
     }
+    public static PurePair<ExperimentResult, List<StreamCountData>> runBatchDetails(NonPrivacyMechanism scheme, Integer batchID, List<List<StreamDataElement<Boolean>>> batchDataList) {
+//        NonPrivacyMechanism scheme = new NonPrivacyMechanism(dataType);
+        ExperimentResult experimentResult = new ExperimentResult();
+        int timeBatchSize = batchDataList.size();
+        long startTime, endTime, timeCost;
+        List<StreamCountData> publicationList = new ArrayList<>(timeBatchSize);
+        startTime = System.currentTimeMillis();
+        for (int i = 0; i < timeBatchSize; i++) {
+            scheme.updateNextPublicationResult(batchDataList.get(i));
+            publicationList.add(scheme.getReleaseCountMap());
+        }
+        endTime = System.currentTimeMillis();
+        timeCost = endTime - startTime;
+        experimentResult.addPair(Constant.MechanismName, Constant.nonPrivacyName);
+        experimentResult.addPair(Constant.BatchName, String.valueOf(batchID));
+        experimentResult.addPair(Constant.BatchRealSize, String.valueOf(timeBatchSize));
+        experimentResult.addPair(Constant.TimeCost, String.valueOf(timeCost));
+        experimentResult.addPair(Constant.PrivacyBudget, String.valueOf(0.0));
+        experimentResult.addPair(Constant.WindowSize, String.valueOf(0));
+        experimentResult.addPair(Constant.BRE, String.valueOf(0));
+        experimentResult.addPair(Constant.BJSD, String.valueOf(0));
+        experimentResult.addPair(Constant.BWD, String.valueOf(0));
+
+        experimentResult.addPair(Constant.PartA_BDPVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartB_BDPVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartA_BSampleVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartB_BSampleVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartA_BCountVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartB_BCountVar, String.valueOf(0));
+        experimentResult.addPair(Constant.PartA_BiasSquare, String.valueOf(0));
+        experimentResult.addPair(Constant.PartB_BiasSquare, String.valueOf(0));
+        experimentResult.addPair(Constant.NonNullCount, String.valueOf(0));
+
+        return new PurePair<>(experimentResult, publicationList);
+
+
+    }
 
 }

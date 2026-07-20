@@ -34,6 +34,21 @@ public class SchemeUtils {
         average /= size;
         return average + LaplaceUtils.getLaplaceNoise(1.0/size, epsilon);
     }
+    public static Double[] getDissimilarityDetails(TreeMap<String, Integer> currentCountMap, StreamNoiseCountData lastTimeNoiseCountData, Double epsilon) {
+        int size = currentCountMap.size();
+        TreeMap<String, Double> lastTimeNoiseMap = lastTimeNoiseCountData.getDataMap();
+        if (size != lastTimeNoiseMap.size()) {
+            throw new RuntimeException("The size of current count result is not equal to the historical noise count result!");
+        }
+        Double average = 0D;
+        for (Map.Entry<String, Integer> currentEntry : currentCountMap.entrySet()) {
+            average += Math.abs(currentEntry.getValue() - lastTimeNoiseMap.get(currentEntry.getKey()));
+        }
+        average /= size;
+        double dis = average + LaplaceUtils.getLaplaceNoise(1.0/size, epsilon);
+        double scale = 1 / epsilon;
+        return new Double[]{dis, scale};
+    }
 
     public static TreeMap<String, Double> getNoiseCount(TreeMap<String, Integer> data, Double privacyBudget) {
         return getLaplaceNoiseCount(data, 1.0, privacyBudget);

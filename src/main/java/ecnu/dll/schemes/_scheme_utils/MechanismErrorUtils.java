@@ -87,6 +87,26 @@ public class MechanismErrorUtils {
         result = countVar + bias * bias;
         return  result;
     }
+    public static Double[] getSampleErrorDetails(TreeMap<Double, Integer> epsilonCountMap, Double epsilonTheta) {
+        Integer itemSize = MapUtils.getIntegerValueSum(epsilonCountMap);
+
+        Double result = 0D, countVar = 0D, bias = 0D, tempEpsilon, tempProbability, tempValue, biasSquare;
+        Integer tempCount;
+        for (Map.Entry<Double, Integer> entry : epsilonCountMap.entrySet()) {
+            tempEpsilon = entry.getKey();
+            if (tempEpsilon >= epsilonTheta) {
+                break;
+            }
+            tempProbability = (Math.exp(tempEpsilon) - 1) / (Math.exp(epsilonTheta) - 1);
+            tempCount = entry.getValue();
+            tempValue = tempCount * (1 - tempProbability);
+            countVar += tempValue * tempProbability;
+            bias += tempValue;
+        }
+        biasSquare = bias * bias;
+        result = countVar + biasSquare;
+        return  new Double[]{result, countVar, biasSquare};
+    }
 
     public static Double getDPError(Double epsilon, Double sensitivity) {
         return 2.0 * Math.pow(sensitivity / epsilon, 2);
@@ -113,11 +133,13 @@ public class MechanismErrorUtils {
 
     public static Double[] getMinimalEpsilonAndErrorDetails(TreeMap<Double, Integer> epsilonCountMap) {
         Set<Double> epsilonSet = epsilonCountMap.keySet();
-        Double minimalError = Double.MAX_VALUE, chosenSamplingError = null, chosenDPError = null;
+        Double minimalError = Double.MAX_VALUE, chosenSamplingError = null, chosenDPError = null, chosenCountVar = null, chosenBiasSquare = null;
         Double optimalEpsilon = null;
-        Double tempError, tempSampleError, tempDPError;
+        Double[] tempSampleErrorDetails;
+        Double tempError, tempSampleError, tempDPError, tempCountVar, tempBiasSquare;
         for (Double epsilon : epsilonSet) {
-            tempSampleError = getSampleError(epsilonCountMap, epsilon);
+            tempSampleErrorDetails = getSampleErrorDetails(epsilonCountMap, epsilon);
+            tempSampleError = tempSampleErrorDetails[0];
             tempDPError = getDPError(epsilon);
             tempError = tempSampleError + tempDPError;
             if (tempError < minimalError) {
@@ -125,8 +147,10 @@ public class MechanismErrorUtils {
                 optimalEpsilon = epsilon;
                 chosenSamplingError = tempSampleError;
                 chosenDPError = tempDPError;
+                chosenCountVar = tempSampleErrorDetails[1];
+                chosenBiasSquare = tempSampleErrorDetails[2];
             }
         }
-        return new Double[]{optimalEpsilon, minimalError, chosenSamplingError, chosenDPError};
+        return new Double[]{optimalEpsilon, minimalError, chosenSamplingError, chosenDPError, chosenCountVar, chosenBiasSquare};
     }
 }

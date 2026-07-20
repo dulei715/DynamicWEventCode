@@ -42,6 +42,13 @@ public class CheckInDataSetRun {
         Integer singleBatchSize = independentData.getValue();
         DatasetSegmentRunUtils.containingSPASDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
     }
+    public static void runCheckInContainingErrorDetails() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        String basicPath = Constant.checkInFilePath;
+        String dataTypeFileName = "country.txt";
+        PureTriple<String, Integer, List<Integer>> independentData = ConfigureUtils.getIndependentData("BatchUnitSize", "default", "default");
+        Integer singleBatchSize = independentData.getValue();
+        DatasetSegmentRunUtils.containingErrorDetailsDatasetRun(basicPath, dataTypeFileName, singleBatchSize);
+    }
     public static void runCheckInContainingTotal() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         String basicPath = Constant.checkInFilePath;
         String dataTypeFileName = "country.txt";
