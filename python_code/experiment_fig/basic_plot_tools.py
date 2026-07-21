@@ -1332,6 +1332,8 @@ if __name__ == '__main__':
     internal_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/2.result_internal/1.trajectory_internal_result"
     time_cost_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/3.result_time_cost/1.trajectory_time_cost_result"
     influence_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/4.result_containing_ldp/1.trajectory_containing_ldp_result"
+    influence_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/6.result_containing_spas/1.trajectory_containing_spas_result"
+
     default_window_size = 120
     default_privacy_budget = 0.6
     time_col_index = 4

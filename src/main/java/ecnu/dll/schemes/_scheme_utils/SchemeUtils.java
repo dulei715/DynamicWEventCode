@@ -47,6 +47,8 @@ public class SchemeUtils {
         average /= size;
         double dis = average + LaplaceUtils.getLaplaceNoise(1.0/size, epsilon);
         double scale = 1 / epsilon;
+        // 为了和PBA统一量纲，这里用平方版
+//        double scale = 2 / epsilon / epsilon;
         return new Double[]{dis, scale};
     }
 
