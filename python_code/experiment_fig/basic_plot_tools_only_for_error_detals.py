@@ -231,7 +231,7 @@ def plot_budget_change_influence_given_metric_for_single_dataset_all_columns_con
 
     plt.tight_layout()
 
-    # plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
+    plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
 
     plt.show()
 
@@ -321,7 +321,7 @@ def plot_BA_budget_change_influence_given_metric_for_single_dataset_all_columns_
 
     plt.tight_layout()
 
-    # plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
+    plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
 
     plt.show()
 

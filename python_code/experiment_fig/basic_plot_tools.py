@@ -571,6 +571,89 @@ def plot_budget_change_influence_given_metric_for_single_dataset(basic_path, def
     plt.show()
 
     plt.close()
+def test_plot_part_budget_change_influence_given_metric_for_single_dataset(basic_path, default_window_size, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
+
+    dir_names = cutils.list_dir_name(basic_path)
+
+    x = []
+    y_ba = []
+    y_pba = []
+
+    for temp_name in dir_names:
+        temp_budget, temp_window_size = sutils.extract_budget_and_window_size_from_dir_name(temp_name)
+        if temp_window_size != default_window_size:
+            continue
+
+        data_path = os.path.join(basic_path, temp_name, 'result.txt')
+        try:
+            temp_table = pd.read_csv(data_path, sep=',')
+        except Exception as e:
+            print(f"读取失败: {data_path} -> {e}")
+            continue
+
+        x.append(temp_budget)
+        getter = np.log if metric_whether_log else lambda v: v
+        col = metric_col_index - 1  # Python 索引从0开始
+
+        try:
+            y_ba.append(getter(temp_table.iloc[1, col]) * shrink_ratio)
+            y_pba.append(getter(temp_table.iloc[2, col]) * shrink_ratio)
+        except Exception as e:
+            print(f"表格读取异常（{data_path}）：{e}")
+
+    # 排序
+    x = np.array(x)
+    sorted_indices = np.argsort(x)
+    x = x[sorted_indices]
+    y_ba = np.array(y_ba)[sorted_indices]
+    y_pba = np.array(y_pba)[sorted_indices]
+
+    # 图像配置
+    plt.rcParams['font.family'] = 'serif'
+    plt.rcParams['font.serif'] = ['Times New Roman']
+    plt.rcParams['mathtext.fontset'] = 'cm'
+    plt.rcParams['font.size'] = font_size
+    # figure_MarkerSize = 24
+    # figure_FontSize_X = 28
+    # figure_FontSize_Y = 28
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # linewidth = 3
+    # markeredgewidth = 3
+
+    # ax.plot(x, y_bd, 'ks-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BD')
+    ax.plot(x, y_ba, 'mo-', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='BA')
+    # ax.plot(x, y_plbu, color='teal', linestyle='--', marker='*', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PLBU')
+    # ax.plot(x, y_pbd, 'bs--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBD')
+    ax.plot(x, y_pba, 'go--', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PBA')
+    # ax.plot(x, y_pdbd, 'cs:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBD')
+    # ax.plot(x, y_pdba, 'ro:', linewidth=linewidth, markersize=figure_MarkerSize, markerfacecolor='none', markeredgewidth=markeredgewidth, label='PDBA')
+
+    ax.set_xlabel(r"$\mathcal{E}$", fontsize=figure_FontSize_X)
+    ylabel = f"ln({metric_name})" if metric_whether_log else metric_name
+    # y_all = np.concatenate([y_bd, y_ba, y_pbd, y_pba, y_pdbd, y_pdba, y_plbu])
+    y_all = np.concatenate([y_ba, y_pba])
+    ax.set_ylim(top=np.max(y_all) * 1.07)  # 提高 7% 上限，避免遮挡
+    ax.set_ylabel(ylabel, fontsize=figure_FontSize_Y)
+
+    ax.set_xticks(x)
+    padding = (x[-1] - x[0]) * 0.05  # 动态计算边缘留白 5%
+    ax.set_xlim(x[0] - padding, x[-1] + padding)
+
+    ax.tick_params(axis='both', labelsize=figure_FontSize_X)
+
+    # 图例
+    # legend_names = ["BD", "BA", "PLBU", "PBD", "PBA", "PDBD", "PDBA"]
+    legend_names = ["BA", "PBA"]
+    # ax.legend(legend_names, loc='best', fontsize=14, frameon=False)
+
+    plt.tight_layout()
+
+    # plt.savefig(output_file_name + '.pdf', format='pdf', bbox_inches="tight")
+
+    plt.show()
+
+    plt.close()
 def plot_window_size_change_influence_given_metric_for_single_dataset(basic_path, default_budget, metric_col_index, metric_name, metric_whether_log, shrink_ratio, output_file_name):
 
     dir_names = cutils.list_dir_name(basic_path)
@@ -1332,14 +1415,24 @@ if __name__ == '__main__':
     internal_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/2.result_internal/1.trajectory_internal_result"
     time_cost_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/3.result_time_cost/1.trajectory_time_cost_result"
     influence_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/4.result_containing_ldp/1.trajectory_containing_ldp_result"
-    influence_basic_path = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/6.result_containing_spas/1.trajectory_containing_spas_result"
+    influence_basic_path2 = "/Users/mac/MainFiles/1.Research/dataset/3_stream_dp/6.result_containing_spas/1.trajectory_containing_spas_result"
+
+    # influence_basic_path_test = "/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/8.result_containing_error_details/1.trajectory_containing_error_details_result"
+    # influence_basic_path_test = "/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/8.result_containing_error_details/2.check_in_containing_error_details_result"
+    # influence_basic_path_test = "/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/8.result_containing_error_details/3.tlns_containing_error_details_result"
+    # influence_basic_path_test = "/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/8.result_containing_error_details/4.sin_containing_error_details_result"
+    influence_basic_path_test = "/Users/admin/MainFiles/1.Research/dataset/3_stream_dp/8.result_containing_error_details/5.log_containing_error_details_result"
 
     default_window_size = 120
     default_privacy_budget = 0.6
     time_col_index = 4
-    ajsd_col_index = 10
+    amre_col_index = 19
+    ajsd_col_index = 20
+    mwd_col_index = 21
     time_y_name = "running time (s)"
+    amre_y_name = "AMRE"
     tjsd_y_name = "AJSD"
+    mwd_y_name = "MWD"
     metric_whether_log_time = False
     metric_whether_log_error = True
     shrink_ratio_time = 0.001
@@ -1352,4 +1445,8 @@ if __name__ == '__main__':
     # plot_window_size_change_influence_given_metric_for_single_dataset(influence_basic_path, default_privacy_budget, ajsd_col_index, tjsd_y_name, metric_whether_log_error, shrink_ratio_error, output_file_name)
     # draw_ratio_change_with_two_budget_for_single_dataset_except_dynamic(internal_basic_path, output_file_name)
     # draw_ratio_change_with_two_w_size_for_single_dataset_except_dynamic(internal_basic_path, output_file_name)
+    test_plot_part_budget_change_influence_given_metric_for_single_dataset(
+        influence_basic_path_test, default_window_size,
+        amre_col_index, amre_y_name, metric_whether_log_error,
+        shrink_ratio_error, output_file_name)
 
