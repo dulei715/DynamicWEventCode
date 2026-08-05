@@ -25,6 +25,7 @@ def plot_budget_change_for_error(input_basic_path, output_basic_path):
     metric_simple_name = r"error"
     metric_name = r"$\overline{err}_{OBS}$"
     # metric_name = r"$Mean Error Component$"
+    # metric_name = r"Mean Error"
     metric_whether_log = True
 
     for i, dir_name in enumerate(dataset_dirs):
